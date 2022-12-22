@@ -1,4 +1,4 @@
-package com.company.repositories;
+package com.company.repositories.food;
 
 import com.company.models.food.FoodType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +36,26 @@ public class JdbcFoodTypeRepository implements FoodTypeRepository {
     return jdbcTemplate.query(GET_BY_NAME_QUERY, foodTypeRowMapper, name).get(0);
   }
 
+  @Override
+  public int save(FoodType foodType) {
+    Integer id = jdbcTemplate.queryForObject(INSERT_QUERY, Integer.class,
+      foodType.getName(), foodType.getHp(), foodType.getMana(), foodType.getStamina()
+    );
+
+    if (id == null) {
+      // TODO
+      throw new IllegalArgumentException("Stub");
+    }
+
+    return id;
+  }
+
   private final static String GET_ALL_QUERY =
     "select id, name, hp, mana, stamina from food_types";
 
   private final static String GET_BY_NAME_QUERY =
     "select id, name, hp, mana, stamina from food_types where name = ?";
+
+  private final static String INSERT_QUERY =
+    "insert into food_types (name, hp, mana, stamina) values (?, ?, ?, ?) returning id";
 }

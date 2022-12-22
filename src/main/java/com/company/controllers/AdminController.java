@@ -1,11 +1,11 @@
 package com.company.controllers;
 
+import com.company.controllers.dto.FoodTypeDto;
 import com.company.models.food.Food;
+import com.company.models.food.FoodType;
 import com.company.services.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,5 +22,12 @@ public class AdminController {
   @GetMapping("storage")
   List<Food> storage() {
     return foodService.getAll();
+  }
+
+  @PostMapping("storage/food-type")
+  void addFoodType(@RequestBody FoodTypeDto request) {
+    var foodTypeToAdd =
+      new FoodType(null, request.name, request.hp, request.mana, request.stamina);
+    foodService.addFoodType(foodTypeToAdd);
   }
 }

@@ -1,7 +1,7 @@
 package com.company.controllers;
 
 import com.company.models.food.FoodType;
-import com.company.repositories.FoodTypeRepository;
+import com.company.repositories.food.FoodTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

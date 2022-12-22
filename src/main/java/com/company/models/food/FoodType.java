@@ -1,13 +1,13 @@
 package com.company.models.food;
 
 public class FoodType {
-  private int id;
+  private Integer id;
   private String name;
   private int hp;
   private int mana;
   private int stamina;
 
-  public int getId() {
+  public Integer getId() {
     return id;
   }
 
@@ -47,7 +47,7 @@ public class FoodType {
     this.stamina = stamina;
   }
 
-  public FoodType(int id, String name, int hp, int mana, int stamina) {
+  public FoodType(Integer id, String name, int hp, int mana, int stamina) {
     this.id = id;
     this.name = name;
     this.hp = hp;

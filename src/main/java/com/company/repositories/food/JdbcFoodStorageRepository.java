@@ -1,4 +1,4 @@
-package com.company.repositories;
+package com.company.repositories.food;
 
 import com.company.models.food.Food;
 import com.company.models.food.FoodType;
