@@ -17,7 +17,10 @@ public class JdbcPeopleRepository implements PeopleRepository {
     int id = rs.getInt("id");
     String name = rs.getString("name");
     Date birthday = rs.getDate("birthday");
-    return new Person(id, name, birthday);
+    int hp = rs.getInt("hp");
+    int mana = rs.getInt("mana");
+    int stamina = rs.getInt("stamina");
+    return new Person(id, name, birthday, hp, mana, stamina);
   };
 
   @Autowired
@@ -27,11 +30,16 @@ public class JdbcPeopleRepository implements PeopleRepository {
 
   @Override
   public List<Person> getAll() {
-    return null;
+    return jdbcTemplate.query(GET_ALL_QUERY, personRowMapper);
   }
 
   @Override
   public Person getByName(String name) {
-    return null;
+    return jdbcTemplate.query(GET_BY_NAME_QUERY, personRowMapper).get(0);
   }
+
+  private static final String GET_ALL_QUERY =
+    "select id, name, birthday, hp, mana, stamina from people";
+  private static final String GET_BY_NAME_QUERY =
+    "select id, name, birthday, hp, mana, stamina from people where name = ?";
 }

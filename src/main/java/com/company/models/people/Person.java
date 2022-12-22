@@ -6,6 +6,18 @@ public class Person {
   private int id;
   private String name;
   private Date birthday;
+  private int hp;
+  private int mana;
+  private int stamina;
+
+  public Person(int id, String name, Date birthday, int hp, int mana, int stamina) {
+    this.id = id;
+    this.name = name;
+    this.birthday = birthday;
+    this.hp = hp;
+    this.mana = mana;
+    this.stamina = stamina;
+  }
 
   public int getId() {
     return id;
@@ -31,9 +43,27 @@ public class Person {
     this.birthday = birthday;
   }
 
-  public Person(int id, String name, Date birthday) {
-    this.id = id;
-    this.name = name;
-    this.birthday = birthday;
+  public int getHp() {
+    return hp;
+  }
+
+  public void setHp(int hp) {
+    this.hp = hp;
+  }
+
+  public int getMana() {
+    return mana;
+  }
+
+  public void setMana(int mana) {
+    this.mana = mana;
+  }
+
+  public int getStamina() {
+    return stamina;
+  }
+
+  public void setStamina(int stamina) {
+    this.stamina = stamina;
   }
 }

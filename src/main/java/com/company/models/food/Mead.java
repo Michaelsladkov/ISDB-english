@@ -2,7 +2,7 @@ package com.company.models.food;
 
 public class Mead extends FoodType {
   private String sortName;
-  private int intAlcohol;
+  private int alcohol;
 
   public String getSortName() {
     return sortName;
@@ -12,17 +12,17 @@ public class Mead extends FoodType {
     this.sortName = sortName;
   }
 
-  public int getIntAlcohol() {
-    return intAlcohol;
+  public int getAlcohol() {
+    return alcohol;
   }
 
-  public void setIntAlcohol(int intAlcohol) {
-    this.intAlcohol = intAlcohol;
+  public void setAlcohol(int alcohol) {
+    this.alcohol = alcohol;
   }
 
-  public Mead(int id, String name, int hp, int mana, int stamina, String sortName, int intAlcohol) {
+  public Mead(int id, String name, int hp, int mana, int stamina, String sortName, int alcohol) {
     super(id, name, hp, mana, stamina);
     this.sortName = sortName;
-    this.intAlcohol = intAlcohol;
+    this.alcohol = alcohol;
   }
 }
