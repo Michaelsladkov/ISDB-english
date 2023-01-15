@@ -51,7 +51,7 @@ public class CommonController {
     return "index";
   }
 
-  @GetMapping("sign-in")
+  @PostMapping("sign-in")
   public String sigIn(Model model) {
     var login = (String) model.getAttribute("login");
     var password = (String) model.getAttribute("password");
