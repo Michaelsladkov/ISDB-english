@@ -1,8 +1,7 @@
 package com.company.business.repositories.food;
 
-import com.company.business.models.food.FoodType;
 import com.company.business.models.food.Food;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.company.business.models.food.FoodType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -24,7 +23,6 @@ public class JdbcFoodStorageRepository implements FoodStorageRepository {
     return new Food(foodType, count);
   };
 
-  @Autowired
   public JdbcFoodStorageRepository(JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
   }

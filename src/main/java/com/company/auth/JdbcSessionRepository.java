@@ -2,7 +2,6 @@ package com.company.auth;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -22,7 +21,6 @@ public class JdbcSessionRepository implements SessionRepository {
     return new DbSession(sessionId, userLogin);
   };
 
-  @Autowired
   public JdbcSessionRepository(UserRepository userRepository, JdbcTemplate jdbcTemplate) {
     this.userRepository = userRepository;
     this.jdbcTemplate = jdbcTemplate;

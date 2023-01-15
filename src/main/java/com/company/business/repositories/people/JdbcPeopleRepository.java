@@ -3,7 +3,6 @@ package com.company.business.repositories.people;
 import com.company.business.models.people.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -26,7 +25,6 @@ public class JdbcPeopleRepository implements PeopleRepository {
     return new Person(id, name, birthday, hp, mana, stamina);
   };
 
-  @Autowired
   public JdbcPeopleRepository(JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
   }
@@ -39,7 +37,7 @@ public class JdbcPeopleRepository implements PeopleRepository {
   @Override
   public Person getById(int id) {
     List<Person> personByList = jdbcTemplate.query(GET_BY_ID_QUERY, personRowMapper, id);
-    if(personByList.isEmpty()) {
+    if (personByList.isEmpty()) {
       logger.error("Can't find person with id = '" + id + "'");
       return null;
     }
@@ -49,7 +47,7 @@ public class JdbcPeopleRepository implements PeopleRepository {
   @Override
   public Person getByName(String name) {
     List<Person> personByList = jdbcTemplate.query(GET_BY_NAME_QUERY, personRowMapper, name);
-    if(personByList.isEmpty()) {
+    if (personByList.isEmpty()) {
       logger.error("Can't find person by name = '" + name + "'");
       return null;
     }

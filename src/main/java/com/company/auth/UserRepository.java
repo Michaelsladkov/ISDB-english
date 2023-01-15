@@ -1,8 +1,5 @@
 package com.company.auth;
 
-import org.springframework.stereotype.Repository;
-
-@Repository
 interface UserRepository {
   void add(User user);
 

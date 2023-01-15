@@ -1,7 +1,6 @@
 package com.company.business.repositories.food;
 
 import com.company.business.models.food.Mead;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -24,7 +23,6 @@ public class JdbcMeadRepository implements MeadRepository {
     return new Mead(id, name, hp, mana, stamina, sortName, alcohol);
   };
 
-  @Autowired
   public JdbcMeadRepository(FoodTypeRepository foodTypeRepository, JdbcTemplate jdbcTemplate) {
     this.foodTypeRepository = foodTypeRepository;
     this.jdbcTemplate = jdbcTemplate;

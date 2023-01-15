@@ -1,7 +1,6 @@
 package com.company.business.repositories.food;
 
 import com.company.business.models.food.FoodType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -21,7 +20,6 @@ public class JdbcFoodTypeRepository implements FoodTypeRepository {
     return new FoodType(id, name, hp, mana, stamina);
   };
 
-  @Autowired
   public JdbcFoodTypeRepository(JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
   }
