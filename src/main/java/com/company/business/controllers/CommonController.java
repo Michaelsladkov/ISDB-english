@@ -7,6 +7,7 @@ import com.company.auth.UserService;
 import com.company.business.repositories.people.PeopleRepository;
 import com.company.business.models.food.FoodType;
 import com.company.business.repositories.food.FoodTypeRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,10 +52,10 @@ public class CommonController {
     return "index";
   }
 
-  @PostMapping("sign-in")
-  public String sigIn(Model model) {
-    var login = (String) model.getAttribute("login");
-    var password = (String) model.getAttribute("password");
+  @PostMapping(value = "sign-in", params="action=sign-in")
+  public String sigIn(HttpServletRequest request, Model model) {
+    var login = (String) request.getParameter("login");
+    var password = (String) request.getParameter("password");
     if (userService.check(new User(login, password, null)) != SUCCESS) {
       logger.error("Can't sign in with login = '" + login + "'");
       model.addAttribute("error", true);
@@ -66,10 +67,10 @@ public class CommonController {
     return "customerPage";
   }
 
-  @PostMapping("sign-up")
-  public String signUp(Model model) {
-    var login = (String) model.getAttribute("login");
-    var password = (String) model.getAttribute("password");
+  @PostMapping(value = "sign-in", params="action=sign-up")
+  public String signUp(HttpServletRequest request, Model model) {
+    var login = (String) request.getParameter("login");
+    var password = (String) request.getParameter("password");
 
     var newUser = new User(login, password, null);
     var checkUserResult = userService.check(newUser);

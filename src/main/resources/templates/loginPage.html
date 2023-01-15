@@ -1,25 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Войти в медоварню</title>
-    <link rel="stylesheet" href="../css/login_style.css">
+    <link rel="stylesheet" href="../static/css/login_style.css" th:href="@{/css/login_style.css}">
 
 </head>
 <body>
 <div id="bg"></div>
 
-<form>
+<form th:action="@{/sign-in}" method="post">
     <div class="form-field">
-        <input type="text" placeholder="Username" required/>
+        <input type="text" placeholder="Username" name="login" required />
     </div>
 
     <div class="form-field">
-        <input type="password" placeholder="Password" required/>
+        <input type="password" placeholder="Password" name="password" required />
     </div>
 
     <div class="form-field">
-        <button class="btn" type="submit">Войти</button>
+        <button class="btn" type="submit" name="action" value="sign-in">Войти</button>
+    </div>
+    <div class="form-field">
+        <button class="btn" type="submit" name="action" value="sign-up">Зарегистрироваться</button>
     </div>
 </form>
 
