@@ -1,0 +1,137 @@
+@import url("https://fonts.googleapis.com/css?family=Lato:400,700");
+#bg {
+    background-image: url('../img/inside.jpg');
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    z-index: -10;
+    /*filter: blur(5px);*/
+}
+
+body {
+    color: white;
+    font-family: 'Lato', sans-serif;
+}
+
+.inline {
+    display: inline-block;
+    /*border: 1px solid red;*/
+    margin: 30px;
+}
+
+/*form .form-field {*/
+/*    display: -webkit-box;*/
+/*    display: -ms-flexbox;*/
+/*    display: flex;*/
+/*    -webkit-box-pack: justify;*/
+/*    -ms-flex-pack: justify;*/
+/*    justify-content: space-between;*/
+/*    -webkit-box-align: center;*/
+/*    -ms-flex-align: center;*/
+/*    align-items: center;*/
+/*    margin-bottom: 1rem;*/
+/*    position: relative;*/
+/*}*/
+
+form input {
+    width: 37%;
+    font-family: inherit;
+    outline: none;
+    background-color: #fff;
+    border-radius: 4px;
+    border: none;
+    display: block;
+    padding: 5px 10px 5px 10px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    font-size: 17px;
+    color: #4A4A4A;
+    margin-top: 10px;
+    /*text-indent: 40px;*/
+}
+
+form select {
+    width: 40%;
+    font-family: inherit;
+    outline: none;
+    background-color: #fff;
+    border-radius: 4px;
+    border: none;
+    display: block;
+    padding: 5px 10px 5px 10px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    font-size: 17px;
+    color: #4A4A4A;
+    margin: auto;
+    /*text-indent: 40px;*/
+}
+
+
+form .btn {
+    outline: none;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    margin: 0 auto;
+    padding: 5px 10px 5px 10px;
+    text-align: center;
+    background-color: #425942;
+    color: #fff;
+    border-radius: 4px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    font-size: 17px;
+}
+
+.table {
+    width: 50%;
+    border: none;
+    margin-bottom: 20px;
+    border-collapse: separate;
+    color: gold;
+}
+.table thead th {
+    font-weight: bold;
+    text-align: left;
+    border: none;
+    padding: 10px 15px;
+    background: rgba(237, 237, 237, 0.5);
+    font-size: 14px;
+    border-top: 1px solid #ddd;
+}
+.table tr th:first-child, .table tr td:first-child {
+    border-left: 1px solid #ddd;
+}
+.table tr th:last-child, .table tr td:last-child {
+    border-right: 1px solid #ddd;
+}
+.table thead tr th:first-child {
+    border-radius: 5px 0 0 0;
+}
+.table thead tr th:last-child {
+    border-radius: 0 5px 0 0;
+}
+.table tbody td {
+    text-align: left;
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    vertical-align: top;
+}
+.table tbody tr:nth-child(even) {
+    background: rgba(248, 248, 248, 0.3);
+}
+.table tbody tr:last-child {
+    background: rgb(248, 248, 248);
+    color: black;
+}
+.table tbody tr:last-child td{
+    border-bottom: 1px solid #ddd;
+}
+.table tbody tr:last-child td:first-child {
+    border-radius: 0 0 0 5px;
+}
+.table tbody tr:last-child td:last-child {
+    border-radius: 0 0 5px 0;
+}

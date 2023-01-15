@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" >
+    <head>
+        <meta charset="UTF-8">
+        <title>Медоварня</title>
+        <link rel="stylesheet" href="../css/main_style.css">
+
+    </head>
+    <body>
+        <div id="bg"></div>
+
+        <table border="0"  width="100%" height="100%" cellpadding="20" cellspacing="10">
+            <thead>
+            <tr>
+                <th colspan="2">
+                    <div id="hp" class="inline">HP: 100</div>
+                    <div id="mana" class="inline">Mana: 100</div>
+                    <div id="stamina" class="inline">Stamina: 100</div>
+                    <div id="alcohol" class="inline">Опьянение: 20</div>
+                </th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+                <td align="center" id="left">
+                    <form action="" method="post">
+                        <select>
+                            <option selected disabled>Выберите товар</option>
+                            <option value="Мед">Мед</option>
+                            <option value="Мясо">Мясо</option>
+                            <option value="Хлеб">Хлеб</option>
+                        </select>
+                        <input type="number" min="1" placeholder="Количество">
+                        <br>
+                        <input type="submit" value="Заказать" class="btn">
+                    </form>
+                </td>
+                <td align="center" id="right">
+                    <table border="1" class="table">
+                        <thead>
+                        <tr>
+                            <th>Название</th> <th>Количество</th> <th>Стоимость</th>
+                        </tr>
+                        </thead>
+                        <tr>
+                            <td>Мясо</td> <td>2</td> <td>30</td>
+                        </tr>
+                        <tr>
+                            <td>Мед</td> <td>2</td> <td>20</td>
+                        </tr>
+                        <tr>
+                            <td>Хлеб</td> <td>1</td> <td>7</td>
+                        </tr>
+                        <tr>
+                            <td>Сумма</td> <td></td> <td>57</td>
+                        </tr>
+                    </table>
+                    <form>
+                        <input type="submit" value="Оплатить" class="btn">
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </body>
+</html>
