@@ -85,7 +85,13 @@ public class CommonController {
 
     model.addAttribute("person", person);
 
-    return "customerPage";
+    return "index";
+  }
+
+  @PostMapping
+  public String logout() {
+    sessionRepository.delete(getSessionId());
+    return "redirect:/";
   }
 
   @GetMapping(path = "menu")
