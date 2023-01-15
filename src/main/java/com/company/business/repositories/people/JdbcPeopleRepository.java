@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -18,7 +18,7 @@ public class JdbcPeopleRepository implements PeopleRepository {
   private final static RowMapper<Person> personRowMapper = (rs, rowNum) -> {
     int id = rs.getInt("id");
     String name = rs.getString("name");
-    Date birthday = rs.getDate("birthday");
+    LocalDate birthday = rs.getDate("birthday").toLocalDate();
     int hp = rs.getInt("hp");
     int mana = rs.getInt("mana");
     int stamina = rs.getInt("stamina");
@@ -54,10 +54,27 @@ public class JdbcPeopleRepository implements PeopleRepository {
     return personByList.get(0);
   }
 
+  @Override
+  public Integer save(Person person) {
+    Integer id = jdbcTemplate.queryForObject(INSERT_QUERY, Integer.class,
+      person.getName(), person.getBirthday(), person.getHp(), person.getMana(), person.getStamina()
+    );
+
+    if (id == null) {
+      // TODO
+      throw new IllegalArgumentException("Stub");
+    }
+
+    return id;
+  }
+
   private static final String GET_ALL_QUERY =
     "select id, name, birthday, hp, mana, stamina from people";
   private static final String GET_BY_ID_QUERY =
     "select id, name, birthday, hp, mana, stamina from people where id = ?";
   private static final String GET_BY_NAME_QUERY =
     "select id, name, birthday, hp, mana, stamina from people where name = ?";
+  private static final String INSERT_QUERY =
+    "insert into people (name, birthday, hp, mana, stamina) values (?, ?, ?, ?, ?) returning id";
+
 }

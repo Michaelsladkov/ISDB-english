@@ -23,6 +23,11 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public void update(User user) {
+    repository.update(user);
+  }
+
+  @Override
   public CheckUserResult check(User user) {
     var userWithSameLogin = repository.get(user.getLogin());
     if (userWithSameLogin == null) {

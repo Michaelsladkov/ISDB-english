@@ -5,9 +5,10 @@ import com.company.auth.SessionRepository;
 import com.company.auth.User;
 import com.company.auth.UserService;
 import com.company.business.models.food.FoodType;
+import com.company.business.models.people.Person;
 import com.company.business.repositories.food.FoodTypeRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import com.company.business.repositories.people.PeopleRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.RequestContextHolder;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.company.auth.UserService.CheckUserResult.NO_USER;
@@ -50,7 +52,7 @@ public class CommonController {
     return "index";
   }
 
-  @PostMapping(value = "sign-in", params="action=sign-in")
+  @PostMapping(value = "sign-in", params = "action=sign-in")
   public String sigIn(HttpServletRequest request, Model model) {
     var login = (String) request.getParameter("login");
     var password = (String) request.getParameter("password");
@@ -62,11 +64,14 @@ public class CommonController {
 
     sessionRepository.store(new Session(getSessionId(), userService.get(login)));
 
+    var person = peopleRepository.getById(userService.get(login).getPersonId());
+    model.addAttribute("person", person);
+
     return "index";
   }
 
-  @PostMapping(value = "sign-in", params="action=sign-up")
-  public String signUp(HttpServletRequest request, Model model) {
+  @PostMapping(value = "sign-in", params = "action=sign-up")
+  public String registerUser(HttpServletRequest request, Model model) {
     var login = (String) request.getParameter("login");
     var password = (String) request.getParameter("password");
 
@@ -78,11 +83,23 @@ public class CommonController {
       return "signupPage";
     }
 
-    var personName = (String) model.getAttribute("name");
-    var person = peopleRepository.getByName(personName);
-    newUser.setPersonId(person.getId());
     userService.save(newUser);
     sessionRepository.store(new Session(getSessionId(), newUser));
+
+    model.addAttribute("login", login);
+
+    return "registerPage";
+  }
+
+  @PostMapping(value = "sign-up")
+  public String signUp(HttpServletRequest request, Model model) {
+    var person = personFromRequest(request);
+    Integer personId = peopleRepository.save(person);
+
+    var login = (String) request.getParameter("login");
+    var user = userService.get(login);
+    user.setPersonId(personId);
+    userService.update(user);
 
     model.addAttribute("person", person);
 
@@ -102,5 +119,15 @@ public class CommonController {
 
   private static String getSessionId() {
     return RequestContextHolder.currentRequestAttributes().getSessionId();
+  }
+
+  private Person personFromRequest(HttpServletRequest request) {
+    return new Person(
+      null, request.getParameter("name"),
+      LocalDate.parse(request.getParameter("date")),
+      Integer.parseInt(request.getParameter("hp")),
+      Integer.parseInt(request.getParameter("mana")),
+      Integer.parseInt(request.getParameter("stamina"))
+    );
   }
 }

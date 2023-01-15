@@ -1,16 +1,19 @@
 package com.company.business.models.people;
 
+import org.springframework.data.relational.core.sql.In;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Person {
-  private int id;
+  private Integer id;
   private String name;
-  private Date birthday;
+  private LocalDate birthday;
   private int hp;
   private int mana;
   private int stamina;
 
-  public Person(int id, String name, Date birthday, int hp, int mana, int stamina) {
+  public Person(Integer id, String name, LocalDate birthday, int hp, int mana, int stamina) {
     this.id = id;
     this.name = name;
     this.birthday = birthday;
@@ -19,11 +22,11 @@ public class Person {
     this.stamina = stamina;
   }
 
-  public int getId() {
+  public Integer getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
@@ -35,11 +38,11 @@ public class Person {
     this.name = name;
   }
 
-  public Date getBirthday() {
+  public LocalDate getBirthday() {
     return birthday;
   }
 
-  public void setBirthday(Date birthday) {
+  public void setBirthday(LocalDate birthday) {
     this.birthday = birthday;
   }
 

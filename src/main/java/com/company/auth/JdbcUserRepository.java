@@ -40,9 +40,17 @@ public class JdbcUserRepository implements UserRepository {
     jdbcTemplate.update(INSERT_QUERY, user.getLogin(), user.getPassword(), user.getPersonId());
   }
 
+  @Override
+  public void update(User user) {
+    jdbcTemplate.update(UPDATE_QUERY, user.getLogin(), user.getPassword(), user.getPersonId());
+  }
+
   private final static String GET_BY_LOGIN_QUERY =
     "select login, password, person_id from users where login = ?";
 
   private final static String INSERT_QUERY =
     "insert into users (login, password, person_id) values (?, ?, ?)";
+
+  private final static String UPDATE_QUERY =
+    "update users set login = ?, password = ?, person_id = ?";
 }
