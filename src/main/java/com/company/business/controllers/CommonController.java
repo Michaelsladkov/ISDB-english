@@ -31,7 +31,6 @@ public class CommonController {
   private final FoodTypeRepository foodTypeRepository;
   private final PeopleRepository peopleRepository;
 
-  @Autowired
   public CommonController(SessionRepository sessionRepository, UserService userService, FoodTypeRepository foodTypeRepository, PeopleRepository peopleRepository) {
     this.sessionRepository = sessionRepository;
     this.userService = userService;
@@ -63,7 +62,7 @@ public class CommonController {
 
     sessionRepository.store(new Session(getSessionId(), userService.get(login)));
 
-    return "customerPage";
+    return "index";
   }
 
   @PostMapping("sign-up")
