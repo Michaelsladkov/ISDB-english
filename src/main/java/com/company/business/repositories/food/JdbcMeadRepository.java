@@ -9,9 +9,6 @@ import java.util.List;
 
 @Repository
 public class JdbcMeadRepository implements MeadRepository {
-  private final FoodTypeRepository foodTypeRepository;
-  private final JdbcTemplate jdbcTemplate;
-
   private final static RowMapper<Mead> meadRowMapper = (rs, rowNum) -> {
     int id = rs.getInt("id");
     String name = rs.getString("name");
@@ -22,6 +19,17 @@ public class JdbcMeadRepository implements MeadRepository {
     int alcohol = rs.getInt("alcohol");
     return new Mead(id, name, hp, mana, stamina, sortName, alcohol);
   };
+  private final static String GET_ALL_QUERY =
+    "select id, name, hp, mana, stamina, sort_name, alcohol" +
+      " from mead_types as meads left join food_types as types using(id)";
+  private final static String GET_BY_SORT_NAME_QUERY =
+    "select id, name, hp, mana, stamina, sort_name, alcohol" +
+      " from mead_types as meads left join food_types as types using(id)" +
+      " where sort_name = ?";
+  private final static String INSERT_QUERY =
+    "insert into mead (id, sort_name, alcohol) values (?, ?, ?)";
+  private final FoodTypeRepository foodTypeRepository;
+  private final JdbcTemplate jdbcTemplate;
 
   public JdbcMeadRepository(FoodTypeRepository foodTypeRepository, JdbcTemplate jdbcTemplate) {
     this.foodTypeRepository = foodTypeRepository;
@@ -45,16 +53,4 @@ public class JdbcMeadRepository implements MeadRepository {
     jdbcTemplate.update(INSERT_QUERY, mead.getId(), mead.getSortName(), mead.getAlcohol());
     return id;
   }
-
-  private final static String GET_ALL_QUERY =
-    "select id, name, hp, mana, stamina, sort_name, alcohol" +
-      " from mead_types as meads left join food_types as types using(id)";
-
-  private final static String GET_BY_SORT_NAME_QUERY =
-    "select id, name, hp, mana, stamina, sort_name, alcohol" +
-      " from mead_types as meads left join food_types as types using(id)" +
-      " where sort_name = ?";
-
-  private final static String INSERT_QUERY =
-    "insert into mead (id, sort_name, alcohol) values (?, ?, ?)";
 }

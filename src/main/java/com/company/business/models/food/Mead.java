@@ -4,6 +4,12 @@ public class Mead extends FoodType {
   private String sortName;
   private int alcohol;
 
+  public Mead(int id, String name, int hp, int mana, int stamina, String sortName, int alcohol) {
+    super(id, name, hp, mana, stamina);
+    this.sortName = sortName;
+    this.alcohol = alcohol;
+  }
+
   public String getSortName() {
     return sortName;
   }
@@ -17,12 +23,6 @@ public class Mead extends FoodType {
   }
 
   public void setAlcohol(int alcohol) {
-    this.alcohol = alcohol;
-  }
-
-  public Mead(int id, String name, int hp, int mana, int stamina, String sortName, int alcohol) {
-    super(id, name, hp, mana, stamina);
-    this.sortName = sortName;
     this.alcohol = alcohol;
   }
 }
