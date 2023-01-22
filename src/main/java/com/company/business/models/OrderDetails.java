@@ -3,22 +3,12 @@ package com.company.business.models;
 import com.company.business.models.food.FoodType;
 
 public class OrderDetails {
-  Order order;
   FoodType foodType;
   int count;
 
-  public OrderDetails(Order order, FoodType foodType, int count) {
-    this.order = order;
+  public OrderDetails(FoodType foodType, int count) {
     this.foodType = foodType;
     this.count = count;
-  }
-
-  public Order getOrder() {
-    return order;
-  }
-
-  public void setOrder(Order order) {
-    this.order = order;
   }
 
   public FoodType getFoodType() {

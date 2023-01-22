@@ -1,6 +1,7 @@
 package com.company.business.repositories.orders;
 
 import com.company.business.models.Order;
+import com.company.business.models.OrderDetails;
 import com.company.business.repositories.people.CustomerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,10 +30,12 @@ public class JdbcOrderRepository implements OrderRepository {
     "update orders set closed = true where id = ?";
   private final CustomerRepository customerRepository;
   private final JdbcTemplate jdbcTemplate;
+  private final OrderDetailsRepository orderDetailsRepository;
 
-  public JdbcOrderRepository(JdbcTemplate jdbcTemplate, CustomerRepository customerRepository) {
-    this.jdbcTemplate = jdbcTemplate;
+  public JdbcOrderRepository(CustomerRepository customerRepository, JdbcTemplate jdbcTemplate, OrderDetailsRepository orderDetailsRepository) {
     this.customerRepository = customerRepository;
+    this.jdbcTemplate = jdbcTemplate;
+    this.orderDetailsRepository = orderDetailsRepository;
   }
 
   @Override
@@ -68,6 +71,16 @@ public class JdbcOrderRepository implements OrderRepository {
   @Override
   public void setClosed(int id) {
     jdbcTemplate.update(SET_CLOSED_QUERY, id);
+  }
+
+  @Override
+  public List<OrderDetails> getDetails(int id) {
+    return orderDetailsRepository.get(id);
+  }
+
+  @Override
+  public void addDetails(int id, List<OrderDetails> details) {
+    orderDetailsRepository.add(id, details);
   }
 
   private static class DbOrder {

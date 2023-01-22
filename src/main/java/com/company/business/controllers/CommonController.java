@@ -102,7 +102,7 @@ public class CommonController extends BaseController {
     return "redirect:/";
   }
 
-  @GetMapping(path = "menu")
+  @GetMapping(value = "menu")
   public List<FoodType> menu() {
     return foodTypeRepository.getAll();
   }

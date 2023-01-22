@@ -49,19 +49,6 @@ public class AdminController extends BaseController {
     return "redirect:/admin/";
   }
 
-
-  //  @PutMapping("worker")
-  String updateWorker(HttpServletRequest request, Model model) {
-    if (!validateRole())
-      return "redirect:/";
-
-    var name = request.getParameter("name");
-    var profession = Profession.valueOf(request.getParameter("profession"));
-
-    workerService.save(name, profession);
-    return "redirect:/admin/";
-  }
-
   private boolean validateRole() {
     var person = getPerson();
     var roles = rolesHelper.getRoles(person);

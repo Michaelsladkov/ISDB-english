@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.company.business.models.people.Role.*;
-import static com.company.business.models.people.Worker.Profession.MANAGER;
 
 @Component
 public class RolesHelper {
@@ -41,13 +40,5 @@ public class RolesHelper {
     }
 
     return resultRoles;
-  }
-
-  public boolean validateAdminRole(Person person) {
-    var worker = workerRepository.getById(person.getId());
-    if (worker == null)
-      return false;
-
-    return worker.getProfession() == MANAGER;
   }
 }

@@ -7,6 +7,10 @@ import com.company.business.repositories.food.FoodTypeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class FoodService {
@@ -27,5 +31,12 @@ public class FoodService {
 
   public int addFoodType(FoodType foodType) {
     return foodTypeRepository.save(foodType);
+  }
+
+  public Map<String, FoodType> getFoodTypes(Set<String> names) {
+    return foodTypeRepository
+      .get(names)
+      .stream()
+      .collect(Collectors.toMap(FoodType::getName, Function.identity()));
   }
 }
