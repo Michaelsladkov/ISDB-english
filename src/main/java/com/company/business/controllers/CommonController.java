@@ -53,7 +53,7 @@ public class CommonController extends BaseController {
     var customer = customerService.get(person.getId());
     if (customer != null && !validateBan(customer)) {
       logger.warn("Person with id '" + customer.getId() + "' has been banned");
-      return "ban";
+      return "banPage";
     }
 
     model.addAttribute("person", person);
