@@ -47,7 +47,7 @@ public class JdbcWorkerRepository implements WorkerRepository {
   public Worker getById(int id) {
     List<Worker> workerByList = jdbcTemplate.query(GET_BY_ID_QUERY, workerRowMapper, id);
     if (workerByList.isEmpty()) {
-      logger.error("Can't find worker with id = '" + id + "'");
+      logger.warn("Can't find worker with id = '" + id + "'");
       return null;
     }
     return workerByList.get(0);

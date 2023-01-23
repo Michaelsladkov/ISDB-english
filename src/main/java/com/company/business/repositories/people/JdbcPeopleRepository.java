@@ -47,7 +47,7 @@ public class JdbcPeopleRepository implements PeopleRepository {
   public Person getById(int id) {
     List<Person> personByList = jdbcTemplate.query(GET_BY_ID_QUERY, personRowMapper, id);
     if (personByList.isEmpty()) {
-      logger.error("Can't find person with id = '" + id + "'");
+      logger.warn("Can't find person with id = '" + id + "'");
       return null;
     }
     return personByList.get(0);
@@ -57,7 +57,7 @@ public class JdbcPeopleRepository implements PeopleRepository {
   public Person getByName(String name) {
     List<Person> personByList = jdbcTemplate.query(GET_BY_NAME_QUERY, personRowMapper, name);
     if (personByList.isEmpty()) {
-      logger.error("Can't find person by name = '" + name + "'");
+      logger.warn("Can't find person by name = '" + name + "'");
       return null;
     }
     return personByList.get(0);

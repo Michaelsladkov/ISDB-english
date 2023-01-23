@@ -33,7 +33,7 @@ public class JdbcUserRepository implements UserRepository {
   public User get(String login) {
     List<User> userByList = jdbcTemplate.query(GET_BY_LOGIN_QUERY, userRowMapper, login);
     if (userByList.isEmpty()) {
-      logger.error("Cant find user with login = '" + login + "'");
+      logger.warn("Cant find user with login = '" + login + "'");
       return null;
     }
     return userByList.get(0);

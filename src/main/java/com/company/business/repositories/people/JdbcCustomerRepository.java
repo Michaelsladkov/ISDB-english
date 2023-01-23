@@ -47,7 +47,7 @@ public class JdbcCustomerRepository implements CustomerRepository {
   public Customer get(int id) {
     List<Customer> customerByList = jdbcTemplate.query(GET_BY_ID_QUERY, customerRowMapper, id);
     if (customerByList.isEmpty()) {
-      logger.error("Can't find customer with id = '" + id + "'");
+      logger.warn("Can't find customer with id = '" + id + "'");
       return null;
     }
     return customerByList.get(0);
