@@ -29,6 +29,10 @@ public class OrderService {
     return repository.get(id);
   }
 
+  public List<Order> getOpen() {
+    return repository.getAllOpen();
+  }
+
   public Order correctOrder(Customer customer, String foodTypeName, int count) {
     var order = repository.getOpen(customer);
 

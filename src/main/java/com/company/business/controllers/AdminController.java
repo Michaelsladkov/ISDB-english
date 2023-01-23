@@ -36,7 +36,7 @@ public class AdminController extends BaseController {
     this.customerService = customerService;
   }
 
-  @GetMapping({"/", "index"})
+  @GetMapping({"/", "index", ""})
   String index(Model model) {
     if (!validateRole())
       return "redirect:/";

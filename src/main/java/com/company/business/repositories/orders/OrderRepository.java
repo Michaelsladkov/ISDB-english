@@ -9,6 +9,8 @@ import java.util.List;
 public interface OrderRepository {
   Order get(int id);
 
+  List<Order> getAllOpen();
+
   Order getOpen(Customer customer);
 
   int add(Order order);

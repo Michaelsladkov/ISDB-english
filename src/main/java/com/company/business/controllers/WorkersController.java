@@ -34,12 +34,36 @@ public class WorkersController extends BaseController {
   }
 
   @GetMapping("/orders")
-  public String orders() {
+  public String orders(HttpServletRequest request, Model model) {
     if (!validateRole(Role.ORDERS_MANAGER)) {
       return "redirect:/index";
     }
 
+    var openOrders = orderService.getOpen();
+
+    model.addAllAttributes(Map.of(
+      "openOrders", openOrders
+    ));
+
     return "cashierPage";
+  }
+
+  @GetMapping("/orders/details")
+  public String orderDetails(HttpServletRequest request, Model model) {
+    if (!validateRole(Role.ORDERS_MANAGER)) {
+      return "redirect:/index";
+    }
+
+    var orderId = Integer.parseInt(request.getParameter("orderId"));
+    var order = orderService.get(orderId);
+    var orderDetails = orderService.getDetails(orderId);
+
+    model.addAllAttributes(Map.of(
+      "order", order,
+      "orderDetails", orderDetails
+    ));
+
+    return "orderDetailsPage";
   }
 
   @PostMapping("/orders/close")
@@ -67,8 +91,10 @@ public class WorkersController extends BaseController {
     var foodTypes = foodService.getFoodTypes();
     var food = foodService.getAll();
 
-    model.addAttribute("foodTypes", foodTypes);
-    model.addAttribute("storage", food);
+    model.addAllAttributes(Map.of(
+      "foodTypes", foodTypes,
+      "storage", food
+    ));
 
     return "warehousePage";
   }

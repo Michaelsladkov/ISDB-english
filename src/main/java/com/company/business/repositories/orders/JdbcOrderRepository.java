@@ -4,6 +4,8 @@ import com.company.business.models.Order;
 import com.company.business.models.OrderDetails;
 import com.company.business.models.people.Customer;
 import com.company.business.repositories.people.CustomerRepository;
+import one.util.streamex.EntryStream;
+import one.util.streamex.StreamEx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -25,8 +27,10 @@ public class JdbcOrderRepository implements OrderRepository {
   };
   private final static String GET_BY_ID_QUERY =
     "select id, customer_id, time, closed from orders where id = ?";
+  private final static String GET_ALL_OPEN_QUERY =
+    "select id, customer_id, time, closed from orders where close = false";
   private final static String GET_OPEN_BY_CUSTOMER_ID_QUERY =
-    "select id, customer_id, time, closed from orders where customer_id = ? closed = True";
+    "select id, customer_id, time, closed from orders where customer_id = ? closed = false";
   private final static String INSERT_QUERY =
     "insert into orders (customer_id, time, closed) values (?, ?, ?) returning id";
   private final static String SET_CLOSED_QUERY =
@@ -55,6 +59,17 @@ public class JdbcOrderRepository implements OrderRepository {
       return null;
 
     return new Order(dbOrder.id, customer, dbOrder.time, dbOrder.closed);
+  }
+
+  @Override
+  public List<Order> getAllOpen() {
+    List<DbOrder> dbOrderByList = jdbcTemplate.query(GET_ALL_OPEN_QUERY, dbOrderRowMapper);
+    return EntryStream.of(StreamEx.of(dbOrderByList).groupingBy(DbOrder::getCustomerId))
+      .mapKeys(customerRepository::get)
+      .flatMapKeyValue((customer, dbOrders) ->
+        StreamEx.of(dbOrders).map(order -> new Order(order.id, customer, order.time, true))
+      )
+      .toList();
   }
 
   @Override
@@ -110,6 +125,10 @@ public class JdbcOrderRepository implements OrderRepository {
       this.customerId = customerId;
       this.time = time;
       this.closed = closed;
+    }
+
+    public int getCustomerId() {
+      return customerId;
     }
   }
 }
