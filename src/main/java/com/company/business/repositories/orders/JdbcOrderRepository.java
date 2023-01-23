@@ -47,7 +47,7 @@ public class JdbcOrderRepository implements OrderRepository {
     }
 
     var dbOrder = dbOrderByList.get(0);
-    var customer = customerRepository.getById(dbOrder.customerId);
+    var customer = customerRepository.get(dbOrder.customerId);
     if (customer == null)
       return null;
 

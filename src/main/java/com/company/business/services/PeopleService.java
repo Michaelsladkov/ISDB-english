@@ -19,6 +19,10 @@ public class PeopleService {
     return repository.getById(id);
   }
 
+  public Person get(String name) {
+    return repository.getByName(name);
+  }
+
   public void increaseIndicators(int id, int hp, int mana, int stamina) {
     var person = get(id);
     var newHp = Math.min(person.getHp() + hp, 100);

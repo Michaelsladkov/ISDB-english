@@ -6,4 +6,6 @@ public interface BanRepository {
   Ban get(int id);
 
   Ban getByCustomerId(int customerId);
+
+  Integer add(Ban ban);
 }

@@ -7,7 +7,7 @@ import java.util.List;
 public interface CustomerRepository {
   List<Customer> getAll();
 
-  Customer getById(int id);
+  Customer get(int id);
 
   void save(Customer person);
 }

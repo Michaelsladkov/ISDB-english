@@ -44,7 +44,7 @@ public class JdbcCustomerRepository implements CustomerRepository {
   }
 
   @Override
-  public Customer getById(int id) {
+  public Customer get(int id) {
     List<Customer> customerByList = jdbcTemplate.query(GET_BY_ID_QUERY, customerRowMapper, id);
     if (customerByList.isEmpty()) {
       logger.error("Can't find customer with id = '" + id + "'");

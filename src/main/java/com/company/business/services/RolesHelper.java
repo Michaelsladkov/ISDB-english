@@ -26,7 +26,7 @@ public class RolesHelper {
 
   public Set<Role> getRoles(Person person) {
     var resultRoles = new HashSet<Role>();
-    var customer = customerRepository.getById(person.getId());
+    var customer = customerRepository.get(person.getId());
     if (customer != null)
       resultRoles.add(CUSTOMER);
     var worker = workerRepository.getById(person.getId());

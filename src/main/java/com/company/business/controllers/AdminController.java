@@ -1,7 +1,9 @@
 package com.company.business.controllers;
 
 import com.company.auth.SessionRepository;
+import com.company.business.models.people.Ban;
 import com.company.business.repositories.people.PeopleRepository;
+import com.company.business.services.CustomerService;
 import com.company.business.services.RolesHelper;
 import com.company.business.services.WorkerService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDate;
+
 import static com.company.business.models.people.Role.ADMIN;
 import static com.company.business.models.people.Role.OWNER;
 import static com.company.business.models.people.Worker.Profession;
@@ -23,11 +27,13 @@ public class AdminController extends BaseController {
   private final static Logger logger = LoggerFactory.getLogger(AdminController.class);
   private final RolesHelper rolesHelper;
   private final WorkerService workerService;
+  private final CustomerService customerService;
 
-  public AdminController(SessionRepository sessionRepository, PeopleRepository peopleRepository, RolesHelper rolesHelper, WorkerService workerService) {
+  public AdminController(SessionRepository sessionRepository, PeopleRepository peopleRepository, RolesHelper rolesHelper, WorkerService workerService, CustomerService customerService) {
     super(sessionRepository, peopleRepository);
     this.rolesHelper = rolesHelper;
     this.workerService = workerService;
+    this.customerService = customerService;
   }
 
   @GetMapping({"/", "index"})
@@ -48,6 +54,25 @@ public class AdminController extends BaseController {
     workerService.save(name, profession);
     return "redirect:/admin/";
   }
+
+  @PostMapping("ban")
+  String addBan(HttpServletRequest request, Model model) {
+    if (!validateRole())
+      return "redirect:/";
+
+    var customerName = request.getParameter("name");
+    var days = Integer.parseInt(request.getParameter("days"));
+
+    var from = LocalDate.now();
+    var to = from.plusDays(days);
+    var customer = customerService.get(customerName);
+    var newBan = new Ban(null, customer.getId(), from, to);
+
+    customerService.addBan(newBan);
+
+    return "redirect:/admin/";
+  }
+
 
   private boolean validateRole() {
     var person = getPerson();
