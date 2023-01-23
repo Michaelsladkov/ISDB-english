@@ -46,7 +46,7 @@ public class CommonController extends BaseController {
     return "index";
   }
 
-  @PostMapping(value = "sign-in", params = "action=sign-in")
+  @PostMapping(value = "sign-in")
   public String sigIn(HttpServletRequest request, Model model) {
     var login = (String) request.getParameter("login");
     var password = (String) request.getParameter("password");
@@ -62,36 +62,30 @@ public class CommonController extends BaseController {
     return "redirect:/";
   }
 
-  @PostMapping(value = "sign-in", params = "action=sign-up")
-  public String registerUser(HttpServletRequest request, Model model) {
-    var login = request.getParameter("login");
-    var password = request.getParameter("password");
-
-    var newUser = new User(login, password, null);
-    var checkUserResult = userService.check(newUser);
-    if (checkUserResult != NO_USER) {
-      logger.error("User '" + login + "' is already exists");
-      model.addAttribute("error", true);
-      return "signupPage";
-    }
-
-    userService.save(newUser);
-    sessionRepository.store(new Session(sessionId(), newUser));
-
-    model.addAttribute("login", login);
-
+  @GetMapping(value = "sign-up")
+  public String registerUser() {
     return "registerPage";
   }
 
   @PostMapping(value = "sign-up")
   public String signUp(HttpServletRequest request, Model model) {
-    var user = getUser();
-
+    var login = request.getParameter("login");
+    var password = request.getParameter("password");
+    var newUser = new User(login, password, null);
+    var checkUserResult = userService.check(newUser);
+    if (checkUserResult != NO_USER) {
+      logger.error("User '" + login + "' is already exists");
+      model.addAttribute("error", true);
+      return "registerPage";
+    }
+    userService.save(newUser);
+    sessionRepository.store(new Session(sessionId(), newUser));
+    model.addAttribute("login", login);
     var person = personFromRequest(request);
     Integer personId = peopleRepository.save(person);
 
-    user.setPersonId(personId);
-    userService.update(user);
+    newUser.setPersonId(personId);
+    userService.update(newUser);
 
     return "redirect:/";
   }
