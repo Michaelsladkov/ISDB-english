@@ -28,7 +28,7 @@ public class JdbcWorkerRepository implements WorkerRepository {
       "from workers as w inner join people as p using(id)";
   private static final String GET_BY_ID_QUERY =
     "select w.id, id, name, birthday, hp, mana, stamina, profession " +
-      "from workers as w inner join people as p using(id) +" +
+      "from workers as w inner join people as p using(id) " +
       "where w.id = ?";
   private static final String INSERT_QUERY =
     "insert into workers (id, profession) values (?, ?)";
