@@ -39,7 +39,7 @@ public class CustomersController extends BaseController {
 
     if (!validateBan(customer)) {
       logger.warn("Customer with id '" + customer.getId() + "' has been banned");
-      return "ban";
+      return "banPage";
     }
 
     var order = createNewEmptyOrder(customer);
