@@ -143,3 +143,8 @@ form .btn {
 #button-bar {
     width: 50%;
 }
+
+.not-available {
+    color: lightcoral;
+    text-decoration: line-through;
+}
