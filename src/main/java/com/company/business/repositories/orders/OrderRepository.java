@@ -2,11 +2,14 @@ package com.company.business.repositories.orders;
 
 import com.company.business.models.Order;
 import com.company.business.models.OrderDetails;
+import com.company.business.models.people.Customer;
 
 import java.util.List;
 
 public interface OrderRepository {
   Order get(int id);
+
+  Order getOpen(Customer customer);
 
   int add(Order order);
 

@@ -2,6 +2,7 @@ package com.company.business.repositories.orders;
 
 import com.company.business.models.Order;
 import com.company.business.models.OrderDetails;
+import com.company.business.models.people.Customer;
 import com.company.business.repositories.people.CustomerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,8 @@ public class JdbcOrderRepository implements OrderRepository {
   };
   private final static String GET_BY_ID_QUERY =
     "select id, customer_id, time, closed from orders where id = ?";
+  private final static String GET_OPEN_BY_CUSTOMER_ID_QUERY =
+    "select id, customer_id, time, closed from orders where customer_id = ? closed = True";
   private final static String INSERT_QUERY =
     "insert into orders (customer_id, time, closed) values (?, ?, ?) returning id";
   private final static String SET_CLOSED_QUERY =
@@ -42,7 +45,7 @@ public class JdbcOrderRepository implements OrderRepository {
   public Order get(int id) {
     List<DbOrder> dbOrderByList = jdbcTemplate.query(GET_BY_ID_QUERY, dbOrderRowMapper, id);
     if (dbOrderByList.isEmpty()) {
-      logger.error("Can't find order by id = '" + id + "'");
+      logger.warn("Can't find order by id = '" + id + "'");
       return null;
     }
 
@@ -50,6 +53,19 @@ public class JdbcOrderRepository implements OrderRepository {
     var customer = customerRepository.get(dbOrder.customerId);
     if (customer == null)
       return null;
+
+    return new Order(dbOrder.id, customer, dbOrder.time, dbOrder.closed);
+  }
+
+  @Override
+  public Order getOpen(Customer customer) {
+    List<DbOrder> dbOrderByList = jdbcTemplate.query(GET_OPEN_BY_CUSTOMER_ID_QUERY, dbOrderRowMapper, customer.getId());
+    if (dbOrderByList.isEmpty()) {
+      logger.warn("Can't find open order by customer id = '" + customer.getId() + "'");
+      return null;
+    }
+
+    var dbOrder = dbOrderByList.get(0);
 
     return new Order(dbOrder.id, customer, dbOrder.time, dbOrder.closed);
   }

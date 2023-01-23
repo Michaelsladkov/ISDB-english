@@ -1,38 +1,33 @@
 package com.company.business.controllers;
 
 import com.company.auth.SessionRepository;
-import com.company.business.models.Order;
-import com.company.business.models.food.FoodType;
 import com.company.business.models.people.Customer;
-import com.company.business.repositories.orders.OrderRepository;
 import com.company.business.repositories.people.PeopleRepository;
 import com.company.business.services.CustomerService;
 import com.company.business.services.FoodService;
+import com.company.business.services.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/customer")
 public class CustomersController extends BaseController {
   private final Logger logger = LoggerFactory.getLogger(CustomersController.class);
   private final CustomerService service;
-  private final OrderRepository orderRepository;
+  private final OrderService orderService;
   private final FoodService foodService;
 
-  public CustomersController(SessionRepository sessionRepository, PeopleRepository peopleRepository, CustomerService customerService, OrderRepository orderRepository, FoodService foodService) {
+  public CustomersController(SessionRepository sessionRepository, PeopleRepository peopleRepository, CustomerService service, OrderService orderService, FoodService foodService) {
     super(sessionRepository, peopleRepository);
-    this.service = customerService;
-    this.orderRepository = orderRepository;
+    this.service = service;
+    this.orderService = orderService;
     this.foodService = foodService;
   }
 
@@ -45,19 +40,18 @@ public class CustomersController extends BaseController {
       return "banPage";
     }
 
-    var order = createNewEmptyOrder(customer);
     var foodName = request.getParameter("food_type");
+    var count = Integer.parseInt(request.getParameter("count"));
 
-    var details = foodService.getFoodTypes(Set.of(foodName));
-    // TODO get details as List<> from request
+    var order = orderService.correctOrder(customer, foodName, count);
+    var details = orderService.getDetails(order.getId());
+
+    model.addAllAttributes(Map.of(
+      "order", order,
+      "orderDetails", details
+    ));
+
     return "index";
-  }
-
-  private Order createNewEmptyOrder(Customer customer) {
-    var order = new Order(null, customer, LocalDateTime.now(), false);
-    Integer id = orderRepository.add(order);
-    order.setId(id);
-    return order;
   }
 
   private Customer getCustomer() {
