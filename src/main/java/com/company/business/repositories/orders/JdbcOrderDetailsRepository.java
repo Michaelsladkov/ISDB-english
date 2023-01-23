@@ -63,7 +63,7 @@ class JdbcOrderDetailsRepository implements OrderDetailsRepository {
   public void add(int orderId, List<OrderDetails> details) {
     var batchArgs = details.stream().map(d ->
       new Object[]{orderId, d.getFoodType().getId(), d.getCount()}
-    ).collect(Collectors.toList());
+    ).toList();
 
     jdbcTemplate.batchUpdate(INSERT_QUERY, batchArgs);
   }

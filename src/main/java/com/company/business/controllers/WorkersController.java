@@ -4,6 +4,7 @@ import com.company.auth.SessionRepository;
 import com.company.business.models.people.Role;
 import com.company.business.repositories.orders.OrderRepository;
 import com.company.business.repositories.people.PeopleRepository;
+import com.company.business.services.FoodService;
 import com.company.business.services.OrderService;
 import com.company.business.services.RolesHelper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,11 +22,13 @@ public class WorkersController extends BaseController {
   private static final Logger logger = LoggerFactory.getLogger(WorkersController.class);
   private final RolesHelper rolesHelper;
   private final OrderService orderService;
+  private final FoodService foodService;
 
-  public WorkersController(SessionRepository sessionRepository, PeopleRepository peopleRepository, RolesHelper rolesHelper, OrderService orderService) {
+  public WorkersController(SessionRepository sessionRepository, PeopleRepository peopleRepository, RolesHelper rolesHelper, OrderService orderService, FoodService foodService) {
     super(sessionRepository, peopleRepository);
     this.rolesHelper = rolesHelper;
     this.orderService = orderService;
+    this.foodService = foodService;
   }
 
   @GetMapping("/orders")
@@ -41,7 +44,7 @@ public class WorkersController extends BaseController {
   public String closeOrder(HttpServletRequest request, Model model) {
     if (!validateRole(Role.ORDERS_MANAGER)) {
       model.addAttribute("error", true);
-      return "cashierPage";
+      return "redirect:/index";
     }
 
     int orderId = Integer.parseInt(request.getParameter("order_id"));
@@ -50,6 +53,34 @@ public class WorkersController extends BaseController {
     orderService.closeOrder(order);
 
     return "cashierPage";
+  }
+
+  @GetMapping("/storage")
+  public String storage(Model model) {
+    if (!validateRole(Role.STORAGE_MANAGER)) {
+      model.addAttribute("error", true);
+      return "redirect:/index";
+    }
+
+    var foodTypes = foodService.getFoodTypes();
+    var food = foodService.getAll();
+
+    model.addAttribute("foodTypes", foodTypes);
+    model.addAttribute("storage", food);
+
+    return "warehousePage";
+  }
+
+  @PostMapping("/storage")
+  public String addFood(HttpServletRequest request, Model model) {
+    if (!validateRole(Role.STORAGE_MANAGER)) {
+      model.addAttribute("error", true);
+      return "index";
+    }
+
+
+
+    return "index";
   }
 
   private boolean validateRole(Role expectedRole) {

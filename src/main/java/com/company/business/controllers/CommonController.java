@@ -7,9 +7,9 @@ import com.company.auth.UserService;
 import com.company.business.models.food.FoodType;
 import com.company.business.models.people.Customer;
 import com.company.business.models.people.Person;
-import com.company.business.repositories.food.FoodTypeRepository;
 import com.company.business.repositories.people.PeopleRepository;
 import com.company.business.services.CustomerService;
+import com.company.business.services.FoodService;
 import com.company.business.services.RolesHelper;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.LinkedList;
 
 import static com.company.auth.UserService.CheckUserResult.NO_USER;
 import static com.company.auth.UserService.CheckUserResult.SUCCESS;
@@ -31,14 +31,14 @@ import static com.company.auth.UserService.CheckUserResult.SUCCESS;
 public class CommonController extends BaseController {
   private final static Logger logger = LoggerFactory.getLogger(CommonController.class);
   private final UserService userService;
-  private final FoodTypeRepository foodTypeRepository;
+  private final FoodService foodService;
   private final CustomerService customerService;
   private final RolesHelper rolesHelper;
 
-  public CommonController(SessionRepository sessionRepository, PeopleRepository peopleRepository, UserService userService, FoodTypeRepository foodTypeRepository, CustomerService customerService, RolesHelper rolesHelper) {
+  public CommonController(SessionRepository sessionRepository, PeopleRepository peopleRepository, UserService userService, FoodService foodService, CustomerService customerService, RolesHelper rolesHelper) {
     super(sessionRepository, peopleRepository);
     this.userService = userService;
-    this.foodTypeRepository = foodTypeRepository;
+    this.foodService = foodService;
     this.customerService = customerService;
     this.rolesHelper = rolesHelper;
   }
@@ -58,6 +58,20 @@ public class CommonController extends BaseController {
 
     model.addAttribute("person", person);
     model.addAttribute("Roles", rolesHelper);
+
+    var availableFoodTypes = new LinkedList<FoodType>();
+    var notAvailableFoodTypes = new LinkedList<FoodType>();
+    foodService.getAll().forEach((food) -> {
+      if (food.getCount() == 0) {
+        notAvailableFoodTypes.add(food.getFoodType());
+      } else {
+        availableFoodTypes.add(food.getFoodType());
+      }
+    });
+
+    model.addAttribute("availableFoodTypes", availableFoodTypes);
+    model.addAttribute("notAvailableFoodTypes", notAvailableFoodTypes);
+
     return "index";
   }
 
@@ -118,10 +132,6 @@ public class CommonController extends BaseController {
   public String logoutGet() {
     sessionRepository.delete(sessionId());
     return "redirect:/";
-  }
-  @GetMapping(value = "menu")
-  public List<FoodType> menu() {
-    return foodTypeRepository.getAll();
   }
 
   private Person personFromRequest(HttpServletRequest request) {

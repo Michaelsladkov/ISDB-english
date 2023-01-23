@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class JdbcFoodStorageRepository implements FoodStorageRepository {
@@ -24,7 +25,12 @@ public class JdbcFoodStorageRepository implements FoodStorageRepository {
     " from food_storage as storage left join food_types as types on storage.food_type = types.id";
   private final static String GET_BY_ID_QUERY = "select id, name, hp, mana, stamina, count" +
     " from food_storage as storage left join food_types as types on storage.food_type = types.id" +
-    " where storage.id = ?";
+    " where storage.food_type = ?";
+  private final static String INSERT_QUERY =
+    "insert into food_storage (food_type, count) values(?, ?)";
+  private final static String UPDATE_COUNT_QUERY =
+    "update food_storage set count = ? where food_type = ?";
+
   private final JdbcTemplate jdbcTemplate;
 
   public JdbcFoodStorageRepository(JdbcTemplate jdbcTemplate) {
@@ -37,7 +43,26 @@ public class JdbcFoodStorageRepository implements FoodStorageRepository {
   }
 
   @Override
-  public Food get(int id) {
-    return jdbcTemplate.query(GET_BY_ID_QUERY, foodRowMapper, id).get(0);
+  public Food get(int foodTypeId) {
+    return jdbcTemplate.query(GET_BY_ID_QUERY, foodRowMapper, foodTypeId).get(0);
+  }
+
+  @Override
+  public void save(Food food) {
+    jdbcTemplate.update(INSERT_QUERY, food.getFoodType().getId(), food.getCount());
+  }
+
+  @Override
+  public void save(List<Food> food) {
+    var batchArgs = food.stream().map(f ->
+      new Object[]{f.getFoodType().getId(), f.getCount()}
+    ).toList();
+
+    jdbcTemplate.batchUpdate(INSERT_QUERY, batchArgs);
+  }
+
+  @Override
+  public void updateCount(Food food) {
+    jdbcTemplate.update(UPDATE_COUNT_QUERY, food.getCount(), food.getFoodType().getId());
   }
 }

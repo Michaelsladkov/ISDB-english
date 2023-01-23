@@ -53,8 +53,8 @@ CREATE TABLE "workers"
 CREATE TABLE "food_types"
 (
     "id"      serial PRIMARY KEY,
+    "name"    varchar UNIQUE,
     "price"   int,
-    "name"    varchar,
     "hp"      int,
     "mana"    int,
     "stamina" int,
