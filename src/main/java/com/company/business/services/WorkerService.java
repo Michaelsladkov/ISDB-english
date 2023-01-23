@@ -5,6 +5,8 @@ import com.company.business.repositories.people.PeopleRepository;
 import com.company.business.repositories.people.WorkerRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static com.company.business.models.people.Worker.Profession;
 
 @Service
@@ -15,6 +17,10 @@ public class WorkerService {
   public WorkerService(WorkerRepository repository, PeopleRepository peopleRepository) {
     this.repository = repository;
     this.peopleRepository = peopleRepository;
+  }
+
+  public List<Worker> getAll() {
+    return repository.getAll();
   }
 
   public void save(String name, Profession profession) {

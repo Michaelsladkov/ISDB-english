@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 import static com.company.business.models.people.Role.ADMIN;
 import static com.company.business.models.people.Role.OWNER;
@@ -40,6 +41,12 @@ public class AdminController extends BaseController {
   String index(Model model) {
     if (!validateRole())
       return "redirect:/";
+
+    var workers = workerService.getAll();
+    model.addAllAttributes(Map.of(
+      "workers", workers
+    ));
+
     return "adminPage";
   }
 
