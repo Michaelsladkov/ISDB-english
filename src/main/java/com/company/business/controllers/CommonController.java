@@ -114,6 +114,11 @@ public class CommonController extends BaseController {
     return "redirect:/";
   }
 
+  @GetMapping("/logout")
+  public String logoutGet() {
+    sessionRepository.delete(sessionId());
+    return "redirect:/";
+  }
   @GetMapping(value = "menu")
   public List<FoodType> menu() {
     return foodTypeRepository.getAll();
