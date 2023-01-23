@@ -1,9 +1,6 @@
 package com.company.business.models.people;
 
-import org.springframework.data.relational.core.sql.In;
-
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Person {
   private Integer id;

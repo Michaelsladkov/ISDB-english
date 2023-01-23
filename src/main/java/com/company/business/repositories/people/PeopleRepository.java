@@ -6,7 +6,10 @@ import java.util.List;
 
 public interface PeopleRepository {
   List<Person> getAll();
+
   Person getById(int id);
+
   Person getByName(String name);
+
   Integer save(Person person);
 }

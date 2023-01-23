@@ -13,8 +13,6 @@ import java.util.List;
 @Repository
 public class JdbcPeopleRepository implements PeopleRepository {
   private static final Logger logger = LoggerFactory.getLogger(JdbcPeopleRepository.class);
-  private final JdbcTemplate jdbcTemplate;
-
   private final static RowMapper<Person> personRowMapper = (rs, rowNum) -> {
     int id = rs.getInt("id");
     String name = rs.getString("name");
@@ -24,6 +22,15 @@ public class JdbcPeopleRepository implements PeopleRepository {
     int stamina = rs.getInt("stamina");
     return new Person(id, name, birthday, hp, mana, stamina);
   };
+  private static final String GET_ALL_QUERY =
+    "select id, name, birthday, hp, mana, stamina from people";
+  private static final String GET_BY_ID_QUERY =
+    "select id, name, birthday, hp, mana, stamina from people where id = ?";
+  private static final String GET_BY_NAME_QUERY =
+    "select id, name, birthday, hp, mana, stamina from people where name = ?";
+  private static final String INSERT_QUERY =
+    "insert into people (name, birthday, hp, mana, stamina) values (?, ?, ?, ?, ?) returning id";
+  private final JdbcTemplate jdbcTemplate;
 
   public JdbcPeopleRepository(JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
@@ -67,14 +74,5 @@ public class JdbcPeopleRepository implements PeopleRepository {
 
     return id;
   }
-
-  private static final String GET_ALL_QUERY =
-    "select id, name, birthday, hp, mana, stamina from people";
-  private static final String GET_BY_ID_QUERY =
-    "select id, name, birthday, hp, mana, stamina from people where id = ?";
-  private static final String GET_BY_NAME_QUERY =
-    "select id, name, birthday, hp, mana, stamina from people where name = ?";
-  private static final String INSERT_QUERY =
-    "insert into people (name, birthday, hp, mana, stamina) values (?, ?, ?, ?, ?) returning id";
 
 }

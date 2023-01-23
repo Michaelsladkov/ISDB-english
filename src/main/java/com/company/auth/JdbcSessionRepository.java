@@ -11,32 +11,37 @@ import java.util.List;
 @Repository
 public class JdbcSessionRepository implements SessionRepository {
   private static final Logger logger = LoggerFactory.getLogger(JdbcSessionRepository.class);
-  private final UserRepository userRepository;
-  private final JdbcTemplate jdbcTemplate;
-
   private final static RowMapper<DbSession> sessionRowMapper = (rs, rowNum) -> {
     String sessionId = rs.getString("session_id");
     ;
     String userLogin = rs.getString("user_login");
     return new DbSession(sessionId, userLogin);
   };
+  private final static String GET_QUERY =
+    "select session_id, user_login from sessions where session_id = ?";
+  private final static String INSERT_QUERY =
+    "insert into sessions (session_id, user_login) values (?, ?)";
+  private final static String DELETE_QUERY =
+    "delete from sessions where session_id = ?";
+  private final UserRepository userRepository;
+  private final JdbcTemplate jdbcTemplate;
 
   public JdbcSessionRepository(UserRepository userRepository, JdbcTemplate jdbcTemplate) {
     this.userRepository = userRepository;
     this.jdbcTemplate = jdbcTemplate;
   }
 
-
   @Override
   public Session get(String sessionId) {
     List<DbSession> dbSessionByList = jdbcTemplate.query(GET_QUERY, sessionRowMapper, sessionId);
-    if(dbSessionByList.isEmpty()) {
+    if (dbSessionByList.isEmpty()) {
       logger.error("Can't find session with id = " + sessionId);
       return null;
     }
     var dbSession = dbSessionByList.get(0);
     var user = userRepository.get(dbSession.userLogin);
-    if(user == null) return null;
+    if (user == null)
+      return null;
 
     return new Session(sessionId, user);
   }
@@ -60,13 +65,4 @@ public class JdbcSessionRepository implements SessionRepository {
       this.userLogin = userLogin;
     }
   }
-
-  private final static String GET_QUERY =
-    "select session_id, user_login from sessions where session_id = ?";
-
-  private final static String INSERT_QUERY =
-    "insert into sessions (session_id, user_login) values (?, ?)";
-
-  private final static String DELETE_QUERY =
-    "delete from sessions where session_id = ?";
 }

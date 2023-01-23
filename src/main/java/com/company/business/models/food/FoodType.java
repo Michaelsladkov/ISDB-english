@@ -7,6 +7,14 @@ public class FoodType {
   private int mana;
   private int stamina;
 
+  public FoodType(Integer id, String name, int hp, int mana, int stamina) {
+    this.id = id;
+    this.name = name;
+    this.hp = hp;
+    this.mana = mana;
+    this.stamina = stamina;
+  }
+
   public Integer getId() {
     return id;
   }
@@ -44,14 +52,6 @@ public class FoodType {
   }
 
   public void setStamina(int stamina) {
-    this.stamina = stamina;
-  }
-
-  public FoodType(Integer id, String name, int hp, int mana, int stamina) {
-    this.id = id;
-    this.name = name;
-    this.hp = hp;
-    this.mana = mana;
     this.stamina = stamina;
   }
 }
