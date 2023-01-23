@@ -34,7 +34,7 @@ public class WorkersController extends BaseController {
       return "redirect:/index";
     }
 
-    return "cashier";
+    return "cashierPage";
   }
 
   @PostMapping("/orders/close")
