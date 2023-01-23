@@ -95,3 +95,19 @@ form .btn {
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
   font-size: 17px;
 }
+
+a {
+  font-family: 'Lato', sans-serif;
+}
+
+a:link {
+  color: #9acd32;
+}
+
+a:visited {
+  color: #9acd32;
+}
+
+a:hover {
+  color: yellow;
+}
