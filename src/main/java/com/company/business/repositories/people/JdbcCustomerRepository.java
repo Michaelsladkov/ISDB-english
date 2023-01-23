@@ -28,7 +28,7 @@ public class JdbcCustomerRepository implements CustomerRepository {
       "from customers as c inner join people as p using(id)";
   private static final String GET_BY_ID_QUERY =
     "select c.id, id, name, birthday, hp, mana, stamina, loyalty_level " +
-      "from customers as c inner join people as p using(id) +" +
+      "from customers as c inner join people as p using(id) " +
       "where c.id = ?";
   private static final String INSERT_QUERY =
     "insert into customers (id, loyaltyLevel) values (?, ?)";
