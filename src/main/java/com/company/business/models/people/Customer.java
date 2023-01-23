@@ -10,6 +10,11 @@ public class Customer extends Person {
     this.loyaltyLevel = loyaltyLevel;
   }
 
+  public Customer(Person person, int loyaltyLevel) {
+    super(person.getId(), person.getName(), person.getBirthday(), person.getHp(), person.getMana(), person.getStamina());
+    this.loyaltyLevel = loyaltyLevel;
+  }
+
   public int getLoyaltyLevel() {
     return loyaltyLevel;
   }

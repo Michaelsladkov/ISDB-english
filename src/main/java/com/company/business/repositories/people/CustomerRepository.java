@@ -9,5 +9,5 @@ public interface CustomerRepository {
 
   Customer get(int id);
 
-  void save(Customer person);
+  void save(Customer customer);
 }

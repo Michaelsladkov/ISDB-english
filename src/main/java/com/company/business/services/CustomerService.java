@@ -2,11 +2,11 @@ package com.company.business.services;
 
 import com.company.business.models.people.Ban;
 import com.company.business.models.people.Customer;
+import com.company.business.models.people.Person;
 import com.company.business.repositories.people.BanRepository;
 import com.company.business.repositories.people.CustomerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -32,6 +32,14 @@ public class CustomerService {
     var person = peopleService.get(name);
 
     return repository.get(person.getId());
+  }
+
+  public void save(Customer customer) {
+    repository.save(customer);
+  }
+
+  public void addNewCustomer(Person person) {
+    repository.save(new Customer(person, 0));
   }
 
   public Integer addBan(Ban ban) {

@@ -22,11 +22,11 @@ public class JdbcBanRepository implements BanRepository {
   };
 
   private static final String GET_BY_ID_QUERY =
-    "select id, customer_id, from, to from ban_records where id = ?";
+    "select id, customer_id, \"from\", \"to\" from ban_records where id = ?";
   private static final String GET_BY_CUSTOMER_ID_QUERY =
-    "select id, customer_id, from, to from ban_records where customer_id = ?";
+    "select id, customer_id, \"from\", \"to\" from ban_records where customer_id = ?";
   private static final String INSERT_QUERY =
-    "insert into ban_records (customer_id, from, to) values (?, ?, ?) returning id";
+    "insert into ban_records (customer_id, \"from\", \"to\") values (?, ?, ?) returning id";
 
   private final JdbcTemplate jdbcTemplate;
 

@@ -94,9 +94,12 @@ public class CommonController extends BaseController {
     model.addAttribute("login", login);
     var person = personFromRequest(request);
     Integer personId = peopleRepository.save(person);
+    person.setId(personId);
 
     newUser.setPersonId(personId);
     userService.update(newUser);
+
+    customerService.addNewCustomer(person);
 
     return "redirect:/";
   }

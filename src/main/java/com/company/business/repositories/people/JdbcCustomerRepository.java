@@ -31,7 +31,7 @@ public class JdbcCustomerRepository implements CustomerRepository {
       "from customers as c inner join people as p using(id) " +
       "where c.id = ?";
   private static final String INSERT_QUERY =
-    "insert into customers (id, loyaltyLevel) values (?, ?)";
+    "insert into customers (id, loyalty_level) values (?, ?)";
   private final JdbcTemplate jdbcTemplate;
 
   public JdbcCustomerRepository(JdbcTemplate jdbcTemplate) {
