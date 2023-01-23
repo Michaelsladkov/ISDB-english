@@ -69,18 +69,18 @@
             <tr>
                 <table id="button-bar">
                 <td>
-                    <form th:action="@{/worker/orders}" method="get">
+                    <form th:action="@{/worker/orders}" method="get" th:if="${Roles.getRoles(person).contains(T(com.company.business.models.people.Role).ORDERS_MANAGER)}">
                         <input type="submit" value="За кассу">
                     </form>
                 </td>
                 <td>
-                    <form method="get">
-                        <input type="submit" value="За лупа">
+                    <form method="get" th:if="${Roles.getRoles(person).contains(T(com.company.business.models.people.Role).STORAGE_MANAGER)}">
+                        <input type="submit" value="На склад">
                     </form>
                 </td>
                 <td>
-                    <form method="get">
-                        <input type="submit" value="За своих">
+                    <form method="get" th:if="${Roles.getRoles(person).contains(T(com.company.business.models.people.Role).ADMIN)}">
+                        <input type="submit" value="В кабинет">
                     </form>
                 </td>
                 </table>

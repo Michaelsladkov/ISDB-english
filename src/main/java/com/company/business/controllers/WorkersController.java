@@ -41,7 +41,7 @@ public class WorkersController extends BaseController {
   public String closeOrder(HttpServletRequest request, Model model) {
     if (!validateRole(Role.ORDERS_MANAGER)) {
       model.addAttribute("error", true);
-      return "index";
+      return "cashierPage";
     }
 
     int orderId = Integer.parseInt(request.getParameter("order_id"));
@@ -49,7 +49,7 @@ public class WorkersController extends BaseController {
 
     orderService.closeOrder(order);
 
-    return "index";
+    return "cashierPage";
   }
 
   private boolean validateRole(Role expectedRole) {

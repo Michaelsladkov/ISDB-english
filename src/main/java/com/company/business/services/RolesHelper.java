@@ -8,6 +8,7 @@ import com.company.business.repositories.people.WorkerRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static com.company.business.models.people.Role.*;
@@ -36,7 +37,8 @@ public class RolesHelper {
     switch (worker.getProfession()) {
       case STOREKEEPER -> resultRoles.add(STORAGE_MANAGER);
       case WAITER -> resultRoles.add(ORDERS_MANAGER);
-      case MANAGER -> resultRoles.add(ADMIN);
+      case MANAGER -> resultRoles.addAll(List.of(ADMIN, ORDERS_MANAGER, STORAGE_MANAGER));
+      case OWNER -> resultRoles.addAll(List.of(OWNER, ADMIN, ORDERS_MANAGER, STORAGE_MANAGER));
     }
 
     return resultRoles;

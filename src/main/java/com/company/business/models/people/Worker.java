@@ -22,5 +22,6 @@ public class Worker extends Person {
     WAITER,
     MANAGER,
     STOREKEEPER,
+    OWNER
   }
 }
