@@ -1,10 +1,13 @@
 package com.company.business.models.people;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 
 public class Person {
   private Integer id;
   private String name;
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
   private LocalDate birthday;
   private int hp;
   private int mana;
