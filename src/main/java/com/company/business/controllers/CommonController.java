@@ -44,7 +44,7 @@ public class CommonController extends BaseController {
       return "loginPage";
 
     model.addAttribute("person", getPerson());
-    return "redirect:/customerPage";
+    return "index";
   }
 
   @PostMapping(value = "sign-in")
@@ -89,11 +89,6 @@ public class CommonController extends BaseController {
     userService.update(newUser);
 
     return "redirect:/";
-  }
-
-  @GetMapping(value = "customerPage")
-  public String getCustomerPage() {
-    return "index";
   }
 
   @PostMapping("/logout")
