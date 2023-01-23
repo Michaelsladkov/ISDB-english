@@ -18,9 +18,9 @@
                         </form>
                     </div>
                     <div id="hp" class="inline" th:text="${'HP: ' + person.getHp()}"></div>
-                    <div id="mana" class="inline" th:text="${person.getMana()}">Mana: 100</div>
-                    <div id="stamina" class="inline" th:text="${person.getStamina()}">Stamina: 100</div>
-                    <div id="alcohol" class="inline" th:text="${person.getHp()}">Опьянение: 20</div>
+                    <div id="mana" class="inline" th:text="${'Mana: ' + person.getMana()}"></div>
+                    <div id="stamina" class="inline" th:text="${'Stamina: ' + person.getStamina()}"></div>
+                    <div id="alcohol" class="inline" th:text="${'Опьянение ' + person.getHp()}"></div>
                 </th>
             </tr>
             </thead>
@@ -76,12 +76,12 @@
                     </form>
                 </td>
                 <td>
-                    <form th:action="@{/worker/orders}" method="get" th:if="${Roles.getRoles(person).contains(T(com.company.business.models.people.Role).STORAGE_MANAGER)}">
+                    <form th:action="@{/worker/storage}" method="get" th:if="${Roles.getRoles(person).contains(T(com.company.business.models.people.Role).STORAGE_MANAGER)}">
                         <input type="submit" value="На склад">
                     </form>
                 </td>
                 <td>
-                    <form th:action="@{/worker/orders}" method="get" th:if="${Roles.getRoles(person).contains(T(com.company.business.models.people.Role).ADMIN)}">
+                    <form th:action="@{/admin/}" method="get" th:if="${Roles.getRoles(person).contains(T(com.company.business.models.people.Role).ADMIN)}">
                         <input type="submit" value="В кабинет">
                     </form>
                 </td>

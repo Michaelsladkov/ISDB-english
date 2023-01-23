@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Склад</title>
-  <link rel="stylesheet" href="../static/css/admin_style.css">
+  <link rel="stylesheet" href="../static/css/admin_style.css" th:href="@{/css/admin_style.css}">
 
 </head>
 <body>
@@ -22,37 +22,22 @@
 
   <tbody>
   <tr>
-    <td align="center" id="left">
-      <form action="" method="post">
-        <select>
-          <option selected disabled>Выберите товар</option>
-          <option value="Мед">Мед</option>
-          <option value="Мясо">Мясо</option>
-          <option value="Хлеб">Хлеб</option>
-        </select>
-        <input type="number" min="1" placeholder="Количество">
-        <br>
-        <input type="submit" value="Добавить" class="btn">
-      </form>
-    </td>
-    <td align="center" id="right">
-      <table border="1" class="table">
-        <thead>
-        <tr>
-          <th>Название</th> <th>Количество</th> <th>Цена</th>
-        </tr>
-        </thead>
-        <tr>
-          <td>Мясо</td> <td>2</td> <td>30</td>
-        </tr>
-        <tr>
-          <td>Мед</td> <td>2</td> <td>20</td>
-        </tr>
-        <tr>
-          <td>Хлеб</td> <td>1</td> <td>7</td>
-        </tr>
-      </table>
-    </td>
+    <table border="1" class="table">
+      <thead>
+      <tr>
+        <th>id</th> <th>Имя</th> <th>Должность</th>
+      </tr>
+      </thead>
+      <tr>
+        <td>1</td> <td>Крендель</td> <td>Официант</td>
+      </tr>
+      <tr>
+        <td>2</td> <td>Вупсень</td> <td>Грузчик</td>
+      </tr>
+      <tr>
+        <td>3</td> <td>Пупсень</td> <td>Менеджер</td>
+      </tr>
+    </table>
   </tr>
   </tbody>
 </table>
