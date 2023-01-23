@@ -13,10 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.context.request.RequestContextHolder;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,33 +26,28 @@ import static com.company.auth.UserService.CheckUserResult.SUCCESS;
 
 @Controller
 @RequestMapping("/")
-public class CommonController {
+public class CommonController extends BaseController {
   private final static Logger logger = LoggerFactory.getLogger(CommonController.class);
-  private final SessionRepository sessionRepository;
   private final UserService userService;
   private final FoodTypeRepository foodTypeRepository;
-  private final PeopleRepository peopleRepository;
 
-  public CommonController(SessionRepository sessionRepository, UserService userService, FoodTypeRepository foodTypeRepository, PeopleRepository peopleRepository) {
-    this.sessionRepository = sessionRepository;
+  public CommonController(SessionRepository sessionRepository, UserService userService, PeopleRepository peopleRepository, FoodTypeRepository foodTypeRepository) {
+    super(sessionRepository, peopleRepository);
     this.userService = userService;
     this.foodTypeRepository = foodTypeRepository;
-    this.peopleRepository = peopleRepository;
   }
 
-  @GetMapping("/")
-  public String index(Model model) {
-    var session = sessionRepository.get(getSessionId());
+  @GetMapping({"/", "index"})
+  public String index(HttpServletRequest request, Model model) {
+    var session = session();
     if (session == null)
       return "loginPage";
 
-    var user = (User) model.getAttribute("user");
-    var person = peopleRepository.getById(user.getPersonId());
-    model.addAttribute("person", person);
-    return "index";
+    model.addAttribute("person", getPerson());
+    return "redirect:/customerPage";
   }
 
-  @PostMapping(value = "sign-in", params = "action=sign-in")
+  @PostMapping(value = "sign-in")
   public String sigIn(HttpServletRequest request, Model model) {
     var login = (String) request.getParameter("login");
     var password = (String) request.getParameter("password");
@@ -62,63 +57,54 @@ public class CommonController {
       return "loginPage";
     }
 
-    sessionRepository.store(new Session(getSessionId(), userService.get(login)));
+    var user = userService.get(login);
+    sessionRepository.store(new Session(sessionId(), user));
 
-    var person = peopleRepository.getById(userService.get(login).getPersonId());
-    model.addAttribute("person", person);
-
-    return "index";
+    return "redirect:/";
   }
 
-  @PostMapping(value = "sign-in", params = "action=sign-up")
-  public String registerUser(HttpServletRequest request, Model model) {
-    var login = (String) request.getParameter("login");
-    var password = (String) request.getParameter("password");
-
-    var newUser = new User(login, password, null);
-    var checkUserResult = userService.check(newUser);
-    if (checkUserResult != NO_USER) {
-      logger.error("User '" + login + "' is already exists");
-      model.addAttribute("error", true);
-      return "signupPage";
-    }
-
-    userService.save(newUser);
-    sessionRepository.store(new Session(getSessionId(), newUser));
-
-    model.addAttribute("login", login);
-
+  @GetMapping(value = "sign-up")
+  public String registerUser() {
     return "registerPage";
   }
 
   @PostMapping(value = "sign-up")
   public String signUp(HttpServletRequest request, Model model) {
+    var login = request.getParameter("login");
+    var password = request.getParameter("password");
+    var newUser = new User(login, password, null);
+    var checkUserResult = userService.check(newUser);
+    if (checkUserResult != NO_USER) {
+      logger.error("User '" + login + "' is already exists");
+      model.addAttribute("error", true);
+      return "registerPage";
+    }
+    userService.save(newUser);
+    sessionRepository.store(new Session(sessionId(), newUser));
+    model.addAttribute("login", login);
     var person = personFromRequest(request);
     Integer personId = peopleRepository.save(person);
 
-    var login = (String) request.getParameter("login");
-    var user = userService.get(login);
-    user.setPersonId(personId);
-    userService.update(user);
+    newUser.setPersonId(personId);
+    userService.update(newUser);
 
-    model.addAttribute("person", person);
-
-    return "index";
-  }
-
-  @PostMapping
-  public String logout() {
-    sessionRepository.delete(getSessionId());
     return "redirect:/";
   }
 
-  @GetMapping(path = "menu")
-  public List<FoodType> menu() {
-    return foodTypeRepository.getAll();
+  @GetMapping(value = "customerPage")
+  public String getCustomerPage() {
+    return "index";
   }
 
-  private static String getSessionId() {
-    return RequestContextHolder.currentRequestAttributes().getSessionId();
+  @PostMapping("/logout")
+  public String logout() {
+    sessionRepository.delete(sessionId());
+    return "redirect:/";
+  }
+
+  @GetMapping(value = "menu")
+  public List<FoodType> menu() {
+    return foodTypeRepository.getAll();
   }
 
   private Person personFromRequest(HttpServletRequest request) {

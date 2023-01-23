@@ -1,10 +1,12 @@
-package com.company.business.models.food;
+package com.company.business.models;
 
-public class Food {
-  private FoodType foodType;
-  private int count;
+import com.company.business.models.food.FoodType;
 
-  public Food(FoodType foodType, int count) {
+public class OrderDetails {
+  FoodType foodType;
+  int count;
+
+  public OrderDetails(FoodType foodType, int count) {
     this.foodType = foodType;
     this.count = count;
   }

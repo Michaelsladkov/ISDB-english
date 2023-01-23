@@ -10,8 +10,6 @@ import java.util.List;
 
 @Repository
 public class JdbcFoodStorageRepository implements FoodStorageRepository {
-  private final JdbcTemplate jdbcTemplate;
-
   private final static RowMapper<Food> foodRowMapper = (rs, rowNum) -> {
     int id = rs.getInt("id");
     String name = rs.getString("name");
@@ -22,6 +20,12 @@ public class JdbcFoodStorageRepository implements FoodStorageRepository {
     int count = rs.getInt("count");
     return new Food(foodType, count);
   };
+  private final static String GET_ALL_QUERY = "select id, name, hp, mana, stamina, count" +
+    " from food_storage as storage left join food_types as types on storage.food_type = types.id";
+  private final static String GET_BY_ID_QUERY = "select id, name, hp, mana, stamina, count" +
+    " from food_storage as storage left join food_types as types on storage.food_type = types.id" +
+    " where storage.id = ?";
+  private final JdbcTemplate jdbcTemplate;
 
   public JdbcFoodStorageRepository(JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
@@ -36,11 +40,4 @@ public class JdbcFoodStorageRepository implements FoodStorageRepository {
   public Food get(int id) {
     return jdbcTemplate.query(GET_BY_ID_QUERY, foodRowMapper, id).get(0);
   }
-
-  private final static String GET_ALL_QUERY = "select id, name, hp, mana, stamina, count" +
-    " from food_storage as storage left join food_types as types on storage.food_type = types.id";
-
-  private final static String GET_BY_ID_QUERY = "select id, name, hp, mana, stamina, count" +
-    " from food_storage as storage left join food_types as types on storage.food_type = types.id" +
-    " where storage.id = ?";
 }

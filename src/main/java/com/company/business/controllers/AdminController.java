@@ -1,35 +1,87 @@
 package com.company.business.controllers;
 
-import com.company.business.controllers.dto.FoodTypeDto;
-import com.company.business.models.food.Food;
-import com.company.business.models.food.FoodType;
-import com.company.business.services.FoodService;
+import com.company.auth.SessionRepository;
+import com.company.business.models.people.Ban;
+import com.company.business.repositories.people.PeopleRepository;
+import com.company.business.services.CustomerService;
+import com.company.business.services.RolesHelper;
+import com.company.business.services.WorkerService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
+import java.time.LocalDate;
+
+import static com.company.business.models.people.Role.ADMIN;
+import static com.company.business.models.people.Role.OWNER;
+import static com.company.business.models.people.Worker.Profession;
 
 @Controller
 @RequestMapping("admin")
-public class AdminController {
-  private final FoodService foodService;
+public class AdminController extends BaseController {
+  private final static Logger logger = LoggerFactory.getLogger(AdminController.class);
+  private final RolesHelper rolesHelper;
+  private final WorkerService workerService;
+  private final CustomerService customerService;
 
-  public AdminController(FoodService service) {
-    this.foodService = service;
+  public AdminController(SessionRepository sessionRepository, PeopleRepository peopleRepository, RolesHelper rolesHelper, WorkerService workerService, CustomerService customerService) {
+    super(sessionRepository, peopleRepository);
+    this.rolesHelper = rolesHelper;
+    this.workerService = workerService;
+    this.customerService = customerService;
   }
 
-  @GetMapping("storage")
-  List<Food> storage() {
-    return foodService.getAll();
+  @GetMapping({"/", "index"})
+  String index(Model model) {
+    if (!validateRole())
+      return "redirect:/";
+    return "adminPage";
   }
 
-  @PostMapping("storage/food-type")
-  void addFoodType(@RequestBody FoodTypeDto request) {
-    var foodTypeToAdd =
-      new FoodType(null, request.name, request.hp, request.mana, request.stamina);
-    foodService.addFoodType(foodTypeToAdd);
+  @PostMapping("worker")
+  String addWorker(HttpServletRequest request, Model model) {
+    if (!validateRole())
+      return "redirect:/";
+
+    var name = request.getParameter("name");
+    var profession = Profession.valueOf(request.getParameter("profession"));
+
+    workerService.save(name, profession);
+    return "redirect:/admin/";
+  }
+
+  @PostMapping("ban")
+  String addBan(HttpServletRequest request, Model model) {
+    if (!validateRole())
+      return "redirect:/";
+
+    var customerName = request.getParameter("name");
+    var days = Integer.parseInt(request.getParameter("days"));
+
+    var from = LocalDate.now();
+    var to = from.plusDays(days);
+    var customer = customerService.get(customerName);
+    var newBan = new Ban(null, customer.getId(), from, to);
+
+    customerService.addBan(newBan);
+
+    return "redirect:/admin/";
+  }
+
+
+  private boolean validateRole() {
+    var person = getPerson();
+    var roles = rolesHelper.getRoles(person);
+    if (!(roles.contains(ADMIN) || roles.contains(OWNER))) {
+      logger.error("Person with id = '" + person.getId() + "' hasn't got permissions for manage workers");
+      return false;
+    }
+
+    return true;
   }
 }

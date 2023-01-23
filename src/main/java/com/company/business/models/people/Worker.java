@@ -1,7 +1,6 @@
 package com.company.business.models.people;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Worker extends Person {
   private Profession profession;
@@ -20,6 +19,8 @@ public class Worker extends Person {
   }
 
   public enum Profession {
-    WAITER
+    WAITER,
+    MANAGER,
+    STOREKEEPER,
   }
 }
