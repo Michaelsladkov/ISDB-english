@@ -112,7 +112,7 @@ CREATE TABLE "sessions"
 
 
 CREATE FUNCTION count_spent_money_by_customer(cust_id int) RETURNS int AS
-    $$
+    $count_spent_money_by_customer$
 DECLARE
 money_count int;
 BEGIN

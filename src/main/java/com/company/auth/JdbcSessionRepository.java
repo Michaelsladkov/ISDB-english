@@ -35,7 +35,7 @@ public class JdbcSessionRepository implements SessionRepository {
   public Session get(String sessionId) {
     List<DbSession> dbSessionByList = jdbcTemplate.query(GET_QUERY, sessionRowMapper, sessionId);
     if (dbSessionByList.isEmpty()) {
-      logger.error("Can't find session with id = " + sessionId);
+      logger.warn("Can't find session with id = " + sessionId);
       return null;
     }
     var dbSession = dbSessionByList.get(0);

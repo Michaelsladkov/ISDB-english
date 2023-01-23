@@ -5,15 +5,16 @@ import com.company.auth.SessionRepository;
 import com.company.auth.User;
 import com.company.auth.UserService;
 import com.company.business.models.food.FoodType;
+import com.company.business.models.people.Customer;
 import com.company.business.models.people.Person;
 import com.company.business.repositories.food.FoodTypeRepository;
 import com.company.business.repositories.people.PeopleRepository;
+import com.company.business.services.CustomerService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,11 +31,13 @@ public class CommonController extends BaseController {
   private final static Logger logger = LoggerFactory.getLogger(CommonController.class);
   private final UserService userService;
   private final FoodTypeRepository foodTypeRepository;
+  private final CustomerService customerService;
 
-  public CommonController(SessionRepository sessionRepository, UserService userService, PeopleRepository peopleRepository, FoodTypeRepository foodTypeRepository) {
+  public CommonController(SessionRepository sessionRepository, PeopleRepository peopleRepository, UserService userService, FoodTypeRepository foodTypeRepository, CustomerService customerService) {
     super(sessionRepository, peopleRepository);
     this.userService = userService;
     this.foodTypeRepository = foodTypeRepository;
+    this.customerService = customerService;
   }
 
   @GetMapping({"/", "index"})
@@ -43,7 +46,14 @@ public class CommonController extends BaseController {
     if (session == null)
       return "loginPage";
 
-    model.addAttribute("person", getPerson());
+    var person = getPerson();
+    var customer = customerService.get(person.getId());
+    if (customer != null && !validateBan(customer)) {
+      logger.warn("Person with id '" + customer.getId() + "' has been banned");
+      return "ban";
+    }
+
+    model.addAttribute("person", person);
     return "index";
   }
 
@@ -110,5 +120,9 @@ public class CommonController extends BaseController {
       Integer.parseInt(request.getParameter("mana")),
       Integer.parseInt(request.getParameter("stamina"))
     );
+  }
+
+  private boolean validateBan(Customer customer) {
+    return customerService.checkForBan(customer);
   }
 }
