@@ -10,6 +10,7 @@ import com.company.business.models.people.Person;
 import com.company.business.repositories.food.FoodTypeRepository;
 import com.company.business.repositories.people.PeopleRepository;
 import com.company.business.services.CustomerService;
+import com.company.business.services.RolesHelper;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,12 +33,14 @@ public class CommonController extends BaseController {
   private final UserService userService;
   private final FoodTypeRepository foodTypeRepository;
   private final CustomerService customerService;
+  private final RolesHelper rolesHelper;
 
-  public CommonController(SessionRepository sessionRepository, PeopleRepository peopleRepository, UserService userService, FoodTypeRepository foodTypeRepository, CustomerService customerService) {
+  public CommonController(SessionRepository sessionRepository, PeopleRepository peopleRepository, UserService userService, FoodTypeRepository foodTypeRepository, CustomerService customerService, RolesHelper rolesHelper) {
     super(sessionRepository, peopleRepository);
     this.userService = userService;
     this.foodTypeRepository = foodTypeRepository;
     this.customerService = customerService;
+    this.rolesHelper = rolesHelper;
   }
 
   @GetMapping({"/", "index"})
@@ -54,6 +57,7 @@ public class CommonController extends BaseController {
     }
 
     model.addAttribute("person", person);
+    model.addAttribute("Roles", rolesHelper);
     return "index";
   }
 
