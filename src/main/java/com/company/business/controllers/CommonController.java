@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.company.auth.UserService.CheckUserResult.NO_USER;
 import static com.company.auth.UserService.CheckUserResult.SUCCESS;
@@ -60,17 +63,23 @@ public class CommonController extends BaseController {
     model.addAttribute("Roles", rolesHelper);
 
     var availableFoodTypes = new LinkedList<FoodType>();
-    var notAvailableFoodTypes = new LinkedList<FoodType>();
-    foodService.getAll().forEach((food) -> {
-      if (food.getCount() == 0) {
-        notAvailableFoodTypes.add(food.getFoodType());
-      } else {
-        availableFoodTypes.add(food.getFoodType());
+    var foodTypesById = foodService.getFoodTypes()
+      .stream()
+      .collect(Collectors.toMap(FoodType::getId, Function.identity()));
+
+    foodService.getAll().forEach(food -> {
+      var foodType = food.getFoodType();
+      if (foodTypesById.containsKey(foodType.getId())) {
+        availableFoodTypes.add(foodType);
+        foodTypesById.remove(foodType.getId());
       }
     });
+    var notAvailableFoodTypes = foodTypesById.values();
 
-    model.addAttribute("availableFoodTypes", availableFoodTypes);
-    model.addAttribute("notAvailableFoodTypes", notAvailableFoodTypes);
+    model.addAllAttributes(Map.of(
+      "availableFoodTypes", availableFoodTypes,
+      "notAvailableFoodTypes", notAvailableFoodTypes
+    ));
 
     return "index";
   }

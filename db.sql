@@ -169,7 +169,11 @@ BEGIN
     old_count := (SELECT count FROM food_storage where food_type = NEW.food_id);
     new_count := old_count - count_diff;
 
-UPDATE food_storage SET count = new_count WHERE food_type = NEW.food_id;
+    IF new_count = 0 THEN
+        DELETE FROM food_storage WHERE food_type = NEW.food_id;
+    ELSE
+        UPDATE food_storage SET count = new_count WHERE food_type = NEW.food_id;
+    END IF;
 
 RETURN NEW;
 END;
