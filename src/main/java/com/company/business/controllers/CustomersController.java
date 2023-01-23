@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/customer")
 public class CustomersController extends BaseController {
   private final Logger logger = LoggerFactory.getLogger(CustomersController.class);
   private final CustomerService service;

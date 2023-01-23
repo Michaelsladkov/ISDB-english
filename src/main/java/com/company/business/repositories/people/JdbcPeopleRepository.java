@@ -30,6 +30,8 @@ public class JdbcPeopleRepository implements PeopleRepository {
     "select id, name, birthday, hp, mana, stamina from people where name = ?";
   private static final String INSERT_QUERY =
     "insert into people (name, birthday, hp, mana, stamina) values (?, ?, ?, ?, ?) returning id";
+  private static final String UPDATE_INDICATORS_QUERY =
+    "update people set hp = ?, mana = ?, stamina = ? where id = ?";
   private final JdbcTemplate jdbcTemplate;
 
   public JdbcPeopleRepository(JdbcTemplate jdbcTemplate) {
@@ -75,4 +77,8 @@ public class JdbcPeopleRepository implements PeopleRepository {
     return id;
   }
 
+  @Override
+  public void updateIndicators(int id, int hp, int mana, int stamina) {
+    jdbcTemplate.update(UPDATE_INDICATORS_QUERY, hp, mana, stamina, id);
+  }
 }

@@ -12,4 +12,6 @@ public interface PeopleRepository {
   Person getByName(String name);
 
   Integer save(Person person);
+
+  void updateIndicators(int id, int hp, int mana, int stamina);
 }

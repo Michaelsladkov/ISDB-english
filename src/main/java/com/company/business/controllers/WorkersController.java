@@ -4,6 +4,7 @@ import com.company.auth.SessionRepository;
 import com.company.business.models.people.Role;
 import com.company.business.repositories.orders.OrderRepository;
 import com.company.business.repositories.people.PeopleRepository;
+import com.company.business.services.OrderService;
 import com.company.business.services.RolesHelper;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -18,12 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class WorkersController extends BaseController {
   private static final Logger logger = LoggerFactory.getLogger(WorkersController.class);
   private final RolesHelper rolesHelper;
-  private final OrderRepository orderRepository;
+  private final OrderService orderService;
 
-  public WorkersController(SessionRepository sessionRepository, PeopleRepository peopleRepository, RolesHelper rolesHelper, OrderRepository orderRepository) {
+  public WorkersController(SessionRepository sessionRepository, PeopleRepository peopleRepository, RolesHelper rolesHelper, OrderService orderService) {
     super(sessionRepository, peopleRepository);
     this.rolesHelper = rolesHelper;
-    this.orderRepository = orderRepository;
+    this.orderService = orderService;
   }
 
   @PostMapping("/orders/close")
@@ -34,8 +35,9 @@ public class WorkersController extends BaseController {
     }
 
     int orderId = Integer.parseInt(request.getParameter("order_id"));
+    var order = orderService.get(orderId);
 
-    orderRepository.setClosed(orderId);
+    orderService.closeOrder(order);
 
     return "index";
   }

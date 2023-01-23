@@ -164,7 +164,7 @@ CREATE TRIGGER update_loyalty_level
 CREATE FUNCTION reduce_food_count_in_storage() RETURNS trigger AS
     $reduce_food_count_in_storage$
 DECLARE
-count_diff int;
+    count_diff int;
     old_count  int;
     new_count  int;
 BEGIN
@@ -199,3 +199,26 @@ CREATE TRIGGER check_closed_from_false_to_true
     ON orders
     FOR ROW
     EXECUTE PROCEDURE check_closed_from_false_to_true();
+
+-- CREATE FUNCTION on_close() RETURNS trigger AS $on_close$
+-- DECLARE
+--     details
+-- BEGIN
+--     details := (
+--         SELECT
+--         SUM(hp * details.count) AS hp, SUM(mana * details.count) AS mana, SUM(stamina * details.count) AS stamina
+--         FROM order_details as details INNER LEFT JOIN food_types as f_types
+--         ON details.food_id = f_types.id
+--         WHERE order_id = NEW.id
+--     );
+-- END IF;
+-- RETURN NEW;
+-- END;
+-- $on_close$ LANGUAGE plpgsql;
+--
+--
+-- CREATE TRIGGER on_close_trigger
+--     AFTER UPDATE
+--     ON orders
+--     FOR ROW
+--     EXECUTE PROCEDURE on_close();
