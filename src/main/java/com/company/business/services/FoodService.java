@@ -54,8 +54,13 @@ public class FoodService {
       .forEach((typeName, amount) -> {
         var type = foodTypes.get(typeName);
         var food = foodStorageRepository.get(type.getId());
-        food.setCount(food.getCount() + amount);
-        foodStorageRepository.updateCount(food);
+        if (food == null) {
+          food = new Food(type, amount);
+          foodStorageRepository.save(food);
+        } else {
+          food.setCount(food.getCount() + amount);
+          foodStorageRepository.updateCount(food);
+        }
       });
   }
 }

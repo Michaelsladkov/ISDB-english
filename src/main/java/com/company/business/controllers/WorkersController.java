@@ -1,8 +1,8 @@
 package com.company.business.controllers;
 
 import com.company.auth.SessionRepository;
+import com.company.business.models.food.FoodType;
 import com.company.business.models.people.Role;
-import com.company.business.repositories.orders.OrderRepository;
 import com.company.business.repositories.people.PeopleRepository;
 import com.company.business.services.FoodService;
 import com.company.business.services.OrderService;
@@ -15,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.Map;
 
 @Controller
 @RequestMapping("worker")
@@ -33,7 +35,7 @@ public class WorkersController extends BaseController {
 
   @GetMapping("/orders")
   public String orders() {
-    if(!validateRole(Role.ORDERS_MANAGER)) {
+    if (!validateRole(Role.ORDERS_MANAGER)) {
       return "redirect:/index";
     }
 
@@ -71,6 +73,25 @@ public class WorkersController extends BaseController {
     return "warehousePage";
   }
 
+  @PostMapping("/storage/food-types")
+  public String addFoodType(HttpServletRequest request, Model model) {
+    if (!validateRole(Role.STORAGE_MANAGER)) {
+      model.addAttribute("error", true);
+      return "index";
+    }
+
+    String foodTypeName = request.getParameter("name");
+    int hp = Integer.parseInt(request.getParameter("hp"));
+    int mana = Integer.parseInt(request.getParameter("mana"));
+    int stamina = Integer.parseInt(request.getParameter("stamina"));
+
+    var foodType = new FoodType(null, foodTypeName, hp, mana, stamina);
+
+    foodService.addFoodType(foodType);
+
+    return "redirect:/storage";
+  }
+
   @PostMapping("/storage")
   public String addFood(HttpServletRequest request, Model model) {
     if (!validateRole(Role.STORAGE_MANAGER)) {
@@ -78,9 +99,12 @@ public class WorkersController extends BaseController {
       return "index";
     }
 
+    String foodTypeName = request.getParameter("food-type");
+    int count = Integer.parseInt(request.getParameter("count"));
 
+    foodService.increaseFood(Map.of(foodTypeName, count));
 
-    return "index";
+    return "redirect:/storage";
   }
 
   private boolean validateRole(Role expectedRole) {
