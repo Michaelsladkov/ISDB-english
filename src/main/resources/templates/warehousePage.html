@@ -34,17 +34,27 @@
         <br>
         <input type="submit" value="Добавить" class="btn">
       </form>
+      <br>
+      Добавить новый продукт
+      <form th:action="@{/worker/storage/food-types}" method="post">
+        <input type="text" placeholder="Название" name="name">
+        <input type="number" placeholder="Цена" name="price" min="0">
+        <input type="number" placeholder="HP" name="hp">
+        <input type="number" placeholder="Mana" name="mana">
+        <input type="number" placeholder="Stamina" name="stamina">
+        <input type="submit" value="Добавить" class="btn">
+      </form>
     </td>
     <td align="center" id="right">
       <table border="1" class="table">
         <thead>
         <tr>
-          <th>Название</th> <th>Цена</th> <th>Количество</th>
+          <th>Название</th> <th>HP</th> <th>Mana</th> <th>Stamina</th> <th>Цена</th> <th>Количество</th>
         </tr>
         </thead>
         <th:block th:each="food : ${storage}">
           <tr>
-            <td th:text="${food.foodType.name}"></td> <td th:text="${food.foodType.price}"></td> <td th:text="${food.count}"></td>
+            <td th:text="${food.foodType.name}"></td> <td th:text="${food.foodType.hp}"></td> <td th:text="${food.foodType.mana}"></td> <td th:text="${food.foodType.stamina}"></td> <td th:text="${food.foodType.price}"></td> <td th:text="${food.count}"></td>
           </tr>
         </th:block>
       </table>

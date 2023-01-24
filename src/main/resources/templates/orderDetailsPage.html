@@ -45,6 +45,14 @@
       </table>
     </td>
   </tr>
+  <tr>
+    <td>
+      <form th:action="@{/worker/orders/close}" method="post">
+        <input type="text" style="display:none;" th:value="${order.id}" name="orderId">
+        <input type="submit" value="Завершить заказ" class="btn">
+      </form>
+    </td>
+  </tr>
   </tbody>
 </table>
 
