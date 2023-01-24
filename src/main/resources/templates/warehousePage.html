@@ -23,14 +23,14 @@
   <tbody>
   <tr>
     <td align="center" id="left">
-      <form action="" method="post">
-        <select>
+      <form th:action="@{/worker/storage}" method="post">
+        <select required name="foodType">
           <option selected disabled>Выберите товар</option>
-          <option value="Мед">Мед</option>
-          <option value="Мясо">Мясо</option>
-          <option value="Хлеб">Хлеб</option>
+          <th:block th:each="foodType: ${foodTypes}">
+            <option th:text="${foodType.name}" th:value="${foodType.name}"></option>
+          </th:block>
         </select>
-        <input type="number" min="1" placeholder="Количество">
+        <input type="number" min="1" placeholder="Количество" name="count" required>
         <br>
         <input type="submit" value="Добавить" class="btn">
       </form>
@@ -39,18 +39,14 @@
       <table border="1" class="table">
         <thead>
         <tr>
-          <th>Название</th> <th>Количество</th> <th>Цена</th>
+          <th>Название</th> <th>Цена</th> <th>Количество</th>
         </tr>
         </thead>
-        <tr>
-          <td>Мясо</td> <td>2</td> <td>30</td>
-        </tr>
-        <tr>
-          <td>Мед</td> <td>2</td> <td>20</td>
-        </tr>
-        <tr>
-          <td>Хлеб</td> <td>1</td> <td>7</td>
-        </tr>
+        <th:block th:each="food : ${storage}">
+          <tr>
+            <td th:text="${food.foodType.name}"></td> <td th:text="${food.foodType.price}"></td> <td th:text="${food.count}"></td>
+          </tr>
+        </th:block>
       </table>
     </td>
   </tr>

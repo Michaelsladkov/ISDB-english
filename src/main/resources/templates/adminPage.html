@@ -25,18 +25,14 @@
     <table border="1" class="table">
       <thead>
       <tr>
-        <th>id</th> <th>Имя</th> <th>Должность</th>
+        <th>id</th> <th>Имя</th> <th>Дата Рождения</th> <th>Должность</th>
       </tr>
       </thead>
-      <tr>
-        <td>1</td> <td>Крендель</td> <td>Официант</td>
-      </tr>
-      <tr>
-        <td>2</td> <td>Вупсень</td> <td>Грузчик</td>
-      </tr>
-      <tr>
-        <td>3</td> <td>Пупсень</td> <td>Менеджер</td>
-      </tr>
+      <th:block th:each="worker : ${workers}">
+        <tr>
+          <td th:text="${worker.id}"></td> <td th:text="${worker.name}"></td> <td th:text="${worker.birthday}"></td> <td th:text="${worker.profession}"></td>
+        </tr>
+      </th:block>
     </table>
   </tr>
   </tbody>

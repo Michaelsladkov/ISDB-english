@@ -38,7 +38,7 @@
                                 <option th:text="${foodType.name}" th:value="${foodType.name}" class="not-available"></option>
                             </th:block>
                         </select>
-                        <input type="number" min="1" placeholder="Количество" name="count">
+                        <input type="number" min="1" placeholder="Количество" name="count" required>
                         <br>
                         <input type="submit" value="Заказать" class="btn">
                     </form>
@@ -52,13 +52,13 @@
                         </thead>
                         <th:block th:each="orderDetail : ${orderDetails}">
                             <tr>
-                                <td th:text="${orderDetail.foodType.name}"></td> <td th:text="${orderDetail.count}"></td> <td>0</td>
+                                <td th:text="${orderDetail.foodType.name}"></td> <td th:text="${orderDetail.count}"></td> <td th:text="${orderDetail.foodType.price}"></td>
                             </tr>
                         </th:block>
+                        <tr>
+                            <td>Сумма</td> <td></td> <td th:text="${orderDetails.stream().mapToInt(o -> o.getPrice()).sum()}"></td>
+                        </tr>
                     </table>
-                    <form>
-                        <input type="submit" value="Оплатить" class="btn">
-                    </form>
                 </td>
             </tr>
             <tr>

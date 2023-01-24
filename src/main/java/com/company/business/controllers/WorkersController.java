@@ -126,7 +126,7 @@ public class WorkersController extends BaseController {
       return "index";
     }
 
-    String foodTypeName = request.getParameter("food-type");
+    String foodTypeName = request.getParameter("foodType");
     int count = Integer.parseInt(request.getParameter("count"));
 
     foodService.increaseFood(Map.of(foodTypeName, count));

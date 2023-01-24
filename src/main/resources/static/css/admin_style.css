@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Lato:400,700");
 #bg {
-    background-image: url('../img/warehouse.png');
+    background-image: url('../img/desk.jpg');
     position: fixed;
     left: 0;
     top: 0;
@@ -89,7 +89,7 @@ form .btn {
     border: none;
     margin-bottom: 20px;
     border-collapse: separate;
-    color: gold;
+    color: #00ffd9;
 }
 .table thead th {
     font-weight: bold;
