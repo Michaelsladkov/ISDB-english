@@ -30,7 +30,7 @@ public class JdbcOrderRepository implements OrderRepository {
   private final static String GET_ALL_OPEN_QUERY =
     "select id, customer_id, time, closed from orders where close = false";
   private final static String GET_OPEN_BY_CUSTOMER_ID_QUERY =
-    "select id, customer_id, time, closed from orders where customer_id = ? closed = false";
+    "select id, customer_id, time, closed from orders where customer_id = ? and closed = false";
   private final static String INSERT_QUERY =
     "insert into orders (customer_id, time, closed) values (?, ?, ?) returning id";
   private final static String SET_CLOSED_QUERY =

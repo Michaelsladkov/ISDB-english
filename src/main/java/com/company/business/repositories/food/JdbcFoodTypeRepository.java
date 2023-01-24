@@ -54,7 +54,7 @@ public class JdbcFoodTypeRepository implements FoodTypeRepository {
       ":name", String.join(", ", Collections.nCopies(names.size(), "?"))
     );
 
-    return jdbcTemplate.query(query, foodTypeRowMapper);
+    return jdbcTemplate.query(query, foodTypeRowMapper, names);
   }
 
   @Override
