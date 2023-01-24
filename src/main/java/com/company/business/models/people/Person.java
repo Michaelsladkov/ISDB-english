@@ -12,14 +12,16 @@ public class Person {
   private int hp;
   private int mana;
   private int stamina;
+  private int alcohol;
 
-  public Person(Integer id, String name, LocalDate birthday, int hp, int mana, int stamina) {
+  public Person(Integer id, String name, LocalDate birthday, int hp, int mana, int stamina, int alcohol) {
     this.id = id;
     this.name = name;
     this.birthday = birthday;
     this.hp = hp;
     this.mana = mana;
     this.stamina = stamina;
+    this.alcohol = alcohol;
   }
 
   public Integer getId() {
@@ -68,5 +70,13 @@ public class Person {
 
   public void setStamina(int stamina) {
     this.stamina = stamina;
+  }
+
+  public int getAlcohol() {
+    return alcohol;
+  }
+
+  public void setAlcohol(int alcohol) {
+    this.alcohol = alcohol;
   }
 }

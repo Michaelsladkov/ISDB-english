@@ -20,14 +20,15 @@ public class JdbcWorkerRepository implements WorkerRepository {
     int hp = rs.getInt("hp");
     int mana = rs.getInt("mana");
     int stamina = rs.getInt("stamina");
+    int alcohol = rs.getInt("alcohol");
     var profession = Worker.Profession.valueOf(rs.getString("profession"));
-    return new Worker(id, name, birthday, hp, mana, stamina, profession);
+    return new Worker(id, name, birthday, hp, mana, stamina, alcohol, profession);
   };
   private static final String GET_ALL_QUERY =
-    "select w.id as id, name, birthday, hp, mana, stamina, profession " +
+    "select w.id as id, name, birthday, hp, mana, stamina, alcohol, profession " +
       "from workers as w inner join people as p using(id)";
   private static final String GET_BY_ID_QUERY =
-    "select w.id, id, name, birthday, hp, mana, stamina, profession " +
+    "select w.id, id, name, birthday, hp, mana, stamina, alcohol, profession " +
       "from workers as w inner join people as p using(id) " +
       "where w.id = ?";
   private static final String INSERT_QUERY =

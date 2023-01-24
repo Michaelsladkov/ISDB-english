@@ -27,7 +27,7 @@ public class WorkerService {
     var person = peopleRepository.getByName(name);
     var worker = new Worker(
       person.getId(), person.getName(), person.getBirthday(),
-      person.getHp(), person.getMana(), person.getStamina(),
+      person.getHp(), person.getMana(), person.getStamina(), person.getAlcohol(),
       profession
     );
 

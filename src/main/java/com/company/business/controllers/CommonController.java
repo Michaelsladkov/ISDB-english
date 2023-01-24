@@ -161,7 +161,8 @@ public class CommonController extends BaseController {
       LocalDate.parse(request.getParameter("date")),
       Integer.parseInt(request.getParameter("hp")),
       Integer.parseInt(request.getParameter("mana")),
-      Integer.parseInt(request.getParameter("stamina"))
+      Integer.parseInt(request.getParameter("stamina")),
+      0
     );
   }
 

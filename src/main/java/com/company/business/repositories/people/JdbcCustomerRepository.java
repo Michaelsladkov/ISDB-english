@@ -20,14 +20,15 @@ public class JdbcCustomerRepository implements CustomerRepository {
     int hp = rs.getInt("hp");
     int mana = rs.getInt("mana");
     int stamina = rs.getInt("stamina");
+    int alcohol = rs.getInt("alcohol");
     int loyaltyLevel = rs.getInt("loyalty_level");
-    return new Customer(id, name, birthday, hp, mana, stamina, loyaltyLevel);
+    return new Customer(id, name, birthday, hp, mana, stamina, alcohol, loyaltyLevel);
   };
   private static final String GET_ALL_QUERY =
-    "select c.id as id, name, birthday, hp, mana, stamina, loyalty_level " +
+    "select c.id as id, name, birthday, hp, mana, stamina, alcohol, loyalty_level " +
       "from customers as c inner join people as p using(id)";
   private static final String GET_BY_ID_QUERY =
-    "select c.id, id, name, birthday, hp, mana, stamina, loyalty_level " +
+    "select c.id, id, name, birthday, hp, mana, stamina, alcohol, loyalty_level " +
       "from customers as c inner join people as p using(id) " +
       "where c.id = ?";
   private static final String INSERT_QUERY =

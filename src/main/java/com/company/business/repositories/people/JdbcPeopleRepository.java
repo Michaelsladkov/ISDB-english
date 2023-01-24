@@ -20,18 +20,21 @@ public class JdbcPeopleRepository implements PeopleRepository {
     int hp = rs.getInt("hp");
     int mana = rs.getInt("mana");
     int stamina = rs.getInt("stamina");
-    return new Person(id, name, birthday, hp, mana, stamina);
+    int alcohol = rs.getInt("alcohol");
+    return new Person(id, name, birthday, hp, mana, stamina, alcohol);
   };
   private static final String GET_ALL_QUERY =
-    "select id, name, birthday, hp, mana, stamina from people";
+    "select id, name, birthday, hp, mana, stamina, alcohol from people";
   private static final String GET_BY_ID_QUERY =
-    "select id, name, birthday, hp, mana, stamina from people where id = ?";
+    "select id, name, birthday, hp, mana, stamina, alcohol from people where id = ?";
   private static final String GET_BY_NAME_QUERY =
-    "select id, name, birthday, hp, mana, stamina from people where name = ?";
+    "select id, name, birthday, hp, mana, stamina, alcohol from people where name = ?";
   private static final String INSERT_QUERY =
-    "insert into people (name, birthday, hp, mana, stamina) values (?, ?, ?, ?, ?) returning id";
+    "insert into people (name, birthday, hp, mana, stamina, alcohol) values (?, ?, ?, ?, ?, ?) returning id";
   private static final String UPDATE_INDICATORS_QUERY =
     "update people set hp = ?, mana = ?, stamina = ? where id = ?";
+  private static final String UPDATE_ALCOHOL_QUERY =
+    "update people set alcohol = ? where id = ?";
   private final JdbcTemplate jdbcTemplate;
 
   public JdbcPeopleRepository(JdbcTemplate jdbcTemplate) {

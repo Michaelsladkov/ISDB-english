@@ -6,10 +6,12 @@ CREATE TABLE "people"
     "hp"       int,
     "mana"     int,
     "stamina"  int,
+    "alcohol" int,
     CHECK (
                 hp >= 0
             AND mana >= 0
             AND stamina >= 0
+            AND 0 <= alcohol AND alcohol <= 100
         )
 );
 

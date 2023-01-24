@@ -5,8 +5,8 @@ import java.time.LocalDate;
 public class Worker extends Person {
   private Profession profession;
 
-  public Worker(int id, String name, LocalDate birthday, int hp, int mana, int stamina, Profession profession) {
-    super(id, name, birthday, hp, mana, stamina);
+  public Worker(int id, String name, LocalDate birthday, int hp, int mana, int stamina, int alcohol, Profession profession) {
+    super(id, name, birthday, hp, mana, stamina, alcohol);
     this.profession = profession;
   }
 
