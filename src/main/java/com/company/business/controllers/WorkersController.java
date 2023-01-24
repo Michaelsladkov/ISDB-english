@@ -79,7 +79,7 @@ public class WorkersController extends BaseController {
       return "redirect:/index";
     }
 
-    int orderId = Integer.parseInt(request.getParameter("order_id"));
+    int orderId = Integer.parseInt(request.getParameter("orderId"));
     var order = orderService.get(orderId);
 
     orderService.closeOrder(order);
