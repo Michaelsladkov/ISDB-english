@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -48,13 +49,12 @@ public class WorkersController extends BaseController {
     return "cashierPage";
   }
 
-  @GetMapping("/orders/details")
-  public String orderDetails(HttpServletRequest request, Model model) {
+  @GetMapping("/orders/details/{orderId}")
+  public String orderDetails(HttpServletRequest request, Model model, @PathVariable Integer orderId) {
     if (!validateRole(Role.ORDERS_MANAGER)) {
       return "redirect:/index";
     }
-
-    var orderId = Integer.parseInt(request.getParameter("orderId"));
+//    var orderId = Integer.parseInt(request.getParameter("orderId"));
     var order = orderService.get(orderId);
     var orderDetails = orderService.getDetails(orderId);
 

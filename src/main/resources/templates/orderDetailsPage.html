@@ -13,10 +13,14 @@
   <thead>
   <tr>
     <div class="inline">
-      <form th:action="@{/}" method="get">
-        <input type="submit" value="В зал">
+      <form th:action="@{/worker/orders}" method="get">
+        <input type="submit" value="Назад">
       </form>
     </div>
+      <div class="inline" th:text="'id: ' + ${order.id}"></div>
+      <div class="inline" th:text="'Клиент: ' + ${order.customer.name}"></div>
+      <div class="inline" th:text="'Время: ' + ${order.time}"></div>
+      <div class="inline" th:text="'Оплачен: ' + (${order.closed} ? 'Да' : 'Нет')"></div>
   </tr>
   </thead>
 

@@ -75,7 +75,8 @@ form .btn {
     cursor: pointer;
     display: inline-block;
     margin: 0 auto;
-    padding: 5px 10px 5px 10px;
+    padding: 5px 5px 5px 5px;
+    width: 100%;
     text-align: center;
     background-color: #425942;
     color: #fff;
