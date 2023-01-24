@@ -25,6 +25,8 @@ class JdbcOrderDetailsRepository implements OrderDetailsRepository {
     "select order_id, food_id, count from order_details where order_id = ?";
   private final static String INSERT_QUERY =
     "insert into order_details (order_id, food_id, count) values (?, ?, ?)";
+  private final static String UPDATE_COUNT_QUERY =
+    "update order_details set count = ? where order_id = ? and food_type = ?";
 
   private final FoodTypeRepository foodTypeRepository;
   private final JdbcTemplate jdbcTemplate;
@@ -36,7 +38,7 @@ class JdbcOrderDetailsRepository implements OrderDetailsRepository {
 
   @Override
   public List<OrderDetails> get(int orderId) {
-    var dbOrderDetails = jdbcTemplate.query(GET_BY_ORDER_ID_QUERY, dbOrderDetailsRowMapper);
+    var dbOrderDetails = jdbcTemplate.query(GET_BY_ORDER_ID_QUERY, dbOrderDetailsRowMapper, orderId);
 
     var foodTypeById = dbOrderDetails.stream()
       .map(DbOrderDetails::getFood_id)
@@ -66,6 +68,11 @@ class JdbcOrderDetailsRepository implements OrderDetailsRepository {
     ).toList();
 
     jdbcTemplate.batchUpdate(INSERT_QUERY, batchArgs);
+  }
+
+  @Override
+  public void updateCount(int orderId, OrderDetails details) {
+    jdbcTemplate.update(UPDATE_COUNT_QUERY, details.getCount(), orderId, details.getFoodType().getId());
   }
 
   private static class DbOrderDetails {

@@ -20,4 +20,6 @@ public interface OrderRepository {
   List<OrderDetails> getDetails(int id);
 
   void addDetails(int id, List<OrderDetails> details);
+
+  void updateCount(int id, OrderDetails details);
 }

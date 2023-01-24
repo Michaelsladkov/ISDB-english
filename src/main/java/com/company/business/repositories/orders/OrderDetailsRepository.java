@@ -10,4 +10,6 @@ interface OrderDetailsRepository {
   void add(int orderId, OrderDetails details);
 
   void add(int orderId, List<OrderDetails> details);
+
+  void updateCount(int orderId, OrderDetails details);
 }

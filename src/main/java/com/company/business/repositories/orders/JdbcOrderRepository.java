@@ -114,6 +114,11 @@ public class JdbcOrderRepository implements OrderRepository {
     orderDetailsRepository.add(id, details);
   }
 
+  @Override
+  public void updateCount(int id, OrderDetails details) {
+    orderDetailsRepository.updateCount(id, details);
+  }
+
   private static class DbOrder {
     int id;
     int customerId;

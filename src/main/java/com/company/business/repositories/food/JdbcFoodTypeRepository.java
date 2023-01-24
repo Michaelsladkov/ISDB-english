@@ -2,12 +2,13 @@ package com.company.business.repositories.food;
 
 import com.company.business.models.food.FoodType;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -51,13 +52,21 @@ public class JdbcFoodTypeRepository implements FoodTypeRepository {
   @Override
   public List<FoodType> get(Set<String> names) {
     var query = GET_BY_NAMES_QUERY.replace(
-      ":name", String.join(", ", Collections.nCopies(names.size(), "?"))
+      ":names", String.join(", ", Collections.nCopies(names.size(), "?"))
     );
 
-    var psCreator = new PreparedStatementCreatorFactory(query)
-      .newPreparedStatementCreator(new LinkedList<>(names));
+    var psSetter = new PreparedStatementSetter() {
+      @Override
+      public void setValues(PreparedStatement ps) throws SQLException {
+        int size = names.size();
+        var it = names.iterator();
+        for (int i = 0; i < size; i++) {
+          ps.setString(i + 1, it.next());
+        }
+      }
+    };
 
-    return jdbcTemplate.query(psCreator, foodTypeRowMapper);
+    return jdbcTemplate.query(query, psSetter, foodTypeRowMapper);
   }
 
   @Override

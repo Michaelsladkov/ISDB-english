@@ -185,6 +185,37 @@ CREATE TRIGGER reduce_food_count_in_storage
     FOR ROW
     EXECUTE PROCEDURE reduce_food_count_in_storage();
 
+CREATE FUNCTION reduce_food_count_in_storage_by_diff() RETURNS trigger AS $reduce_food_count_in_storage_by_diff$
+DECLARE
+    count_diff int;
+    old_count  int;
+    new_count  int;
+    old_food_in_order_count int;
+BEGIN
+    old_food_in_order_count := OLD.count;
+    count_diff := NEW.count - OLD.count;
+    IF count_diff < 0 THEN
+        RAISE EXCEPTION 'OPERATION OF DECREASING FOOD COUNT IS NOT SUPPORTED';
+    END IF;
+    old_count := (SELECT count FROM food_storage where food_type = NEW.food_id);
+    new_count := old_count - count_diff;
+
+    IF new_count = 0 THEN
+        DELETE FROM food_storage WHERE food_type = NEW.food_id;
+    ELSE
+        UPDATE food_storage SET count = new_count WHERE food_type = NEW.food_id;
+    END IF;
+
+RETURN NEW;
+END;
+$reduce_food_count_in_storage_by_diff$ LANGUAGE plpgsql;
+
+CREATE TRIGGER reduce_food_count_in_storage_by_diff
+    BEFORE UPDATE
+    ON order_details
+    FOR ROW
+    EXECUTE PROCEDURE reduce_food_count_in_storage_by_diff();
+
 CREATE FUNCTION check_closed_from_false_to_true() RETURNS trigger AS
     $check_closed_from_false_to_true$
 BEGIN
@@ -200,3 +231,5 @@ CREATE TRIGGER check_closed_from_false_to_true
     ON orders
     FOR ROW
     EXECUTE PROCEDURE check_closed_from_false_to_true();
+
+INSERT INTO loyalty_levels (level, sale, description, money) VALUES (0, 0, 'Чушка', 0);

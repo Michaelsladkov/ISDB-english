@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/customer")
+@RequestMapping("customer")
 public class CustomersController extends BaseController {
   private final Logger logger = LoggerFactory.getLogger(CustomersController.class);
   private final CustomerService service;
@@ -51,7 +51,7 @@ public class CustomersController extends BaseController {
       "orderDetails", details
     ));
 
-    return "index";
+    return "redirect:/index";
   }
 
   private Customer getCustomer() {

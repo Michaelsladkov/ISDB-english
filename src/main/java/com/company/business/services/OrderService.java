@@ -4,6 +4,7 @@ import com.company.business.models.Order;
 import com.company.business.models.OrderDetails;
 import com.company.business.models.people.Customer;
 import com.company.business.repositories.orders.OrderRepository;
+import one.util.streamex.StreamEx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,10 @@ public class OrderService {
     return repository.getAllOpen();
   }
 
+  public Order getOpen(Customer customer) {
+    return repository.getOpen(customer);
+  }
+
   public Order correctOrder(Customer customer, String foodTypeName, int count) {
     var order = repository.getOpen(customer);
 
@@ -42,8 +47,14 @@ public class OrderService {
 
     var foodType = foodService.getFoodTypes(Set.of(foodTypeName)).get(foodTypeName);
     var orderDetails = new OrderDetails(foodType, count);
-
-    repository.addDetails(order.getId(), List.of(orderDetails));
+    var existingDetails = StreamEx.of(repository.getDetails(order.getId()))
+      .findFirst(details -> details.getFoodType().getName().equals(foodTypeName))
+      .orElse(null);
+    if (existingDetails != null) {
+      repository.updateCount(order.getId(), orderDetails);
+    } else {
+      repository.addDetails(order.getId(), List.of(orderDetails));
+    }
 
     return order;
   }
