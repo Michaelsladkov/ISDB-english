@@ -31,6 +31,10 @@ public class WorkerService {
       profession
     );
 
-    repository.save(worker);
+    if (repository.getById(person.getId()) != null) {
+      repository.updateProfession(worker);
+    } else {
+      repository.save(worker);
+    }
   }
 }

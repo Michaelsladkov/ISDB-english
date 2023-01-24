@@ -1,5 +1,6 @@
 package com.company.business.repositories.people;
 
+import com.company.business.models.food.Food;
 import com.company.business.models.people.Worker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.function.Supplier;
 
 @Repository
 public class JdbcWorkerRepository implements WorkerRepository {
@@ -33,6 +35,8 @@ public class JdbcWorkerRepository implements WorkerRepository {
       "where w.id = ?";
   private static final String INSERT_QUERY =
     "insert into workers (id, profession) values (?, ?)";
+  private static final String UPDATE_PROFESSION_QUERY =
+    "update workers set profession = ? where id = ?";
   private final JdbcTemplate jdbcTemplate;
 
   public JdbcWorkerRepository(JdbcTemplate jdbcTemplate) {
@@ -46,12 +50,7 @@ public class JdbcWorkerRepository implements WorkerRepository {
 
   @Override
   public Worker getById(int id) {
-    List<Worker> workerByList = jdbcTemplate.query(GET_BY_ID_QUERY, workerRowMapper, id);
-    if (workerByList.isEmpty()) {
-      logger.warn("Can't find worker with id = '" + id + "'");
-      return null;
-    }
-    return workerByList.get(0);
+    return wrapWithNullCheck(() -> jdbcTemplate.query(GET_BY_ID_QUERY, workerRowMapper, id));
   }
 
   @Override
@@ -59,4 +58,17 @@ public class JdbcWorkerRepository implements WorkerRepository {
     jdbcTemplate.update(INSERT_QUERY, worker.getId(), worker.getProfession().toString());
   }
 
+  @Override
+  public void updateProfession(Worker worker) {
+    jdbcTemplate.update(UPDATE_PROFESSION_QUERY, worker.getProfession(), worker.getId());
+  }
+
+  private Worker wrapWithNullCheck(Supplier<List<Worker>> getter) {
+    try {
+      return getter.get().get(0);
+    } catch (IndexOutOfBoundsException e) {
+      logger.info("Can't find worker");
+      return null;
+    }
+  }
 }

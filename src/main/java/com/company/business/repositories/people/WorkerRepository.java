@@ -10,4 +10,6 @@ public interface WorkerRepository {
   Worker getById(int id);
 
   void save(Worker worker);
+
+  void updateProfession(Worker worker);
 }
