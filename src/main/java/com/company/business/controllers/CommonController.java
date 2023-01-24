@@ -7,6 +7,7 @@ import com.company.auth.UserService;
 import com.company.business.models.food.FoodType;
 import com.company.business.models.people.Customer;
 import com.company.business.models.people.Person;
+import com.company.business.repositories.people.LoyaltyLevelRepository;
 import com.company.business.repositories.people.PeopleRepository;
 import com.company.business.services.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,8 +38,9 @@ public class CommonController extends BaseController {
   private final RolesHelper rolesHelper;
   private final OrderService orderService;
   private final PeopleService peopleService;
+  private final LoyaltyLevelRepository loyaltyLevelRepository;
 
-  public CommonController(SessionRepository sessionRepository, PeopleRepository peopleRepository, UserService userService, FoodService foodService, CustomerService customerService, RolesHelper rolesHelper, OrderService orderService, PeopleService peopleService) {
+  public CommonController(SessionRepository sessionRepository, PeopleRepository peopleRepository, UserService userService, FoodService foodService, CustomerService customerService, RolesHelper rolesHelper, OrderService orderService, PeopleService peopleService, LoyaltyLevelRepository loyaltyLevelRepository) {
     super(sessionRepository, peopleRepository);
     this.userService = userService;
     this.foodService = foodService;
@@ -46,6 +48,7 @@ public class CommonController extends BaseController {
     this.rolesHelper = rolesHelper;
     this.orderService = orderService;
     this.peopleService = peopleService;
+    this.loyaltyLevelRepository = loyaltyLevelRepository;
   }
 
   @GetMapping({"/", "index"})
@@ -56,7 +59,11 @@ public class CommonController extends BaseController {
 
     var person = getPerson();
     var customer = customerService.get(person.getId());
-    if (customer != null && !validateBan(customer)) {
+    if (customer == null) {
+      return "loginPage";
+    }
+
+    if (!validateBan(customer)) {
       logger.warn("Person with id '" + customer.getId() + "' has been banned");
       return "banPage";
     }
@@ -91,6 +98,8 @@ public class CommonController extends BaseController {
         "orderDetails", details
       ));
     }
+
+    model.addAttribute("loyaltyLevel", loyaltyLevelRepository.get(customer.getLoyaltyLevel()));
 
     return "index";
   }

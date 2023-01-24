@@ -2,9 +2,11 @@ package com.company.business.services;
 
 import com.company.business.models.Order;
 import com.company.business.models.OrderDetails;
+import com.company.business.models.food.FoodType;
 import com.company.business.models.food.Mead;
 import com.company.business.models.people.Customer;
 import com.company.business.repositories.orders.OrderRepository;
+import com.company.business.repositories.people.LoyaltyLevelRepository;
 import one.util.streamex.StreamEx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,11 +23,13 @@ public class OrderService {
   private final OrderRepository repository;
   private final FoodService foodService;
   private final PeopleService peopleService;
+  private final LoyaltyLevelRepository loyaltyLevelRepository;
 
-  public OrderService(OrderRepository repository, FoodService foodService, PeopleService peopleService) {
+  public OrderService(OrderRepository repository, FoodService foodService, PeopleService peopleService, LoyaltyLevelRepository loyaltyLevelRepository) {
     this.repository = repository;
     this.foodService = foodService;
     this.peopleService = peopleService;
+    this.loyaltyLevelRepository = loyaltyLevelRepository;
   }
 
   public Order get(int id) {
@@ -79,7 +83,7 @@ public class OrderService {
       manaToIncrease += foodType.getMana() * d.getCount();
       staminaToIncrease += foodType.getStamina() * d.getCount();
       var foodAsMead = meads.getOrDefault(foodType.getId(), null);
-      if(foodAsMead != null) {
+      if (foodAsMead != null) {
         alcoholToIncrease += foodAsMead.getAlcohol();
       }
     }
@@ -88,6 +92,20 @@ public class OrderService {
       order.getCustomer().getId(), hpToIncrease, manaToIncrease, staminaToIncrease
     );
     peopleService.increaseAlcohol(order.getCustomer().getId(), alcoholToIncrease);
+  }
+
+  public double countTotalCost(Order order) {
+    var details = repository.getDetails(order.getId());
+    double costByDetails = StreamEx.of(details)
+      .map(OrderDetails::getFoodType)
+      .map(FoodType::getPrice)
+      .mapToInt(p -> p)
+      .sum();
+
+    var customer = order.getCustomer();
+    double loyaltyLevelSale = loyaltyLevelRepository.get(customer.getLoyaltyLevel()).getSale();
+
+    return costByDetails * loyaltyLevelSale / 100.;
   }
 
   private Order createNewEmptyOrder(Customer customer) {

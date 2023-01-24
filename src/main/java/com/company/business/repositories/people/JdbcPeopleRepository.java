@@ -69,7 +69,7 @@ public class JdbcPeopleRepository implements PeopleRepository {
   @Override
   public Integer save(Person person) {
     Integer id = jdbcTemplate.queryForObject(INSERT_QUERY, Integer.class,
-      person.getName(), person.getBirthday(), person.getHp(), person.getMana(), person.getStamina()
+      person.getName(), person.getBirthday(), person.getHp(), person.getMana(), person.getStamina(), person.getAlcohol()
     );
 
     if (id == null) {

@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 
 @Repository
 public class JdbcBanRepository implements BanRepository {
-  private static final Logger logger = LoggerFactory.getLogger(JdbcCustomerRepository.class);
+  private static final Logger logger = LoggerFactory.getLogger(JdbcBanRepository.class);
   private final static RowMapper<Ban> banRowMapper = (rs, rowNum) -> {
     int id = rs.getInt("id");
     int customerId = rs.getInt("customer_id");

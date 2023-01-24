@@ -3,6 +3,7 @@ package com.company.business.controllers;
 import com.company.auth.SessionRepository;
 import com.company.business.models.food.FoodType;
 import com.company.business.models.people.Role;
+import com.company.business.repositories.people.LoyaltyLevelRepository;
 import com.company.business.repositories.people.PeopleRepository;
 import com.company.business.services.FoodService;
 import com.company.business.services.OrderService;
@@ -25,12 +26,14 @@ public class WorkersController extends BaseController {
   private final RolesHelper rolesHelper;
   private final OrderService orderService;
   private final FoodService foodService;
+  private final LoyaltyLevelRepository loyaltyLevelRepository;
 
-  public WorkersController(SessionRepository sessionRepository, PeopleRepository peopleRepository, RolesHelper rolesHelper, OrderService orderService, FoodService foodService) {
+  public WorkersController(SessionRepository sessionRepository, PeopleRepository peopleRepository, RolesHelper rolesHelper, OrderService orderService, FoodService foodService, LoyaltyLevelRepository loyaltyLevelRepository) {
     super(sessionRepository, peopleRepository);
     this.rolesHelper = rolesHelper;
     this.orderService = orderService;
     this.foodService = foodService;
+    this.loyaltyLevelRepository = loyaltyLevelRepository;
   }
 
   @GetMapping("/orders")
@@ -57,10 +60,13 @@ public class WorkersController extends BaseController {
     var orderId = Integer.parseInt(request.getParameter("orderId"));
     var order = orderService.get(orderId);
     var orderDetails = orderService.getDetails(orderId);
+    var resultCost = orderService.countTotalCost(order);
 
     model.addAllAttributes(Map.of(
       "order", order,
-      "orderDetails", orderDetails
+      "orderDetails", orderDetails,
+      "totalCost", resultCost,
+      "loyaltyLevel", loyaltyLevelRepository.get(order.getCustomer().getLoyaltyLevel())
     ));
 
     return "orderDetailsPage";

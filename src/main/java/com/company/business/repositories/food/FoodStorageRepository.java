@@ -1,7 +1,6 @@
 package com.company.business.repositories.food;
 
 import com.company.business.models.food.Food;
-import com.company.business.models.food.FoodType;
 
 import java.util.List;
 
