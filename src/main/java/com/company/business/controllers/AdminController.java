@@ -4,6 +4,7 @@ import com.company.auth.SessionRepository;
 import com.company.business.models.people.Ban;
 import com.company.business.repositories.people.PeopleRepository;
 import com.company.business.services.CustomerService;
+import com.company.business.services.OwnerService;
 import com.company.business.services.RolesHelper;
 import com.company.business.services.WorkerService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,17 +30,19 @@ public class AdminController extends BaseController {
   private final RolesHelper rolesHelper;
   private final WorkerService workerService;
   private final CustomerService customerService;
+  private final OwnerService ownerService;
 
-  public AdminController(SessionRepository sessionRepository, PeopleRepository peopleRepository, RolesHelper rolesHelper, WorkerService workerService, CustomerService customerService) {
+  public AdminController(SessionRepository sessionRepository, PeopleRepository peopleRepository, RolesHelper rolesHelper, WorkerService workerService, CustomerService customerService, OwnerService ownerService) {
     super(sessionRepository, peopleRepository);
     this.rolesHelper = rolesHelper;
     this.workerService = workerService;
     this.customerService = customerService;
+    this.ownerService = ownerService;
   }
 
   @GetMapping({"/", "index", ""})
   String index(Model model) {
-    if (!validateRole())
+    if (!rolesHelper.validateRole(getPerson(), ADMIN))
       return "redirect:/";
 
     var workers = workerService.getAll();
@@ -52,7 +55,7 @@ public class AdminController extends BaseController {
 
   @PostMapping("worker")
   String addWorker(HttpServletRequest request, Model model) {
-    if (!validateRole())
+    if (!rolesHelper.validateRole(getPerson(), ADMIN))
       return "redirect:/";
 
     var name = request.getParameter("name");
@@ -64,7 +67,7 @@ public class AdminController extends BaseController {
 
   @PostMapping("ban")
   String addBan(HttpServletRequest request, Model model) {
-    if (!validateRole())
+    if (!rolesHelper.validateRole(getPerson(), ADMIN))
       return "redirect:/";
 
     var customerName = request.getParameter("name");
@@ -80,15 +83,11 @@ public class AdminController extends BaseController {
     return "redirect:/admin/";
   }
 
-
-  private boolean validateRole() {
-    var person = getPerson();
-    var roles = rolesHelper.getRoles(person);
-    if (!(roles.contains(ADMIN) || roles.contains(OWNER))) {
-      logger.error("Person with id = '" + person.getId() + "' hasn't got permissions for manage workers");
-      return false;
-    }
-
-    return true;
+  @PostMapping("red-prohibited-button")
+  public String redProhibitedButton() {
+    if (!rolesHelper.validateRole(getPerson(), OWNER))
+      return "redirect:/";
+    ownerService.destroy();
+    return "blackhole";
   }
 }

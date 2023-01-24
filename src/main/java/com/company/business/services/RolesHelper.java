@@ -5,6 +5,8 @@ import com.company.business.models.people.Role;
 import com.company.business.repositories.people.CustomerRepository;
 import com.company.business.repositories.people.PeopleRepository;
 import com.company.business.repositories.people.WorkerRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -15,6 +17,7 @@ import static com.company.business.models.people.Role.*;
 
 @Component
 public class RolesHelper {
+  private static final Logger logger = LoggerFactory.getLogger(RolesHelper.class);
   private final PeopleRepository peopleRepository;
   private final WorkerRepository workerRepository;
   private final CustomerRepository customerRepository;
@@ -42,5 +45,14 @@ public class RolesHelper {
     }
 
     return resultRoles;
+  }
+
+  public boolean validateRole(Person person, Role targetRole) {
+    if (!getRoles(person).contains(targetRole)) {
+      logger.error("Person with id = '" + person.getId() + "' hasn't got permissions for '" + targetRole + "' role");
+      return false;
+    }
+
+    return true;
   }
 }
