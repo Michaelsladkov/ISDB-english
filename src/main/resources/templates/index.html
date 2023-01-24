@@ -52,11 +52,11 @@
                         </thead>
                         <th:block th:each="orderDetail : ${orderDetails}">
                             <tr>
-                                <td th:text="${orderDetail.foodType.name}"></td> <td th:text="${orderDetail.count}"></td> <td th:text="${orderDetail.foodType.price}"></td>
+                                <td th:text="${orderDetail.foodType.name}"></td> <td th:text="${orderDetail.count}"></td> <td th:text="${orderDetail.foodType.price * orderDetail.count}"></td>
                             </tr>
                         </th:block>
                         <tr>
-                            <td>Сумма</td> <td></td> <td th:text="${orderDetails.stream().mapToInt(o -> o.getPrice()).sum()}"></td>
+                            <td>Сумма</td> <td></td> <td th:text="${0}"></td>
                         </tr>
                     </table>
                 </td>

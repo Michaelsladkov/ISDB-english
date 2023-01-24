@@ -116,7 +116,7 @@ public class WorkersController extends BaseController {
 
     foodService.addFoodType(foodType);
 
-    return "redirect:/storage";
+    return "redirect:/worker/storage";
   }
 
   @PostMapping("/storage")
@@ -131,7 +131,7 @@ public class WorkersController extends BaseController {
 
     foodService.increaseFood(Map.of(foodTypeName, count));
 
-    return "redirect:/storage";
+    return "redirect:/worker/storage";
   }
 
   private boolean validateRole(Role expectedRole) {
