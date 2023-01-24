@@ -40,7 +40,7 @@ public class CustomersController extends BaseController {
       return "banPage";
     }
 
-    var foodName = request.getParameter("food_type");
+    var foodName = request.getParameter("foodType");
     var count = Integer.parseInt(request.getParameter("count"));
 
     var order = orderService.correctOrder(customer, foodName, count);

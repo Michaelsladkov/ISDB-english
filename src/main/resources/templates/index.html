@@ -28,8 +28,8 @@
             <tbody>
             <tr>
                 <td align="center" id="left">
-                    <form action="" method="post">
-                        <select>
+                    <form th:action="@{/customer/order}" method="post">
+                        <select required name="foodType">
                             <option selected disabled>Выберите товар</option>
                             <th:block th:each="foodType: ${availableFoodTypes}">
                                 <option th:text="${foodType.name}" th:value="${foodType.name}"></option>
@@ -38,30 +38,23 @@
                                 <option th:text="${foodType.name}" th:value="${foodType.name}" class="not-available"></option>
                             </th:block>
                         </select>
-                        <input type="number" min="1" placeholder="Количество">
+                        <input type="number" min="1" placeholder="Количество" name="count">
                         <br>
                         <input type="submit" value="Заказать" class="btn">
                     </form>
                 </td>
                 <td align="center" id="right">
-                    <table border="1" class="table">
+                    <table border="1" class="table" th:if="${orderDetails != null}">
                         <thead>
                         <tr>
                             <th>Название</th> <th>Количество</th> <th>Стоимость</th>
                         </tr>
                         </thead>
-                        <tr>
-                            <td>Мясо</td> <td>2</td> <td>30</td>
-                        </tr>
-                        <tr>
-                            <td>Мед</td> <td>2</td> <td>20</td>
-                        </tr>
-                        <tr>
-                            <td>Хлеб</td> <td>1</td> <td>7</td>
-                        </tr>
-                        <tr>
-                            <td>Сумма</td> <td></td> <td>57</td>
-                        </tr>
+                        <th:block th:each="orderDetail : ${orderDetails}">
+                            <tr>
+                                <td th:text="${orderDetail.foodType.name}"></td> <td th:text="${orderDetail.count}"></td> <td>0</td>
+                            </tr>
+                        </th:block>
                     </table>
                     <form>
                         <input type="submit" value="Оплатить" class="btn">
