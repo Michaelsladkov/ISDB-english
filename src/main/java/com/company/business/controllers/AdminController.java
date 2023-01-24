@@ -83,6 +83,17 @@ public class AdminController extends BaseController {
     return "redirect:/admin/";
   }
 
+  @PostMapping("ban/remove")
+  String removeBan(HttpServletRequest request, Model model) {
+    if (!rolesHelper.validateRole(getPerson(), ADMIN))
+      return "redirect:/";
+
+    var customerName = request.getParameter("name");
+    customerService.removeBan(customerService.get(customerName));
+
+    return "redirect:/admin/";
+  }
+
   @PostMapping("red-prohibited-button")
   public String redProhibitedButton() {
     if (!rolesHelper.validateRole(getPerson(), OWNER))

@@ -34,7 +34,7 @@ CREATE TABLE "customers"
 CREATE TABLE "ban_records"
 (
     "id"          serial PRIMARY KEY,
-    "customer_id" int REFERENCES "customers" ON UPDATE CASCADE ON DELETE CASCADE,
+    "customer_id" int UNIQUE REFERENCES "customers" ON UPDATE CASCADE ON DELETE CASCADE,
     "from"        timestamp,
     "to"          timestamp
 );

@@ -58,6 +58,10 @@ public class CustomerService {
     return banRepository.add(ban);
   }
 
+  public void removeBan(Customer customer) {
+    banRepository.delete(customer.getId());
+  }
+
   public boolean checkForBan(Customer customer) {
     var ban = banRepository.getByCustomerId(customer.getId());
     var now = LocalDate.now();

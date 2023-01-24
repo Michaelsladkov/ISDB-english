@@ -27,6 +27,8 @@ public class JdbcBanRepository implements BanRepository {
     "select id, customer_id, \"from\", \"to\" from ban_records where customer_id = ?";
   private static final String INSERT_QUERY =
     "insert into ban_records (customer_id, \"from\", \"to\") values (?, ?, ?) returning id";
+  private static final String DELETE_QUERY =
+    "delete from ban_records where customer_id = ?";
 
   private final JdbcTemplate jdbcTemplate;
 
@@ -53,6 +55,11 @@ public class JdbcBanRepository implements BanRepository {
     return jdbcTemplate.queryForObject(INSERT_QUERY, Integer.class,
       ban.getCustomerId(), ban.getFrom(), ban.getTo()
     );
+  }
+
+  @Override
+  public void delete(int customerId) {
+    jdbcTemplate.update(DELETE_QUERY, customerId);
   }
 
   private Ban wrapWithNullCheck(Supplier<List<Ban>> getter) {

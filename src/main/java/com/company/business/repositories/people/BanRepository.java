@@ -8,4 +8,6 @@ public interface BanRepository {
   Ban getByCustomerId(int customerId);
 
   Integer add(Ban ban);
+
+  void delete(int customerId);
 }
