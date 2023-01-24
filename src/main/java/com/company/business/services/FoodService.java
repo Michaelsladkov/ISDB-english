@@ -2,8 +2,10 @@ package com.company.business.services;
 
 import com.company.business.models.food.Food;
 import com.company.business.models.food.FoodType;
+import com.company.business.models.food.Mead;
 import com.company.business.repositories.food.FoodStorageRepository;
 import com.company.business.repositories.food.FoodTypeRepository;
+import com.company.business.repositories.food.MeadRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,13 +21,12 @@ public class FoodService {
   private static final Logger logger = LoggerFactory.getLogger(FoodService.class);
   private final FoodStorageRepository foodStorageRepository;
   private final FoodTypeRepository foodTypeRepository;
+  private final MeadRepository meadRepository;
 
-  public FoodService(
-    FoodStorageRepository foodStorageRepository,
-    FoodTypeRepository foodTypeRepository
-  ) {
+  public FoodService(FoodStorageRepository foodStorageRepository, FoodTypeRepository foodTypeRepository, MeadRepository meadRepository) {
     this.foodStorageRepository = foodStorageRepository;
     this.foodTypeRepository = foodTypeRepository;
+    this.meadRepository = meadRepository;
   }
 
   public List<FoodType> getFoodTypes() {
@@ -45,6 +46,10 @@ public class FoodService {
       .get(names)
       .stream()
       .collect(Collectors.toMap(FoodType::getName, Function.identity()));
+  }
+
+  public List<Mead> getMeads() {
+    return meadRepository.getAll();
   }
 
   public void increaseFood(Map<String, Integer> increasesByFoodName) {

@@ -84,4 +84,9 @@ public class JdbcPeopleRepository implements PeopleRepository {
   public void updateIndicators(int id, int hp, int mana, int stamina) {
     jdbcTemplate.update(UPDATE_INDICATORS_QUERY, hp, mana, stamina, id);
   }
+
+  @Override
+  public void updateAlcohol(int id, int alcohol) {
+    jdbcTemplate.update(UPDATE_ALCOHOL_QUERY, alcohol, id);
+  }
 }

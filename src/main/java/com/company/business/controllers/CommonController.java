@@ -8,10 +8,7 @@ import com.company.business.models.food.FoodType;
 import com.company.business.models.people.Customer;
 import com.company.business.models.people.Person;
 import com.company.business.repositories.people.PeopleRepository;
-import com.company.business.services.CustomerService;
-import com.company.business.services.FoodService;
-import com.company.business.services.OrderService;
-import com.company.business.services.RolesHelper;
+import com.company.business.services.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,14 +36,16 @@ public class CommonController extends BaseController {
   private final CustomerService customerService;
   private final RolesHelper rolesHelper;
   private final OrderService orderService;
+  private final PeopleService peopleService;
 
-  public CommonController(SessionRepository sessionRepository, PeopleRepository peopleRepository, UserService userService, FoodService foodService, CustomerService customerService, RolesHelper rolesHelper, OrderService orderService) {
+  public CommonController(SessionRepository sessionRepository, PeopleRepository peopleRepository, UserService userService, FoodService foodService, CustomerService customerService, RolesHelper rolesHelper, OrderService orderService, PeopleService peopleService) {
     super(sessionRepository, peopleRepository);
     this.userService = userService;
     this.foodService = foodService;
     this.customerService = customerService;
     this.rolesHelper = rolesHelper;
     this.orderService = orderService;
+    this.peopleService = peopleService;
   }
 
   @GetMapping({"/", "index"})
@@ -145,12 +144,14 @@ public class CommonController extends BaseController {
 
   @PostMapping("/logout")
   public String logout() {
+    peopleService.resetAlcohol(getPerson().getId());
     sessionRepository.delete(sessionId());
     return "redirect:/";
   }
 
   @GetMapping("/logout")
   public String logoutGet() {
+    peopleService.resetAlcohol(getPerson().getId());
     sessionRepository.delete(sessionId());
     return "redirect:/";
   }

@@ -2,6 +2,7 @@ package com.company.business.services;
 
 import com.company.business.models.Order;
 import com.company.business.models.OrderDetails;
+import com.company.business.models.food.Mead;
 import com.company.business.models.people.Customer;
 import com.company.business.repositories.orders.OrderRepository;
 import one.util.streamex.StreamEx;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 @Service
 public class OrderService {
@@ -66,17 +68,26 @@ public class OrderService {
   public void closeOrder(Order order) {
     repository.setClosed(order.getId());
 
+    var meads =
+      StreamEx.of(foodService.getMeads()).toMap(Mead::getId, Function.identity());
+
     var details = repository.getDetails(order.getId());
-    int hpToIncrease = 0, manaToIncrease = 0, staminaToIncrease = 0;
+    int hpToIncrease = 0, manaToIncrease = 0, staminaToIncrease = 0, alcoholToIncrease = 0;
     for (var d : details) {
-      hpToIncrease += d.getFoodType().getHp() * d.getCount();
-      manaToIncrease += d.getFoodType().getMana() * d.getCount();
-      staminaToIncrease += d.getFoodType().getStamina() * d.getCount();
+      var foodType = d.getFoodType();
+      hpToIncrease += foodType.getHp() * d.getCount();
+      manaToIncrease += foodType.getMana() * d.getCount();
+      staminaToIncrease += foodType.getStamina() * d.getCount();
+      var foodAsMead = meads.getOrDefault(foodType.getId(), null);
+      if(foodAsMead != null) {
+        alcoholToIncrease += foodAsMead.getAlcohol();
+      }
     }
 
     peopleService.increaseIndicators(
       order.getCustomer().getId(), hpToIncrease, manaToIncrease, staminaToIncrease
     );
+    peopleService.increaseAlcohol(order.getCustomer().getId(), alcoholToIncrease);
   }
 
   private Order createNewEmptyOrder(Customer customer) {

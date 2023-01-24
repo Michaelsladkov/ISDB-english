@@ -30,4 +30,15 @@ public class PeopleService {
     var newStamina = Math.min(person.getStamina() + stamina, 100);
     repository.updateIndicators(id, newHp, newMana, newStamina);
   }
+
+  public void increaseAlcohol(int id, int alcohol) {
+    var person = get(id);
+    var newAlcohol = Math.min(person.getAlcohol() + alcohol, 100);
+    repository.updateAlcohol(id, newAlcohol);
+  }
+
+  public void resetAlcohol(int id) {
+    var person = get(id);
+    repository.updateAlcohol(id, 0);
+  }
 }

@@ -14,4 +14,6 @@ public interface PeopleRepository {
   Integer save(Person person);
 
   void updateIndicators(int id, int hp, int mana, int stamina);
+
+  void updateAlcohol(int id, int alcohol);
 }
