@@ -22,7 +22,7 @@ public class JdbcUserRepository implements UserRepository {
   private final static String INSERT_QUERY =
     "insert into users (login, password, person_id) values (?, ?, ?)";
   private final static String UPDATE_QUERY =
-    "update users set login = ?, password = ?, person_id = ?";
+    "update users set password = ?, person_id = ? where login = ?";
   private final JdbcTemplate jdbcTemplate;
 
   public JdbcUserRepository(JdbcTemplate jdbcTemplate) {
@@ -46,6 +46,6 @@ public class JdbcUserRepository implements UserRepository {
 
   @Override
   public void update(User user) {
-    jdbcTemplate.update(UPDATE_QUERY, user.getLogin(), user.getPassword(), user.getPersonId());
+    jdbcTemplate.update(UPDATE_QUERY, user.getPassword(), user.getPersonId(), user.getLogin());
   }
 }
