@@ -2,14 +2,20 @@ package com.company.business.repositories.food;
 
 import com.company.business.models.food.Food;
 import com.company.business.models.food.FoodType;
+import com.company.business.models.people.Ban;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 @Repository
 public class JdbcFoodStorageRepository implements FoodStorageRepository {
+  private static final Logger logger = LoggerFactory.getLogger(JdbcFoodStorageRepository.class);
+
   private final static RowMapper<Food> foodRowMapper = (rs, rowNum) -> {
     int id = rs.getInt("id");
     String name = rs.getString("name");
@@ -44,7 +50,7 @@ public class JdbcFoodStorageRepository implements FoodStorageRepository {
 
   @Override
   public Food get(int foodTypeId) {
-    return jdbcTemplate.query(GET_BY_ID_QUERY, foodRowMapper, foodTypeId).get(0);
+    return wrapWithNullCheck(() -> jdbcTemplate.query(GET_BY_ID_QUERY, foodRowMapper, foodTypeId));
   }
 
   @Override
@@ -64,5 +70,14 @@ public class JdbcFoodStorageRepository implements FoodStorageRepository {
   @Override
   public void updateCount(Food food) {
     jdbcTemplate.update(UPDATE_COUNT_QUERY, food.getCount(), food.getFoodType().getId());
+  }
+
+  private Food wrapWithNullCheck(Supplier<List<Food>> getter) {
+    try {
+      return getter.get().get(0);
+    } catch (IndexOutOfBoundsException e) {
+      logger.info("Can't find food");
+      return null;
+    }
   }
 }
