@@ -20,7 +20,8 @@
                     <div id="hp" class="inline" th:text="${'HP: ' + person.getHp()}"></div>
                     <div id="mana" class="inline" th:text="${'Mana: ' + person.getMana()}"></div>
                     <div id="stamina" class="inline" th:text="${'Stamina: ' + person.getStamina()}"></div>
-                    <div id="alcohol" class="inline" th:text="${'Опьянение ' + person.getHp()}"></div>
+                    <div id="alcohol" class="inline" th:text="${'Опьянение: ' + person.getAlcohol()}"></div>
+                    <div id="loyalty_level" class="inline" th:text="${'Уровень ПЛ: ' + loyaltyLevel.getDescription() + '(' + loyaltyLevel.getLevel() + ')'}"></div>
                 </th>
             </tr>
             </thead>
@@ -56,7 +57,7 @@
                             </tr>
                         </th:block>
                         <tr>
-                            <td>Сумма</td> <td></td> <td th:text="${0}"></td>
+                            <td>Сумма cо скидкой</td> <td></td> <td th:text="${totalCost}"></td>
                         </tr>
                     </table>
                 </td>
