@@ -2,10 +2,12 @@ package com.company.business.repositories.food;
 
 import com.company.business.models.food.FoodType;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -52,7 +54,10 @@ public class JdbcFoodTypeRepository implements FoodTypeRepository {
       ":name", String.join(", ", Collections.nCopies(names.size(), "?"))
     );
 
-    return jdbcTemplate.query(query, foodTypeRowMapper, names);
+    var psCreator = new PreparedStatementCreatorFactory(query)
+      .newPreparedStatementCreator(new LinkedList<>(names));
+
+    return jdbcTemplate.query(psCreator, foodTypeRowMapper);
   }
 
   @Override
