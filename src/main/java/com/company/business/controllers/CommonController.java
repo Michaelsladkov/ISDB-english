@@ -95,7 +95,8 @@ public class CommonController extends BaseController {
       var details = orderService.getDetails(order.getId());
       model.addAllAttributes(Map.of(
         "order", order,
-        "orderDetails", details
+        "orderDetails", details,
+        "totalCost", orderService.countTotalCost(order)
       ));
     }
 

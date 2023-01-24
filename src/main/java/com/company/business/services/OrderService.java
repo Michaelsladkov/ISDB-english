@@ -105,7 +105,7 @@ public class OrderService {
     var customer = order.getCustomer();
     double loyaltyLevelSale = loyaltyLevelRepository.get(customer.getLoyaltyLevel()).getSale();
 
-    return costByDetails * loyaltyLevelSale / 100.;
+    return costByDetails * (100. - loyaltyLevelSale) / 100.;
   }
 
   private Order createNewEmptyOrder(Customer customer) {

@@ -19,6 +19,7 @@
     </div>
       <div class="inline" th:text="'id: ' + ${order.id}"></div>
       <div class="inline" th:text="'Клиент: ' + ${order.customer.name}"></div>
+      <div class="inline" th:text="'Уровень ПЛ: ' + ${loyaltyLevel.level}"></div>
       <div class="inline" th:text="'Время: ' + ${order.time}"></div>
       <div class="inline" th:text="'Оплачен: ' + (${order.closed} ? 'Да' : 'Нет')"></div>
   </tr>
@@ -30,17 +31,17 @@
       <table border="1" class="table">
         <thead>
         <tr>
-          <th>id</th> <th>Клиент</th> <th>Время</th> <th></th>
+          <th>Товар</th> <th>HP</th> <th>Mana</th> <th>Stamina</th> <th>Количество</th> <th>Цена</th> <th>Стоимость</th>
         </tr>
         </thead>
-        <th:block th:each="order : ${openOrders}">
+        <th:block th:each="orderDetail : ${orderDetails}">
           <tr>
-            <td th:text="${order.id}"></td> <td th:text="${order.customer.name}"></td> <td th:text="${order.time}"></td>
-            <td><form th:action="@{/worker/orders/details/{orderId}(orderId=${order.id})}" method="get">
-              <input type="submit" value="Детали" class="btn">
-            </form></td>
+            <td th:text="${orderDetail.foodType.name}"></td> <td th:text="${orderDetail.foodType.hp}"></td> <td th:text="${orderDetail.foodType.mana}"></td> <td th:text="${orderDetail.foodType.stamina}"></td> <td th:text="${orderDetail.count}"></td> <td th:text="${orderDetail.foodType.price}"></td> <td th:text="${orderDetail.foodType.price} * ${orderDetail.count}"></td>
           </tr>
         </th:block>
+        <tr>
+          <td>Cумма с учетом скидки</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td th:text="${totalCost}"></td>
+        </tr>
       </table>
     </td>
   </tr>
