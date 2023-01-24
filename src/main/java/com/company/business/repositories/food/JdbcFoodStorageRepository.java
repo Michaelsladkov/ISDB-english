@@ -14,16 +14,17 @@ public class JdbcFoodStorageRepository implements FoodStorageRepository {
   private final static RowMapper<Food> foodRowMapper = (rs, rowNum) -> {
     int id = rs.getInt("id");
     String name = rs.getString("name");
+    int price = rs.getInt("price");
     int hp = rs.getInt("hp");
     int mana = rs.getInt("mana");
     int stamina = rs.getInt("stamina");
-    var foodType = new FoodType(id, name, hp, mana, stamina);
+    var foodType = new FoodType(id, name, price, hp, mana, stamina);
     int count = rs.getInt("count");
     return new Food(foodType, count);
   };
-  private final static String GET_ALL_QUERY = "select id, name, hp, mana, stamina, count" +
+  private final static String GET_ALL_QUERY = "select id, name, price, hp, mana, stamina, count" +
     " from food_storage as storage left join food_types as types on storage.food_type = types.id";
-  private final static String GET_BY_ID_QUERY = "select id, name, hp, mana, stamina, count" +
+  private final static String GET_BY_ID_QUERY = "select id, name, price, hp, mana, stamina, count" +
     " from food_storage as storage left join food_types as types on storage.food_type = types.id" +
     " where storage.food_type = ?";
   private final static String INSERT_QUERY =

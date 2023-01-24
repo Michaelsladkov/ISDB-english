@@ -3,13 +3,15 @@ package com.company.business.models.food;
 public class FoodType {
   private Integer id;
   private String name;
+  private Integer price;
   private int hp;
   private int mana;
   private int stamina;
 
-  public FoodType(Integer id, String name, int hp, int mana, int stamina) {
+  public FoodType(Integer id, String name, Integer price, int hp, int mana, int stamina) {
     this.id = id;
     this.name = name;
+    this.price = price;
     this.hp = hp;
     this.mana = mana;
     this.stamina = stamina;
@@ -19,7 +21,7 @@ public class FoodType {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
@@ -29,6 +31,14 @@ public class FoodType {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public Integer getPrice() {
+    return price;
+  }
+
+  public void setPrice(Integer price) {
+    this.price = price;
   }
 
   public int getHp() {

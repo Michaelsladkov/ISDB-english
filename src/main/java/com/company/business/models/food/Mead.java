@@ -4,8 +4,8 @@ public class Mead extends FoodType {
   private String sortName;
   private int alcohol;
 
-  public Mead(int id, String name, int hp, int mana, int stamina, String sortName, int alcohol) {
-    super(id, name, hp, mana, stamina);
+  public Mead(int id, String name, int price, int hp, int mana, int stamina, String sortName, int alcohol) {
+    super(id, name, price, hp, mana, stamina);
     this.sortName = sortName;
     this.alcohol = alcohol;
   }

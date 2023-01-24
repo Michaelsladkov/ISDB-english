@@ -12,18 +12,19 @@ public class JdbcMeadRepository implements MeadRepository {
   private final static RowMapper<Mead> meadRowMapper = (rs, rowNum) -> {
     int id = rs.getInt("id");
     String name = rs.getString("name");
+    int price = rs.getInt("price");
     int hp = rs.getInt("hp");
     int mana = rs.getInt("mana");
     int stamina = rs.getInt("stamina");
     String sortName = rs.getString("sort_name");
     int alcohol = rs.getInt("alcohol");
-    return new Mead(id, name, hp, mana, stamina, sortName, alcohol);
+    return new Mead(id, name, price, hp, mana, stamina, sortName, alcohol);
   };
   private final static String GET_ALL_QUERY =
-    "select id, name, hp, mana, stamina, sort_name, alcohol" +
+    "select id, name, price, hp, mana, stamina, sort_name, alcohol" +
       " from mead_types as meads left join food_types as types using(id)";
   private final static String GET_BY_SORT_NAME_QUERY =
-    "select id, name, hp, mana, stamina, sort_name, alcohol" +
+    "select id, name, price, hp, mana, stamina, sort_name, alcohol" +
       " from mead_types as meads left join food_types as types using(id)" +
       " where sort_name = ?";
   private final static String INSERT_QUERY =

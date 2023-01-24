@@ -107,11 +107,12 @@ public class WorkersController extends BaseController {
     }
 
     String foodTypeName = request.getParameter("name");
+    int price = Integer.parseInt(request.getParameter("price"));
     int hp = Integer.parseInt(request.getParameter("hp"));
     int mana = Integer.parseInt(request.getParameter("mana"));
     int stamina = Integer.parseInt(request.getParameter("stamina"));
 
-    var foodType = new FoodType(null, foodTypeName, hp, mana, stamina);
+    var foodType = new FoodType(null, foodTypeName, price, hp, mana, stamina);
 
     foodService.addFoodType(foodType);
 

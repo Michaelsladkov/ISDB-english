@@ -3,8 +3,8 @@ package com.company.business.models;
 import com.company.business.models.food.FoodType;
 
 public class OrderDetails {
-  FoodType foodType;
-  int count;
+  private FoodType foodType;
+  private int count;
 
   public OrderDetails(FoodType foodType, int count) {
     this.foodType = foodType;
