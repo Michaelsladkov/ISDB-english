@@ -25,12 +25,21 @@
     <table border="1" class="table">
       <thead>
       <tr>
-        <th>id</th> <th>Имя</th> <th>Дата Рождения</th> <th>Должность</th>
+        <th>id</th> <th>Имя</th> <th>Дата Рождения</th> <th>Должность</th> <th></th>
       </tr>
       </thead>
       <th:block th:each="worker : ${workers}">
         <tr>
           <td th:text="${worker.id}"></td> <td th:text="${worker.name}"></td> <td th:text="${worker.birthday}"></td> <td th:text="${worker.profession}"></td>
+          <td><form th:action="@{/admin/worker}" method="post">
+            <input type="text" style="display:none;" th:value="${worker.name}" name="name">
+            <select required name="profession">
+              <th:block th:each="profession: ${T(com.company.business.models.people.Worker.Profession).values()}">
+                <option th:text="${profession.name}" th:value="${profession.name}" th:selected="${worker.profession == profession}"></option>
+              </th:block>
+            </select>
+            <input type="submit" value="Сохранить" class="btn">
+          </form></td>
         </tr>
       </th:block>
     </table>
