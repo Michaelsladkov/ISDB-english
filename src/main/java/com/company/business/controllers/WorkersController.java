@@ -57,7 +57,7 @@ public class WorkersController extends BaseController {
     if (!validateRole(Role.ORDERS_MANAGER)) {
       return "redirect:/index";
     }
-//    var orderId = Integer.parseInt(request.getParameter("orderId"));
+
     var order = orderService.get(orderId);
     var orderDetails = orderService.getDetails(orderId);
     var resultCost = orderService.countTotalCost(order);

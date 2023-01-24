@@ -190,22 +190,20 @@ CREATE TRIGGER reduce_food_count_in_storage
 CREATE FUNCTION reduce_food_count_in_storage_by_diff() RETURNS trigger AS $reduce_food_count_in_storage_by_diff$
 DECLARE
     count_diff int;
-    old_count  int;
-    new_count  int;
-    old_food_in_order_count int;
+    old_count_in_storage  int;
+    new_count_in_storage  int;
 BEGIN
-    old_food_in_order_count := OLD.count;
     count_diff := NEW.count - OLD.count;
     IF count_diff < 0 THEN
         RAISE EXCEPTION 'OPERATION OF DECREASING FOOD COUNT IS NOT SUPPORTED';
     END IF;
-    old_count := (SELECT count FROM food_storage where food_type = NEW.food_id);
-    new_count := old_count - count_diff;
+    old_count_in_storage := (SELECT count FROM food_storage where food_type = NEW.food_id);
+    new_count_in_storage := old_count_in_storage - count_diff;
 
-    IF new_count = 0 THEN
+    IF new_count_in_storage = 0 THEN
         DELETE FROM food_storage WHERE food_type = NEW.food_id;
     ELSE
-        UPDATE food_storage SET count = new_count WHERE food_type = NEW.food_id;
+        UPDATE food_storage SET count = new_count_in_storage WHERE food_type = NEW.food_id;
     END IF;
 
 RETURN NEW;

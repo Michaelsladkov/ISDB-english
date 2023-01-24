@@ -56,7 +56,8 @@ public class OrderService {
       .findFirst(details -> details.getFoodType().getName().equals(foodTypeName))
       .orElse(null);
     if (existingDetails != null) {
-      repository.updateCount(order.getId(), orderDetails);
+      existingDetails.setCount(existingDetails.getCount() + count);
+      repository.updateCount(order.getId(), existingDetails);
     } else {
       repository.addDetails(order.getId(), List.of(orderDetails));
     }
