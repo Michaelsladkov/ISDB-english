@@ -2,7 +2,6 @@ package com.company.business.services;
 
 import com.company.business.models.Order;
 import com.company.business.models.OrderDetails;
-import com.company.business.models.food.FoodType;
 import com.company.business.models.food.Mead;
 import com.company.business.models.people.Customer;
 import com.company.business.repositories.orders.OrderRepository;
@@ -97,9 +96,7 @@ public class OrderService {
   public double countTotalCost(Order order) {
     var details = repository.getDetails(order.getId());
     double costByDetails = StreamEx.of(details)
-      .map(OrderDetails::getFoodType)
-      .map(FoodType::getPrice)
-      .mapToInt(p -> p)
+      .mapToInt(d -> d.getFoodType().getPrice() * d.getCount())
       .sum();
 
     var customer = order.getCustomer();

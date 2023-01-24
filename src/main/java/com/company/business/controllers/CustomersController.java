@@ -1,6 +1,7 @@
 package com.company.business.controllers;
 
 import com.company.auth.SessionRepository;
+import com.company.business.models.people.Ban;
 import com.company.business.models.people.Customer;
 import com.company.business.repositories.people.PeopleRepository;
 import com.company.business.services.CustomerService;
@@ -11,9 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.Duration;
 import java.util.Map;
 
 @Controller
@@ -52,6 +55,12 @@ public class CustomersController extends BaseController {
     ));
 
     return "redirect:/index";
+  }
+
+  @GetMapping("dirt")
+  public String makeDirt() {
+    service.ban(getCustomer(), Duration.ofDays(2));
+    return "onBanPage";
   }
 
   private Customer getCustomer() {

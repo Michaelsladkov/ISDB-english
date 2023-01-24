@@ -9,7 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Service
 public class CustomerService {
@@ -40,6 +43,15 @@ public class CustomerService {
 
   public void addNewCustomer(Person person) {
     repository.save(new Customer(person, 0));
+  }
+
+  public void ban(Customer customer, Duration duration) {
+
+    var from = LocalDateTime.now();
+    var to = from.plusNanos(duration.getNano());
+
+    var ban = new Ban(null, customer.getId(), from.toLocalDate(), to.toLocalDate());
+    addBan(ban);
   }
 
   public Integer addBan(Ban ban) {
