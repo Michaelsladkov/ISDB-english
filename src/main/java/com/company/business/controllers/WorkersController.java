@@ -100,7 +100,8 @@ public class WorkersController extends BaseController {
     model.addAllAttributes(Map.of(
       "person", getPerson(),
       "foodTypes", foodTypes,
-      "storage", food
+      "storage", food,
+      "meads", foodService.getMeads()
     ));
 
     return "warehousePage";
