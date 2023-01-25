@@ -28,7 +28,7 @@ public class JdbcMeadRepository implements MeadRepository {
       " from mead_types as meads left join food_types as types using(id)" +
       " where sort_name = ?";
   private final static String INSERT_QUERY =
-    "insert into mead (id, sort_name, alcohol) values (?, ?, ?)";
+    "insert into mead_types (id, sort_name, alcohol) values (?, ?, ?)";
   private final FoodTypeRepository foodTypeRepository;
   private final JdbcTemplate jdbcTemplate;
 
