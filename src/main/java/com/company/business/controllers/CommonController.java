@@ -87,7 +87,8 @@ public class CommonController extends BaseController {
 
     model.addAllAttributes(Map.of(
       "availableFoodTypes", availableFoodTypes,
-      "notAvailableFoodTypes", notAvailableFoodTypes
+      "notAvailableFoodTypes", notAvailableFoodTypes,
+      "meads", foodService.getMeads()
     ));
 
     var order = orderService.getOpen(customer);

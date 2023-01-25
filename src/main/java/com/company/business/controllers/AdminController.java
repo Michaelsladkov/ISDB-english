@@ -1,7 +1,9 @@
 package com.company.business.controllers;
 
 import com.company.auth.SessionRepository;
+import com.company.business.models.food.Mead;
 import com.company.business.models.people.Ban;
+import com.company.business.repositories.food.MeadRepository;
 import com.company.business.repositories.people.PeopleRepository;
 import com.company.business.services.CustomerService;
 import com.company.business.services.OwnerService;
@@ -31,13 +33,15 @@ public class AdminController extends BaseController {
   private final WorkerService workerService;
   private final CustomerService customerService;
   private final OwnerService ownerService;
+  private final MeadRepository meadRepository;
 
-  public AdminController(SessionRepository sessionRepository, PeopleRepository peopleRepository, RolesHelper rolesHelper, WorkerService workerService, CustomerService customerService, OwnerService ownerService) {
+  public AdminController(SessionRepository sessionRepository, PeopleRepository peopleRepository, RolesHelper rolesHelper, WorkerService workerService, CustomerService customerService, OwnerService ownerService, MeadRepository meadRepository) {
     super(sessionRepository, peopleRepository);
     this.rolesHelper = rolesHelper;
     this.workerService = workerService;
     this.customerService = customerService;
     this.ownerService = ownerService;
+    this.meadRepository = meadRepository;
   }
 
   @GetMapping({"/", "index", ""})
@@ -94,11 +98,32 @@ public class AdminController extends BaseController {
     return "redirect:/admin/";
   }
 
-  @PostMapping("red-prohibited-button")
+  @PostMapping("/owner/red-prohibited-button")
   public String redProhibitedButton() {
     if (!rolesHelper.validateRole(getPerson(), OWNER))
       return "redirect:/";
     ownerService.destroy();
     return "blackhole";
+  }
+
+  @PostMapping("/owner/mead")
+  public String redProhibitedButton(HttpServletRequest request, Model model) {
+    if (!rolesHelper.validateRole(getPerson(), OWNER))
+      return "redirect:/";
+
+    String foodTypeName = request.getParameter("name");
+    int price = Integer.parseInt(request.getParameter("price"));
+    int hp = Integer.parseInt(request.getParameter("hp"));
+    int mana = Integer.parseInt(request.getParameter("mana"));
+    int stamina = Integer.parseInt(request.getParameter("stamina"));
+
+    String sort = request.getParameter("sort");
+    int alcohol = Integer.parseInt(request.getParameter("alcohol"));
+
+    var mead = new Mead(null, foodTypeName, price, hp, mana, stamina, sort, alcohol);
+
+    meadRepository.save(mead);
+
+    return "redirect:/worker/storage";
   }
 }
