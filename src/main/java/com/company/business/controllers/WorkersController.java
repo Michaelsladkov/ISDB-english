@@ -1,7 +1,9 @@
 package com.company.business.controllers;
 
 import com.company.auth.SessionRepository;
+import com.company.business.models.food.Food;
 import com.company.business.models.food.FoodType;
+import com.company.business.models.food.Mead;
 import com.company.business.models.people.Role;
 import com.company.business.repositories.people.LoyaltyLevelRepository;
 import com.company.business.repositories.people.PeopleRepository;
@@ -9,6 +11,7 @@ import com.company.business.services.FoodService;
 import com.company.business.services.OrderService;
 import com.company.business.services.RolesHelper;
 import jakarta.servlet.http.HttpServletRequest;
+import one.util.streamex.StreamEx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -18,7 +21,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.function.Function;
 
 @Controller
 @RequestMapping("worker")
@@ -95,13 +100,26 @@ public class WorkersController extends BaseController {
     }
 
     var foodTypes = foodService.getFoodTypes();
-    var food = foodService.getAll();
+    var meadTypesById = StreamEx.of(foodService.getMeads())
+      .toMap(Mead::getId, Function.identity());
+
+    var meads = new LinkedList<Food>();
+
+    var food = StreamEx.of(foodService.getAll()).filter((f) -> {
+      if (meadTypesById.containsKey(f.getFoodType().getId())) {
+        f.setFoodType(meadTypesById.get(f.getFoodType().getId()));
+        meads.add(f);
+        return false;
+      }
+      return true;
+      }
+    ).toList();
     model.addAttribute("Roles", rolesHelper);
     model.addAllAttributes(Map.of(
       "person", getPerson(),
       "foodTypes", foodTypes,
       "storage", food,
-      "meads", foodService.getMeads()
+      "meads", meads
     ));
 
     return "warehousePage";

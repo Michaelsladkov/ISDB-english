@@ -1,12 +1,12 @@
 CREATE TABLE "people"
 (
     "id"       serial PRIMARY KEY,
-    "name"     varchar NOT NULL,
+    "name"     varchar   NOT NULL,
     "birthday" timestamp NOT NULL,
-    "hp"       int NOT NULL,
-    "mana"     int NOT NULL,
-    "stamina"  int NOT NULL,
-    "alcohol"  int NOT NULL,
+    "hp"       int       NOT NULL,
+    "mana"     int       NOT NULL,
+    "stamina"  int       NOT NULL,
+    "alcohol"  int       NOT NULL,
     CHECK (
                 hp >= 0
             AND mana >= 0
@@ -18,9 +18,9 @@ CREATE TABLE "people"
 CREATE TABLE "loyalty_levels"
 (
     "level"       serial PRIMARY KEY,
-    "sale"        int NOT NULL,
+    "sale"        int     NOT NULL,
     "description" varchar NOT NULL,
-    "money"       int NOT NULL,
+    "money"       int     NOT NULL,
     CHECK (sale >= 0 AND sale <= 100)
 );
 
@@ -56,10 +56,10 @@ CREATE TABLE "food_types"
 (
     "id"      serial PRIMARY KEY,
     "name"    varchar UNIQUE NOT NULL,
-    "price"   int NOT NULL,
-    "hp"      int NOT NULL,
-    "mana"    int NOT NULL,
-    "stamina" int NOT NULL,
+    "price"   int            NOT NULL,
+    "hp"      int            NOT NULL,
+    "mana"    int            NOT NULL,
+    "stamina" int            NOT NULL,
     CHECK (
                 hp >= 0
             AND mana >= 0
@@ -86,7 +86,7 @@ CREATE TABLE "orders"
     "id"          serial PRIMARY KEY,
     "customer_id" int REFERENCES "customers" ON UPDATE CASCADE ON DELETE CASCADE,
     "time"        timestamp NOT NULL,
-    "closed"      boolean NOT NULL
+    "closed"      boolean   NOT NULL
 );
 
 CREATE TABLE "order_details"
@@ -236,4 +236,7 @@ CREATE TRIGGER check_closed_from_false_to_true
 EXECUTE PROCEDURE check_closed_from_false_to_true();
 
 INSERT INTO loyalty_levels (level, sale, description, money)
-VALUES (0, 0, 'Чушка', 0);
+VALUES (0, 0, 'Деревянный', 0),
+       (1, 5, 'Серебряный', 100),
+       (2, 10, 'Золотой', 1000),
+       (3, 50, 'Алмазный', 10000);
