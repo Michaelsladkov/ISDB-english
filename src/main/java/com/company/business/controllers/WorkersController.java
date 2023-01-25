@@ -96,8 +96,9 @@ public class WorkersController extends BaseController {
 
     var foodTypes = foodService.getFoodTypes();
     var food = foodService.getAll();
-
+    model.addAttribute("Roles", rolesHelper);
     model.addAllAttributes(Map.of(
+      "person", getPerson(),
       "foodTypes", foodTypes,
       "storage", food
     ));

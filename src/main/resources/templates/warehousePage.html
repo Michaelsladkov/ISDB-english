@@ -44,6 +44,18 @@
         <input type="number" placeholder="Stamina" name="stamina">
         <input type="submit" value="Добавить" class="btn">
       </form>
+      <th:block th:if="${Roles.getRoles(person).contains(T(com.company.business.models.people.Role).OWNER)}">
+      Добавить новый сорт мёда
+      <form th:action="@{/admin/owner/mead}" method="post">
+        <input type="text" placeholder="Название сорта" name="sort">
+        <input type="number" placeholder="Цена" name="price" min="0">
+        <input type="number" placeholder="HP" name="hp">
+        <input type="number" placeholder="Mana" name="mana">
+        <input type="number" placeholder="Stamina" name="stamina">
+        <input type="number" placeholder="Алкоголь" name="alcohol">
+        <input type="submit" value="Добавить" class="btn">
+      </form>
+      </th:block>
     </td>
     <td align="center" id="right">
       <table border="1" class="table">
