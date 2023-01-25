@@ -1,7 +1,7 @@
 CREATE TABLE "people"
 (
     "id"       serial PRIMARY KEY,
-    "name"     varchar   NOT NULL,
+    "name"     varchar   NOT NULL UNIQUE,
     "birthday" timestamp NOT NULL,
     "hp"       int       NOT NULL,
     "mana"     int       NOT NULL,
