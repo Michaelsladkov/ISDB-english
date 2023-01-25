@@ -1,7 +1,7 @@
 package com.company.business.controllers;
 
 import com.company.auth.SessionRepository;
-import com.company.business.models.people.Ban;
+import com.company.business.models.Order;
 import com.company.business.models.people.Customer;
 import com.company.business.repositories.people.PeopleRepository;
 import com.company.business.services.CustomerService;
@@ -46,7 +46,15 @@ public class CustomersController extends BaseController {
     var foodName = request.getParameter("foodType");
     var count = Integer.parseInt(request.getParameter("count"));
 
-    var order = orderService.correctOrder(customer, foodName, count);
+    Order order;
+
+    try {
+      order = orderService.correctOrder(customer, foodName, count);
+    } catch (Throwable e) {
+      model.addAttribute("error", true);
+      return "redirect:/index";
+    }
+
     var details = orderService.getDetails(order.getId());
 
     model.addAllAttributes(Map.of(

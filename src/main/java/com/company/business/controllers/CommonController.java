@@ -4,6 +4,7 @@ import com.company.auth.Session;
 import com.company.auth.SessionRepository;
 import com.company.auth.User;
 import com.company.auth.UserService;
+import com.company.business.models.food.Food;
 import com.company.business.models.food.FoodType;
 import com.company.business.models.people.Customer;
 import com.company.business.models.people.Person;
@@ -11,6 +12,7 @@ import com.company.business.repositories.people.LoyaltyLevelRepository;
 import com.company.business.repositories.people.PeopleRepository;
 import com.company.business.services.*;
 import jakarta.servlet.http.HttpServletRequest;
+import one.util.streamex.StreamEx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -76,7 +78,8 @@ public class CommonController extends BaseController {
       .stream()
       .collect(Collectors.toMap(FoodType::getId, Function.identity()));
 
-    foodService.getAll().forEach(food -> {
+    var storage = foodService.getAll();
+    storage.forEach(food -> {
       var foodType = food.getFoodType();
       if (foodTypesById.containsKey(foodType.getId())) {
         availableFoodTypes.add(foodType);
@@ -85,10 +88,14 @@ public class CommonController extends BaseController {
     });
     var notAvailableFoodTypes = foodTypesById.values();
 
+    var foodCountByName = StreamEx.of(storage)
+        .toMap(f -> f.getFoodType().getName(), Food::getCount);
+
     model.addAllAttributes(Map.of(
       "availableFoodTypes", availableFoodTypes,
       "notAvailableFoodTypes", notAvailableFoodTypes,
-      "meads", foodService.getMeads()
+      "meads", foodService.getMeads(),
+      "foodCountByName", foodCountByName
     ));
 
     var order = orderService.getOpen(customer);
