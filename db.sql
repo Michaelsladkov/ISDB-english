@@ -44,7 +44,7 @@ CREATE TABLE "ban_records"
 CREATE TABLE "workers"
 (
     "id"         int PRIMARY KEY REFERENCES "people" ON UPDATE CASCADE ON DELETE CASCADE,
-    "profession" varchar NOT NULLk
+    "profession" varchar NOT NULL
 );
 
 
