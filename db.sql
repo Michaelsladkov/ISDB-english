@@ -70,7 +70,6 @@ CREATE TABLE "food_types"
 CREATE TABLE "mead_types"
 (
     "id"        int PRIMARY KEY REFERENCES "food_types" ON UPDATE CASCADE ON DELETE CASCADE,
-    "sort_name" varchar,
     "alcohol"   int,
     CHECK (alcohol > 0 AND alcohol < 100)
 );

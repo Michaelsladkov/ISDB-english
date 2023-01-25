@@ -16,19 +16,14 @@ public class JdbcMeadRepository implements MeadRepository {
     int hp = rs.getInt("hp");
     int mana = rs.getInt("mana");
     int stamina = rs.getInt("stamina");
-    String sortName = rs.getString("sort_name");
     int alcohol = rs.getInt("alcohol");
-    return new Mead(id, name, price, hp, mana, stamina, sortName, alcohol);
+    return new Mead(id, name, price, hp, mana, stamina, alcohol);
   };
   private final static String GET_ALL_QUERY =
-    "select id, name, price, hp, mana, stamina, sort_name, alcohol" +
+    "select id, name, price, hp, mana, stamina, alcohol" +
       " from mead_types as meads left join food_types as types using(id)";
-  private final static String GET_BY_SORT_NAME_QUERY =
-    "select id, name, price, hp, mana, stamina, sort_name, alcohol" +
-      " from mead_types as meads left join food_types as types using(id)" +
-      " where sort_name = ?";
   private final static String INSERT_QUERY =
-    "insert into mead_types (id, sort_name, alcohol) values (?, ?, ?)";
+    "insert into mead_types (id, alcohol) values (?, ?)";
   private final FoodTypeRepository foodTypeRepository;
   private final JdbcTemplate jdbcTemplate;
 
@@ -43,15 +38,10 @@ public class JdbcMeadRepository implements MeadRepository {
   }
 
   @Override
-  public Mead getByName(String name) {
-    return jdbcTemplate.query(GET_BY_SORT_NAME_QUERY, meadRowMapper).get(0);
-  }
-
-  @Override
   public int save(Mead mead) {
     int id = foodTypeRepository.save(mead);
     mead.setId(id);
-    jdbcTemplate.update(INSERT_QUERY, mead.getId(), mead.getSortName(), mead.getAlcohol());
+    jdbcTemplate.update(INSERT_QUERY, mead.getId(), mead.getAlcohol());
     return id;
   }
 }

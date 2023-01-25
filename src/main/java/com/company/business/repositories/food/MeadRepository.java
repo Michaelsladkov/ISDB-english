@@ -7,7 +7,5 @@ import java.util.List;
 public interface MeadRepository {
   List<Mead> getAll();
 
-  Mead getByName(String name);
-
   int save(Mead foodType);
 }

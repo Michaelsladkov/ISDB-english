@@ -117,10 +117,9 @@ public class AdminController extends BaseController {
     int mana = Integer.parseInt(request.getParameter("mana"));
     int stamina = Integer.parseInt(request.getParameter("stamina"));
 
-    String sort = request.getParameter("sort");
     int alcohol = Integer.parseInt(request.getParameter("alcohol"));
 
-    var mead = new Mead(null, foodTypeName, price, hp, mana, stamina, sort, alcohol);
+    var mead = new Mead(null, foodTypeName, price, hp, mana, stamina, alcohol);
 
     meadRepository.save(mead);
 
