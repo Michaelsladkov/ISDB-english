@@ -60,7 +60,7 @@ public class JdbcWorkerRepository implements WorkerRepository {
 
   @Override
   public void updateProfession(Worker worker) {
-    jdbcTemplate.update(UPDATE_PROFESSION_QUERY, worker.getProfession(), worker.getId());
+    jdbcTemplate.update(UPDATE_PROFESSION_QUERY, worker.getProfession().toString(), worker.getId());
   }
 
   private Worker wrapWithNullCheck(Supplier<List<Worker>> getter) {

@@ -22,27 +22,47 @@
 
   <tbody>
   <tr>
-    <table border="1" class="table">
-      <thead>
-      <tr>
-        <th>id</th> <th>Имя</th> <th>Дата Рождения</th> <th>Должность</th> <th></th>
-      </tr>
-      </thead>
-      <th:block th:each="worker : ${workers}">
+    <td align="center" id="left">
+      <table border="1" class="table">
+        <thead>
         <tr>
-          <td th:text="${worker.id}"></td> <td th:text="${worker.name}"></td> <td th:text="${worker.birthday}"></td> <td th:text="${worker.profession}"></td>
-          <td><form th:action="@{/admin/worker}" method="post">
-            <input type="text" style="display:none;" th:value="${worker.name}" name="name">
-            <select required name="profession">
-              <th:block th:each="profession: ${T(com.company.business.models.people.Worker.Profession).values()}">
-                <option th:text="${profession.name}" th:value="${profession.name}" th:selected="${worker.profession == profession}"></option>
-              </th:block>
-            </select>
-            <input type="submit" value="Сохранить" class="btn">
-          </form></td>
+          <th>id</th> <th>Имя</th> <th>Дата Рождения</th> <th>Должность</th>
         </tr>
-      </th:block>
-    </table>
+        </thead>
+        <th:block th:each="worker : ${workers}">
+          <tr>
+            <td th:text="${worker.id}"></td> <td th:text="${worker.name}"></td> <td th:text="${worker.birthday}"></td> <td th:text="${worker.profession}"></td>
+          </tr>
+        </th:block>
+      </table>
+    </td>
+    <td align="center" id="right">
+      Задать должность
+      <form th:action="@{/admin/worker}" method="post">
+        <input required type="text" name="name" placeholder="Имя пользователя">
+        <select required name="profession" style="margin-top: 2%">
+          <th:block th:each="profession: ${T(com.company.business.models.people.Worker.Profession).values()}">
+            <option th:text="${profession.name}" th:value="${profession.name}"></option>
+          </th:block>
+        </select>
+        <br>
+        <input type="submit" value="Назначить">
+      </form>
+      <br>
+      Забанить
+      <form th:action="@{/admin/ban}" method="post">
+        <input required type="text" name="name" placeholder="Имя пользователя">
+        <input required type="number" name="days" min="0" placeholder="Дни">
+        <br>
+        <input type="submit" value="Забанить">
+      </form>
+      <br>
+      Разбанить
+      <form th:action="@{/admin/ban/remove}" method="post">
+        <input required type="text" name="name" placeholder="Имя пользователя">
+        <input type="submit" value="Разбанить">
+      </form>
+    </td>
   </tr>
   </tbody>
 </table>

@@ -26,7 +26,7 @@ class JdbcOrderDetailsRepository implements OrderDetailsRepository {
   private final static String INSERT_QUERY =
     "insert into order_details (order_id, food_id, count) values (?, ?, ?)";
   private final static String UPDATE_COUNT_QUERY =
-    "update order_details set count = ? where order_id = ? and food_type = ?";
+    "update order_details set count = ? where order_id = ? and food_id = ?";
 
   private final FoodTypeRepository foodTypeRepository;
   private final JdbcTemplate jdbcTemplate;
