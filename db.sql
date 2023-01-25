@@ -235,5 +235,8 @@ CREATE TRIGGER check_closed_from_false_to_true
     FOR ROW
 EXECUTE PROCEDURE check_closed_from_false_to_true();
 
-INSERT INTO loyalty_levels (level, sale, description, money)
-VALUES (0, 0, 'Чушка', 0);
+
+INSERT INTO loyalty_levels (level, sale, description, money) VALUES (0, 0, 'Деревянный', 0);
+INSERT INTO loyalty_levels (level, sale, description, money) VALUES (1, 3, 'Бронзовый', 50);
+INSERT INTO loyalty_levels (level, sale, description, money) VALUES (2, 6, 'Серебряный', 200);
+INSERT INTO loyalty_levels (level, sale, description, money) VALUES (3, 10, 'Золотой', 1000);
