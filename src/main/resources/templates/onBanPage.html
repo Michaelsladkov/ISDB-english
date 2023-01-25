@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Буяним</title>
+  <link rel="stylesheet" href="../static/css/ban_style.css" th:href="@{/css/on_ban_style.css}">
+
+</head>
+<body>
+<div id="bg"></div>
+
+<table border="0"  width="100%" height="100%" cellpadding="20" cellspacing="10">
+  <tbody>
+  </tbody>
+</table>
+
+
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<input hidden th:value="@{/}" id="redir-value">
+
+<script>
+  setTimeout(function() {
+    window.location.href = $('#redir-value').val()
+  }, 3000);
+</script>
+</body>
+</html>

@@ -81,6 +81,9 @@
                 </td>
                 </table>
             </tr>
+            <form th:action="@{/customer/dirt}" method="get" th:if="${person.alcohol >= 75}">
+                <input type="submit" value="Буянить" class="btn" style="background-color: red">
+            </form>
             </tbody>
         </table>
         <script src="http://code.jquery.com/jquery-1.10.2.js"></script>

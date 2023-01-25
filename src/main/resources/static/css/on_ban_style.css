@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Lato:400,700");
 #bg {
-    background-image: url('../img/inside.jpg');
+    background-image: url('../img/on_ban.webp');
     position: fixed;
     left: 0;
     top: 0;
@@ -20,12 +20,8 @@ body {
     display: inline-block;
     /*border: 1px solid red;*/
     margin: 30px;
-    width: 150px;
 }
 
-.inline [type="submit"] {
-    width: 100%;
-}
 /*form .form-field {*/
 /*    display: -webkit-box;*/
 /*    display: -ms-flexbox;*/
@@ -138,17 +134,4 @@ form .btn {
 }
 .table tbody tr:last-child td:last-child {
     border-radius: 0 0 5px 0;
-}
-
-#button-bar {
-    width: 50%;
-}
-
-.not-available {
-    color: lightcoral;
-    text-decoration: line-through;
-}
-
-.buyan {
-    background-color: red;
 }
