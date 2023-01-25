@@ -120,7 +120,10 @@ public class CommonController extends BaseController {
     var checkAuthResult = userService.check(new User(login, password, null));
     if (checkAuthResult != SUCCESS) {
       logger.error("Can't sign in with login = '" + login + "'");
-      model.addAttribute("error", checkAuthResult.toString());
+      switch (checkAuthResult) {
+        case NO_USER -> model.addAttribute("error", "Пользователя не существует");
+        case WRONG_PASSWORD -> model.addAttribute("error", "Неверный пароль");
+      }
       return "loginPage";
     }
 
