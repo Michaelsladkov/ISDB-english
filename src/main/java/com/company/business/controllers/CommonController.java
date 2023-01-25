@@ -117,9 +117,10 @@ public class CommonController extends BaseController {
   public String sigIn(HttpServletRequest request, Model model) {
     var login = (String) request.getParameter("login");
     var password = (String) request.getParameter("password");
-    if (userService.check(new User(login, password, null)) != SUCCESS) {
+    var checkAuthResult = userService.check(new User(login, password, null));
+    if (checkAuthResult != SUCCESS) {
       logger.error("Can't sign in with login = '" + login + "'");
-      model.addAttribute("error", true);
+      model.addAttribute("error", checkAuthResult.toString());
       return "loginPage";
     }
 
