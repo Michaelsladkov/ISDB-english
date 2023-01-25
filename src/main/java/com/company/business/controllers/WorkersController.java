@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.function.Function;
@@ -104,11 +105,13 @@ public class WorkersController extends BaseController {
       .toMap(Mead::getId, Function.identity());
 
     var meads = new LinkedList<Food>();
+    var meadAlco = new HashMap<String, Integer>();
 
     var food = StreamEx.of(foodService.getAll()).filter((f) -> {
       if (meadTypesById.containsKey(f.getFoodType().getId())) {
         f.setFoodType(meadTypesById.get(f.getFoodType().getId()));
         meads.add(f);
+        meadAlco.put(f.getFoodType().getName(), ((Mead) f.getFoodType()).getAlcohol());
         return false;
       }
       return true;
@@ -119,7 +122,8 @@ public class WorkersController extends BaseController {
       "person", getPerson(),
       "foodTypes", foodTypes,
       "storage", food,
-      "meads", meads
+      "meads", meads,
+      "meadAlco", meadAlco
     ));
 
     return "warehousePage";

@@ -29,9 +29,6 @@
           <th:block th:each="foodType: ${foodTypes}">
             <option th:text="${foodType.name}" th:value="${foodType.name}"></option>
           </th:block>
-          <th:block th:each="mead: ${meads}">
-            <option th:text="${mead.name}" th:value="${mead.name}"></option>
-          </th:block>
         </select>
         <input type="number" min="1" placeholder="Количество" name="count" required>
         <br>
@@ -81,7 +78,7 @@
         </thead>
         <th:block th:each="food : ${meads}">
           <tr>
-            <td th:text="${food.foodType.name}"></td> <td th:text="${food.foodType.hp}"></td> <td th:text="${food.foodType.mana}"></td> <td th:text="${food.foodType.stamina}"></td> <td th:text="${food.foodType.alcohol}"></td> <td th:text="${food.foodType.price}"></td> <td th:text="${food.count}"></td>
+            <td th:text="${food.foodType.name}"></td> <td th:text="${food.foodType.hp}"></td> <td th:text="${food.foodType.mana}"></td> <td th:text="${food.foodType.stamina}"></td> <td th:text="${meadAlco.get(food.foodType.name)}"></td> <td th:text="${food.foodType.price}"></td> <td th:text="${food.count}"></td>
           </tr>
         </th:block>
       </table>
