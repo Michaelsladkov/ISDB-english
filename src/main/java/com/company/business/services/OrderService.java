@@ -84,7 +84,7 @@ public class OrderService {
       staminaToIncrease += foodType.getStamina() * d.getCount();
       var foodAsMead = meads.getOrDefault(foodType.getId(), null);
       if (foodAsMead != null) {
-        alcoholToIncrease += foodAsMead.getAlcohol();
+        alcoholToIncrease += foodAsMead.getAlcohol() * d.getCount();
       }
     }
 
