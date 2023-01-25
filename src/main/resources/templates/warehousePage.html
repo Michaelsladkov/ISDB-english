@@ -73,6 +73,18 @@
           </tr>
         </th:block>
       </table>
+      <table border="1" class="table">
+        <thead>
+        <tr>
+          <th>Название</th> <th>HP</th> <th>Mana</th> <th>Stamina</th> <th>Алкоголь</th> <th>Цена</th> <th>Количество</th>
+        </tr>
+        </thead>
+        <th:block th:each="food : ${meads}">
+          <tr>
+            <td th:text="${food.foodType.name}"></td> <td th:text="${food.foodType.hp}"></td> <td th:text="${food.foodType.mana}"></td> <td th:text="${food.foodType.stamina}"></td> <td th:text="${food.foodType.alcohol}"></td> <td th:text="${food.foodType.price}"></td> <td th:text="${food.count}"></td>
+          </tr>
+        </th:block>
+      </table>
     </td>
   </tr>
   </tbody>
