@@ -2,7 +2,7 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>Медоварня</title>
+  <title>Mead Brewery</title>
   <link rel="stylesheet" href="../static/css/cashier_style.css" th:href="@{/css/cashier_style.css}">
 
 </head>
@@ -14,7 +14,7 @@
   <tr>
     <div class="inline">
       <form th:action="@{/}" method="get">
-        <input type="submit" value="В зал">
+        <input type="submit" value="To the hall">
       </form>
     </div>
   </tr>
@@ -26,14 +26,14 @@
       <table border="1" class="table">
         <thead>
         <tr>
-          <th>id</th> <th>Клиент</th> <th>Время</th> <th></th>
+          <th>id</th> <th>Client</th> <th>Timestamp</th> <th></th>
         </tr>
         </thead>
         <th:block th:each="order : ${openOrders}">
           <tr>
             <td th:text="${order.id}"></td> <td th:text="${order.customer.name}"></td> <td th:text="${order.time}"></td>
             <td><form th:action="@{/worker/orders/details/{orderId}(orderId=${order.id})}" method="get">
-              <input type="submit" value="Детали" class="btn">
+              <input type="submit" value="Details" class="btn">
             </form></td>
           </tr>
         </th:block>

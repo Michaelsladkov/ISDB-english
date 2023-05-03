@@ -2,7 +2,7 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>Медоварня</title>
+  <title>Mead Brewery</title>
   <link rel="stylesheet" href="../static/css/cashier_style.css" th:href="@{/css/cashier_style.css}">
 
 </head>
@@ -14,14 +14,14 @@
   <tr>
     <div class="inline">
       <form th:action="@{/worker/orders}" method="get">
-        <input type="submit" value="Назад">
+        <input type="submit" value="Back">
       </form>
     </div>
       <div class="inline" th:text="'id: ' + ${order.id}"></div>
-      <div class="inline" th:text="'Клиент: ' + ${order.customer.name}"></div>
-      <div class="inline" th:text="'Уровень ПЛ: ' + ${loyaltyLevel.level}"></div>
-      <div class="inline" th:text="'Время: ' + ${order.time}"></div>
-      <div class="inline" th:text="'Оплачен: ' + (${order.closed} ? 'Да' : 'Нет')"></div>
+      <div class="inline" th:text="'Client: ' + ${order.customer.name}"></div>
+      <div class="inline" th:text="'Loyality level: ' + ${loyaltyLevel.level}"></div>
+      <div class="inline" th:text="'Timestamp: ' + ${order.time}"></div>
+      <div class="inline" th:text="'Payed: ' + (${order.closed} ? 'Yes' : 'No')"></div>
   </tr>
   </thead>
 
@@ -31,7 +31,7 @@
       <table border="1" class="table">
         <thead>
         <tr>
-          <th>Товар</th> <th>HP</th> <th>Mana</th> <th>Stamina</th> <th>Количество</th> <th>Цена</th> <th>Стоимость</th>
+          <th>Product</th> <th>HP</th> <th>Mana</th> <th>Stamina</th> <th>Quantity</th> <th>Price</th> <th>Cost</th>
         </tr>
         </thead>
         <th:block th:each="orderDetail : ${orderDetails}">
@@ -40,7 +40,7 @@
           </tr>
         </th:block>
         <tr>
-          <td>Cумма с учетом скидки</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td th:text="${totalCost}"></td>
+          <td>Cost after discount</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td th:text="${totalCost}"></td>
         </tr>
       </table>
     </td>
@@ -49,7 +49,7 @@
     <td>
       <form th:action="@{/worker/orders/close}" method="post">
         <input type="text" style="display:none;" th:value="${order.id}" name="orderId">
-        <input type="submit" value="Завершить заказ" class="btn">
+        <input type="submit" value="End show" class="btn">
       </form>
     </td>
   </tr>

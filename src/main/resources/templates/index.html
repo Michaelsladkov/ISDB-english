@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/html">
     <head>
         <meta charset="UTF-8">
-        <title>Медоварня</title>
+        <title>Mead Brewery</title>
         <link rel="stylesheet" href="../static/css/main_style.css" th:href="@{/css/main_style.css}">
         <script type="text/javascript" src="../static/js/AlcoholicAnimation.js" th:src="@{/js/AlcoholicAnimation.js}"></script>
     </head>
@@ -14,14 +14,14 @@
                 <th colspan="2">
                     <div class="inline">
                         <form th:action="@{/logout}" method="post">
-                            <input class="not-alcohol-friendly" type="submit" value="Выйти">
+                            <input class="not-alcohol-friendly" type="submit" value="Exit">
                         </form>
                     </div>
                     <div id="hp" class="inline" th:text="${'HP: ' + person.getHp()}"></div>
                     <div id="mana" class="inline" th:text="${'Mana: ' + person.getMana()}"></div>
                     <div id="stamina" class="inline" th:text="${'Stamina: ' + person.getStamina()}"></div>
-                    <div id="alcohol" class="inline" th:text="${'Опьянение: ' + person.getAlcohol()}"></div>
-                    <div id="loyalty_level" class="inline" th:text="${'Уровень ПЛ: ' + loyaltyLevel.getDescription() + '(' + loyaltyLevel.getLevel() + ')'}"></div>
+                    <div id="alcohol" class="inline" th:text="${'Intoxication: ' + person.getAlcohol()}"></div>
+                    <div id="loyalty_level" class="inline" th:text="${'Loyality level: ' + loyaltyLevel.getDescription() + '(' + loyaltyLevel.getLevel() + ')'}"></div>
                 </th>
             </tr>
             </thead>
@@ -31,7 +31,7 @@
                 <td align="center" id="left">
                     <form th:action="@{/customer/order}" method="post">
                         <select required name="foodType">
-                            <option selected disabled>Выберите товар</option>
+                            <option selected disabled>Choose a product</option>
                             <th:block th:each="foodType: ${availableFoodTypes}">
                                 <option th:text="${foodType.name}" th:value="${foodType.name}"></option>
                             </th:block>
@@ -39,16 +39,16 @@
                                 <option th:text="${foodType.name}" th:value="${foodType.name}" class="not-available"></option>
                             </th:block>
                         </select>
-                        <input type="number" min="1" placeholder="Количество" name="count" required>
+                        <input type="number" min="1" placeholder="Quantity" name="count" required>
                         <br>
-                        <input type="submit" value="Заказать" class="btn">
+                        <input type="submit" value="Order" class="btn">
                     </form>
                 </td>
                 <td align="center" id="right">
                     <table border="1" class="table" th:if="${orderDetails != null}">
                         <thead>
                         <tr>
-                            <th>Название</th> <th>Количество</th> <th>Стоимость</th>
+                            <th>Name</th> <th>Quantity</th> <th>Cost</th>
                         </tr>
                         </thead>
                         <th:block th:each="orderDetail : ${orderDetails}">
@@ -57,7 +57,7 @@
                             </tr>
                         </th:block>
                         <tr>
-                            <td>Сумма cо скидкой</td> <td></td> <td th:text="${totalCost}"></td>
+                            <td>Cost after discount</td> <td></td> <td th:text="${totalCost}"></td>
                         </tr>
                     </table>
                 </td>
@@ -66,23 +66,23 @@
                 <table id="button-bar">
                 <td>
                     <form th:action="@{/worker/orders}" method="get" th:if="${Roles.getRoles(person).contains(T(com.company.business.models.people.Role).ORDERS_MANAGER)}">
-                        <input type="submit" value="За кассу">
+                        <input type="submit" value="To the checkout">
                     </form>
                 </td>
                 <td>
                     <form th:action="@{/worker/storage}" method="get" th:if="${Roles.getRoles(person).contains(T(com.company.business.models.people.Role).STORAGE_MANAGER)}">
-                        <input type="submit" value="На склад">
+                        <input type="submit" value="To th storage">
                     </form>
                 </td>
                 <td>
                     <form th:action="@{/admin/}" method="get" th:if="${Roles.getRoles(person).contains(T(com.company.business.models.people.Role).ADMIN)}">
-                        <input type="submit" value="В кабинет">
+                        <input type="submit" value="To the office">
                     </form>
                 </td>
                 </table>
             </tr>
             <form th:action="@{/customer/dirt}" method="get" th:if="${person.alcohol >= 75}">
-                <input type="submit" value="Буянить" class="btn" style="background-color: red">
+                <input type="submit" value="Make a row" class="btn" style="background-color: red">
             </form>
             </tbody>
         </table>

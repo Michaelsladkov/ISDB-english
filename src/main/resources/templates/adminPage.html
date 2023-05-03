@@ -2,7 +2,7 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>Склад</title>
+  <title>Storage</title>
   <link rel="stylesheet" href="../static/css/admin_style.css" th:href="@{/css/admin_style.css}">
 
 </head>
@@ -14,7 +14,7 @@
   <tr>
     <div class="inline">
       <form th:action="@{/}" method="get">
-        <input type="submit" value="В зал">
+        <input type="submit" value="To the hall">
       </form>
     </div>
   </tr>
@@ -26,7 +26,7 @@
       <table border="1" class="table">
         <thead>
         <tr>
-          <th>id</th> <th>Имя</th> <th>Дата Рождения</th> <th>Должность</th>
+          <th>id</th> <th>Name</th> <th>Birth Date</th> <th>Role</th>
         </tr>
         </thead>
         <th:block th:each="worker : ${workers}">
@@ -37,30 +37,30 @@
       </table>
     </td>
     <td align="center" id="right">
-      Задать должность
+      Set role
       <form th:action="@{/admin/worker}" method="post">
-        <input required type="text" name="name" placeholder="Имя пользователя">
+        <input required type="text" name="name" placeholder="User Name">
         <select required name="profession" style="margin-top: 2%">
           <th:block th:each="profession: ${T(com.company.business.models.people.Worker.Profession).values()}">
             <option th:text="${profession.name}" th:value="${profession.name}"></option>
           </th:block>
         </select>
         <br>
-        <input type="submit" value="Назначить">
+        <input type="submit" value="Set">
       </form>
       <br>
-      Забанить
+      Ban
       <form th:action="@{/admin/ban}" method="post">
-        <input required type="text" name="name" placeholder="Имя пользователя">
-        <input required type="number" name="days" min="0" placeholder="Дни">
+        <input required type="text" name="name" placeholder="User Name">
+        <input required type="number" name="days" min="0" placeholder="Days">
         <br>
-        <input type="submit" value="Забанить">
+        <input type="submit" value="Ban">
       </form>
       <br>
-      Разбанить
+      Unban
       <form th:action="@{/admin/ban/remove}" method="post">
-        <input required type="text" name="name" placeholder="Имя пользователя">
-        <input type="submit" value="Разбанить">
+        <input required type="text" name="name" placeholder="User Name">
+        <input type="submit" value="Unban">
       </form>
     </td>
   </tr>

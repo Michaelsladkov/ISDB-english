@@ -2,7 +2,7 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>Склад</title>
+  <title>Storage</title>
   <link rel="stylesheet" href="../css/warehouse_style.css" th:href="@{/css/warehouse_style.css}">
 
 </head>
@@ -14,7 +14,7 @@
   <tr>
     <div class="inline">
       <form th:action="@{/}" method="get">
-        <input type="submit" value="В зал">
+        <input type="submit" value="To the hall">
       </form>
     </div>
   </tr>
@@ -25,35 +25,35 @@
     <td align="center" id="left">
       <form th:action="@{/worker/storage}" method="post">
         <select required name="foodType">
-          <option selected disabled>Выберите товар</option>
+          <option selected disabled>Choose a product</option>
           <th:block th:each="foodType: ${foodTypes}">
             <option th:text="${foodType.name}" th:value="${foodType.name}"></option>
           </th:block>
         </select>
-        <input type="number" min="1" placeholder="Количество" name="count" required>
+        <input type="number" min="1" placeholder="Quantity" name="count" required>
         <br>
-        <input type="submit" value="Добавить" class="btn">
+        <input type="submit" value="Add" class="btn">
       </form>
       <br>
-      Добавить новый продукт
+      Add new product
       <form th:action="@{/worker/storage/food-types}" method="post">
-        <input type="text" placeholder="Название" name="name">
-        <input type="number" placeholder="Цена" name="price" min="0">
+        <input type="text" placeholder="Name" name="name">
+        <input type="number" placeholder="Price" name="price" min="0">
         <input type="number" placeholder="HP" name="hp">
         <input type="number" placeholder="Mana" name="mana">
         <input type="number" placeholder="Stamina" name="stamina">
-        <input type="submit" value="Добавить" class="btn">
+        <input type="submit" value="Add" class="btn">
       </form>
       <th:block th:if="${Roles.getRoles(person).contains(T(com.company.business.models.people.Role).OWNER)}">
-      Добавить новый сорт мёда
+      Add new mead type
       <form th:action="@{/admin/owner/mead}" method="post">
-        <input type="text" placeholder="Название сорта" name="name">
-        <input type="number" placeholder="Цена" name="price" min="0">
+        <input type="text" placeholder="Type name" name="name">
+        <input type="number" placeholder="Price" name="price" min="0">
         <input type="number" placeholder="HP" name="hp">
         <input type="number" placeholder="Mana" name="mana">
         <input type="number" placeholder="Stamina" name="stamina">
-        <input type="number" placeholder="Алкоголь" name="alcohol">
-        <input type="submit" value="Добавить" class="btn">
+        <input type="number" placeholder="Alcohol" name="alcohol">
+        <input type="submit" value="Add" class="btn">
       </form>
       </th:block>
     </td>
@@ -61,7 +61,7 @@
       <table border="1" class="table">
         <thead>
         <tr>
-          <th>Название</th> <th>HP</th> <th>Mana</th> <th>Stamina</th> <th>Цена</th> <th>Количество</th>
+          <th>Name</th> <th>HP</th> <th>Mana</th> <th>Stamina</th> <th>Price</th> <th>Quantity</th>
         </tr>
         </thead>
         <th:block th:each="food : ${storage}">
@@ -73,7 +73,7 @@
       <table border="1" class="table">
         <thead>
         <tr>
-          <th>Название</th> <th>HP</th> <th>Mana</th> <th>Stamina</th> <th>Алкоголь</th> <th>Цена</th> <th>Количество</th>
+          <th>Name</th> <th>HP</th> <th>Mana</th> <th>Stamina</th> <th>Alcohol</th> <th>Price</th> <th>Quantity</th>
         </tr>
         </thead>
         <th:block th:each="food : ${meads}">
